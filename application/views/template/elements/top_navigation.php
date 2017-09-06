@@ -1,17 +1,16 @@
 <!--Header-->
-<header id="topnav" class="navbar navbar-default navbar-fixed-top" role="banner">
+<header id="topnav" class="navbar navbar-default navbar-fixed-top navbar-black" role="banner">
 
     <div class="logo-area">
                 <span id="trigger-sidebar" class="toolbar-trigger toolbar-icon-bg">
-                    <a data-toggle="tooltips" data-placement="right" title="Toggle Sidebar">
+                    <a href="dashboard" data-placement="right" title="Toggle Sidebar">
                         <span class="icon-bg">
-                            <i class="ti ti-menu"></i>
+                            <i class="ti ti-home"></i>
                         </span>
                     </a>
                 </span>
-				
-
-        <a class="navbar-brand" href="#">JCore</a>
+			
+        <a class="navbar-brand" href="#"></a>
 
 
 

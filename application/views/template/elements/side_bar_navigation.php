@@ -11,7 +11,7 @@
 
 
 		</style>
-<?php
+    <?php
 		$user_id=$this->session->user_id;
 					$user = $this->db->query('SELECT user_accounts.user_group_id FROM user_accounts
 							 WHERE user_id='.$user_id);
@@ -24,10 +24,10 @@
 			$products = $this->db->query('SELECT product_id,product_desc FROM products');
 
 
-		?>
+	?>
 
 
-<div class="static-sidebar-wrapper sidebar-default">
+<div class="static-sidebar-wrapper sidebar-default hidden">
     <div class="static-sidebar">
         <div class="sidebar">
             <div class="widget">

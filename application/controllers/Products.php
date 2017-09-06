@@ -69,7 +69,7 @@ class Products extends CORE_Controller
                 $response['stat'] = 'success';
                 $response['msg'] = 'Product information successfully created.';
 
-                $response['row_added'] = $this->response_rows($product_id);
+                $response['row_added'] = $m_products->getProductInventoryInfo($product_id);
                 echo json_encode($response);
 
                 break;
@@ -110,29 +110,22 @@ class Products extends CORE_Controller
 				$m_products->tax_rate =$this->get_numeric_value($this->input->post('tax_rate', TRUE));
                 $m_products->supplier_id = $this->input->post('supplier', TRUE);
 
-
                 $m_products->modify($product_id);
 
-                $response['title']=$product_id;
+                $response['title']='Success!';
                 $response['stat']='success';
                 $response['msg']='Product information successfully updated.';
-                $response['row_updated']=$this->response_rows($product_id);
+                $response['row_updated'] = $m_products->getProductInventoryInfo($product_id);
                 echo json_encode($response);
 
                 break;
         }
     }
 
-
-
-
-
     function response_rows($filter){
         return $this->Products_model->get_list(
             $filter,
-
             'products.*,categories.category_name,units.unit_name,brands.brand_name,vendors.vendor_name',
-
             array(
                 array('categories','categories.category_id=products.category_id','left'),
                 array('units','units.unit_id=products.unit_id','left'),

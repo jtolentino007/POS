@@ -28,12 +28,6 @@
     <!-- Datepicker -->
     <link href="assets/plugins/datapicker/datepicker3.css" rel="stylesheet">
 
-
-
-
-
-
-
     <style>
         .toolbar{
             float: left;

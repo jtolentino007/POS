@@ -25,7 +25,7 @@
     <!--/twitter typehead-->
     <link href="assets/plugins/twittertypehead/twitter.typehead.css" rel="stylesheet">
 
-    <!-- Datepicker --->
+    <!-- Datepicker -->
     <link href="assets/plugins/datapicker/datepicker3.css" rel="stylesheet">
 
 
@@ -121,11 +121,6 @@
 <div class="static-content"  >
 <div class="page-content">
 
-<ol class="breadcrumb"  style="margin-bottom: 10px;">
-    <li><a href="Dashboard">Dashboard</a></li>
-    <li><a href="Deliveries">Receiving Stock</a></li>
-</ol>
-
 
 <div class="container-fluid">
 <div data-widget-group="group1">
@@ -133,36 +128,23 @@
 <div class="col-md-12">
 
 <div id="div_user_list">
-
-
-
-
     <div class="panel panel-default">
-        <div class="panel-body table-responsive">
+        <div class="panel-body table-responsive" style="border-top: 5px solid #2196f3;">
+            <h1>Stock Receiving</h1>
             <table id="tbl_delivery_invoice" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
                     <th></th>
                     <th>Invoice #</th>
                     <th>Supplier</th>
-
                     <th>Date Received</th>
                     <th><center>Action</center></th>
                 </tr>
                 </thead>
                 <tbody>
-
-
-
                 </tbody>
             </table>
         </div>
-
-
-
-
-
-        <div class="panel-footer"></div>
     </div>
 
 </div>
@@ -170,10 +152,8 @@
 
 <div id="div_user_fields" style="display: none;">
 <div class="panel panel-default">
-<div class="panel-heading">
-    <h2>Receiving Stock</h2>
-
-
+<div class="panel-heading" style="background: none!important;">
+    <h1>Stock Receiving</h1>
 
     <!-- <div class="pull-right"><strong>[ <a id="btn_receive_po" href="#" style="text-decoration: underline;">Receive from Purchase Order</a> ]</strong></div>
     <div class="panel-ctrls" data-actions-container=""></div> -->
@@ -195,9 +175,9 @@
                 <label class="col-md-3  control-label boldlabel">* Doc. # :</label>
                 <div class="col-md-9">
                     <div class="input-group">
-                                                    <span class="input-group-addon ">
-                                                        <i class="fa fa-code"></i>
-                                                    </span>
+                        <span class="input-group-addon ">
+                            <i class="fa fa-code"></i>
+                        </span>
                         <input type="text" name="dr_invoice_no" class="form-control inputhighlight" placeholder="Doc No" data-error-msg="Doc # is required." required>
                     </div>
                 </div>

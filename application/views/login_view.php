@@ -25,69 +25,44 @@
     </head>
 
     <body class="focused-form animated-content">
-        
-        
+
+
 <div class="container" id="login-form">
 	<a href="index.html" class="login-logo"></a>
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
 				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h2>Login Form</h2>
-					</div>
-					<div class="panel-body">
-						
-						<form action="#" class="form-horizontal" id="validate-form">
-							<div class="form-group mb-md">
-		                        <div class="col-xs-12">
-		                        	<div class="input-group">							
-										<span class="input-group-addon">
-											<i class="ti ti-user"></i>
-										</span>
-										<input name="user_name" type="text" class="form-control" placeholder="Username" data-parsley-minlength="20" placeholder="At least 6 characters" required>
-									</div>
-		                        </div>
+					<div class="panel-body" style="border-top:5px solid #2196f3; padding-bottom: 50px;">
+            <center><h1>LOGIN <br><small><b>POINT OF SALES</b></small></h1></center><br>
+            <form class="form-horizontal" id="validate-form">
+              <div class="form-group mb-md">
+                  <div class="col-xs-12">
+                  	<div class="input-group">
+  										<span class="input-group-addon">
+  											<i class="ti ti-user"></i>
+  										</span>
+  										<input name="user_name" type="text" class="form-control" placeholder="Username" data-parsley-minlength="20" placeholder="At least 6 characters" required>
+					          </div>
+                  </div>
 							</div>
-
 							<div class="form-group mb-md">
-		                        <div class="col-xs-12">
-		                        	<div class="input-group">
-										<span class="input-group-addon">
-											<i class="ti ti-key"></i>
-										</span>
-										<input name="user_pword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-									</div>
-		                        </div>
-							</div>
-
-							<div class="form-group mb-n">
-								<div class="col-xs-12">
-									<a href="#" class="pull-left">Forgot password?</a>
-									<div class="checkbox-inline icheck pull-right p-n">
-										<label for="">
-											<input type="checkbox"></input>
-											Remember me
-										</label>
-									</div>
-								</div>
+                  <div class="col-xs-12">
+                  	<div class="input-group">
+  										<span class="input-group-addon">
+  											<i class="ti ti-key"></i>
+  										</span>
+  										<input name="user_pword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+  									</div>
+                  </div>
 							</div>
 						</form>
 					</div>
 					<div class="panel-footer">
-						<div class="clearfix">
-							<button id="btn_register" class="btn btn-default pull-left">Register</button>
-							<button id="btn_login" class="btn btn-primary ladda-button pull-right" data-style="expand-left" data-spinner-color="white" data-size="l"><span class=""></span> Login</button>
-
+						<div class="col-xs-12">
+							<button id="btn_login" class="btn btn-primary ladda-button btn-block" data-style="expand-left" data-spinner-color="white" data-size="l"><span class=""></span> Login</button>
 						</div>
 					</div>
 				</div>
-
-				<div class="text-center">
-					<a href="#" class="btn btn-label btn-social btn-facebook mb-md"><i class="ti ti-facebook"></i>Connect with Facebook</a>
-					<a href="#" class="btn btn-label btn-social btn-twitter mb-md"><i class="ti ti-twitter"></i>Connect with Twitter</a>
-				</div>
-
-
 			</div>
 		</div>
 </div>

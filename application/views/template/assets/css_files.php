@@ -13,12 +13,45 @@
 <link href="assets/plugins/notify/pnotify.core.css" rel="stylesheet"> <!-- notification -->
 <link href="assets/css/pace.css" rel="stylesheet"> <!-- pace -->
 <style>
+	
+   html {
+        zoom: 80%;
+   }
+
 	.datepicker{z-index:9999 !important}
+
+	.row {
+		margin-top: 7px;
+	}
+
+	.navbar-brand {
+		background:none!important;
+	}
+
+	.panel {
+		-webkit-box-shadow: 0px 0px 8px 0px rgba(115,110,115,1);
+		-moz-box-shadow: 0px 0px 8px 0px rgba(115,110,115,1);
+		box-shadow: 0px 0px 8px 0px rgba(115,110,115,1);
+	}
+
+	.btn {
+		-webkit-box-shadow: 0px 0px 8px 0px rgba(115,110,115,1);
+		-moz-box-shadow: 0px 0px 8px 0px rgba(115,110,115,1);
+		box-shadow: 0px 0px 8px 0px rgba(115,110,115,1);
+	}
+
 	.panel-heading{
 		background-color:#16a085 !important;
 
 	}
-	.panel-heading h2{
+
+	.btn-height {
+		height: 150px;
+		margin-bottom: 30px;
+	}
+
+	.panel-heading h2,
+	.panel-heading h3 {
 		color:white !important;
 
 	}
@@ -27,35 +60,34 @@
 		font-weight:bold;
 		color:black;
 	}
+
+	.panel-custom {
+		border: none;
+	}
+
 	.form-control {
-			transition: all 0.5s ease;
-      border:1px solid #95a5a6 !important;
-  }
+		transition: all 0.5s ease;
+      	border:1px solid #95a5a6 !important;
+    }
+
+    textarea.form-control:focus,
 	.form-control:focus {
-				transition: all 0.5s ease;
-        box-shadow: 1px 1px 15px black !important;
-				border-radius: 5px;
-				color:black;
-        font-weight: bold;
-        font-size:11pt;
-  }
+		transition: all 0.5s ease;
+		color:black;
+		border-color: #2196f3!important;
+  	}
+	
 	textarea.form-control{
 		transition: all 0.5s ease;
-  }
-  textarea.form-control:focus {
+  	}
+
+  	input[type="checkbox"]:focus {
 		transition: all 0.5s ease;
-		box-shadow: 1px 1px 15px black !important;
-		border-radius: 10px;
-		color:black;
-      font-weight: bold;
-  }
-  input[type="checkbox"]:focus {
-		transition: all 0.5s ease;
-    outline:5px solid #616161 !important;
-  }
+    	outline:5px solid #616161 !important;
+  	}
+
 	.green{
 		color:#27ae60 !important;
-
 	}
 
 	table.dataTable thead > tr > th{

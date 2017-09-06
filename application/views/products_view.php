@@ -96,11 +96,6 @@
             <div class="static-content"  >
                 <div class="page-content"><!-- #page-content -->
 
-                    <ol class="breadcrumb">
-                        <li><a href="dashboard">Dashboard</a></li>
-                        <li><a href="products">Products</a></li>
-                    </ol>
-
                     <div class="container-fluid">
                         <div data-widget-group="group1">
                             <div class="row">
@@ -108,7 +103,8 @@
 
                                     <div id="div_product_list">
                                         <div class="panel panel-default">
-                                            <div class="panel-body table-responsive">
+                                            <div class="panel-body table-responsive" style="border-top: 5px solid #2196f3;">
+                                                <h1>Products</h1>
                                                 <table id="tbl_products" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                                     <thead>
                                                     <tr>
@@ -324,9 +320,9 @@
             <div id="modal_product" class="modal fade" tabindex="-1" role="dialog" style="padding-left:0px !important;"><!--modal-->
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        <div class="modal-header" style="background-color:#2ecc71;">
+                        <div class="modal-header" style="background-color:none;">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title" style="color:#ecf0f1 !important;"><span id="modal_mode"> </span>Product Information</h4>
+                            <h4 class="modal-title"><span id="modal_mode"> </span>Product Information</h4>
                         </div>
                         <div class="modal-body" style="overflow:hidden;">
                             <form id="frm_product">
@@ -355,10 +351,10 @@
                                         <div class="form-group" style="margin-bottom:0px;">
                                             <label class="">Quantity :</label>
                                             <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-toggle-off"></i>
-                                                    </span>
-                                                <input type="text" name="quantity" id="quantity" class="form-control numeric" disabled>
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-toggle-off"></i>
+                                                </span>
+                                                <input type="text" name="quantity" id="quantity" class="form-control numeric" value="0.00" disabled>
                                             </div>
                                         </div>
 
@@ -1129,6 +1125,8 @@ $(document).ready(function(){
             $('#product_brand').select2('val','');
             $('#product_unit').select2('val','');
             $('#product_vendor').select2('val','');
+            $('input[name="quantity"]').val('0.00');
+            $('button').prop('disabled',false);
             _txnMode="new";
         });
 
@@ -1219,7 +1217,7 @@ $(document).ready(function(){
                     createProduct().done(function(response){
                         showNotification(response);
                         dt.row.add(response.row_added[0]).draw();
-                        clearFields($('#frm_product'))
+                        clearFields($('#frm_product'));
                     }).always(function(){
                         $('#modal_product').modal('toggle');
                         showSpinningProgress($('#btn_save'));
@@ -1228,7 +1226,7 @@ $(document).ready(function(){
                     updateProduct().done(function(response){
                         showNotification(response);
                         dt.row(_selectRowObj).data(response.row_updated[0]).draw();
-                        clearFields($('#frm_product'))
+                        clearFields($('#frm_product'));
                         showList(true);
                     }).always(function(){
                         $('#modal_product').modal('toggle');
@@ -1339,6 +1337,7 @@ $(document).ready(function(){
     
     var showSpinningProgress=function(e){
         $(e).find('span').toggleClass('glyphicon glyphicon-refresh spinning');
+        $(e).prop('disabled',true);
     };
 
     var clearFields=function(f){

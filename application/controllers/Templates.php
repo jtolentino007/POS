@@ -224,9 +224,16 @@ class Templates extends CORE_Controller {
                         $data['invoice']=$m_invoice->get_invoice_items($salesfromdate,$salestodate);
                         // echo json_encode($data['invoice']);
                         $company=$m_company->get_list();
-                                    $data['company_info']=$company[0];
-                                    $notes=$m_notes->get_list();
-                                    $data['notes']=$notes[0];
+                        $notes=$m_notes->get_list();
+                        if ($company>0)
+                        {
+                            $data['company_info']=$company[0];
+                        }
+
+                        if (count($notes)>0) 
+                        {
+                            $data['notes']=$notes[0];
+                        }
 
                         echo $this->load->view('template/dailyreports_content',$data,TRUE);
 
@@ -238,8 +245,7 @@ class Templates extends CORE_Controller {
                         $m_company=$this->Company_model;
                         $data['inventory']=$this->Inventory_model->get_inventory_onhand_list_filter($inventoryfromdate,$inventorytodate);
                         $company=$m_company->get_list();
-                            $data['company_info']=$company[0];
-
+                        $data['company_info']=$company[0];
 
                         echo $this->load->view('template/inventoryreports_content',$data,TRUE);
 
@@ -323,7 +329,11 @@ class Templates extends CORE_Controller {
                         $company=$m_company->get_list();
                                     $data['company_info']=$company[0];
                                     $notes=$m_notes->get_list();
-                                    $data['notes']=$notes[0];
+                                    if (count($notes)>0)
+                                    {
+                                        $data['notes']=$notes[0];
+                                    }
+
                         echo $this->load->view('template/zreading_content',$data,TRUE);
 
                         break;
