@@ -18,6 +18,7 @@ class Templates extends CORE_Controller {
         $this->load->model('Inventory_model');
         $this->load->model('Issuance_item_model');
         $this->load->model('Issuance_model');
+        $this->load->model('User_group_right_model');
     }
 
     public function index() {
@@ -86,6 +87,17 @@ class Templates extends CORE_Controller {
 
             break;
 
+            case 'user-rights':
+                $m_rights=$this->User_group_right_model;
+
+                $id=$this->input->get('id',TRUE);
+
+                $data['rights']=$m_rights->get_user_group_rights($id);
+                $data['user_group_id']=$id;
+
+                $this->load->view('template/user_group_rights',$data);
+            break;
+
             case 'issuance': //delivery invoice
                         $m_issuance=$this->Issuance_model;
                         $m_issuance_items=$this->Issuance_item_model;
@@ -128,46 +140,45 @@ class Templates extends CORE_Controller {
             break;
 
             case 'pospr': //delivery invoice
-                        $m_invoice=$this->Pos_payment_model;
-                        $m_invoice_items=$this->Purchase_items_model;
-                        $m_company=$this->Company_model;
-                        $m_info=$this->Notes_model;
+                $m_invoice=$this->Pos_payment_model;
+                $m_invoice_items=$this->Purchase_items_model;
+                $m_company=$this->Company_model;
+                $m_info=$this->Notes_model;
 
-                        $info=$m_invoice->get_list(
-                            $filter_value,
-                            'pos_payment.*,pos_invoice.*,pos_invoice_items.*,customers.customer_name,user_accounts.*,CONCAT(user_fname, " ", user_mname, " ", user_lname) AS cashier',
-                                        array(
-                                            array('pos_invoice','pos_invoice.pos_invoice_id=pos_payment.pos_invoice_id','left'),
-                                            array('customers','customers.customer_id=pos_invoice.customer_id','left'),
-                                            array('user_accounts','user_accounts.user_id=pos_invoice.user_id','left'),
-                                            array('pos_invoice_items','pos_invoice_items.pos_invoice_id=pos_payment.pos_invoice_id','left')                               //join
-                                        )
-                        );
+                $info=$m_invoice->get_list(
+                    $filter_value,
+                    'pos_payment.*,pos_invoice.*,pos_invoice_items.*,customers.customer_name,user_accounts.*,CONCAT(user_fname, " ", user_mname, " ", user_lname) AS cashier',
+                    array(
+                        array('pos_invoice','pos_invoice.pos_invoice_id=pos_payment.pos_invoice_id','left'),
+                        array('customers','customers.customer_id=pos_invoice.customer_id','left'),
+                        array('user_accounts','user_accounts.user_id=pos_invoice.user_id','left'),
+                        array('pos_invoice_items','pos_invoice_items.pos_invoice_id=pos_payment.pos_invoice_id','left')                               //join
+                    )
+                );
 
-                                    $invoice_id=$info[0]->pos_invoice_id;
-                        $data['info']=$invoice_id;
-                        $footer=$m_info->get_list();
-                        $company=$m_company->get_list();
-                        $data['pos_invoice_item']=$m_invoice_items->get_list(
+                $invoice_id=$info[0]->pos_invoice_id;
+                $data['info']=$invoice_id;
+                $footer=$m_info->get_list();
+                $company=$m_company->get_list();
+                $data['pos_invoice_item']=$m_invoice_items->get_list(
+                    array('pos_invoice_items.pos_invoice_id'=>$invoice_id),
+                        'pos_invoice_items.*,products.product_desc',
+                    array(
+                        array('products','products.product_id=pos_invoice_items.product_id','left')
+                    )
+                );
 
-                                        array('pos_invoice_items.pos_invoice_id'=>$invoice_id),
-                                            'pos_invoice_items.*,products.product_desc',
-                                        array(
-                                            array('products','products.product_id=pos_invoice_items.product_id','left')
-                                        )
-                                    );
+                $data['footer_info']=$footer[0];
+                $data['delivery_info']=$info[0];
+                $data['company_info']=$company[0];
 
-                        $data['footer_info']=$footer[0];
-                        $data['delivery_info']=$info[0];
-                        $data['company_info']=$company[0];
-
-                        if($filter_value2=='print'){
-                          echo $this->load->view('template/pos_content',$data,TRUE);
-                        }
-                        else{
-                          echo $this->load->view('template/pos_content',$data,TRUE);
-                          echo $this->load->view('template/pos_menu',$data,TRUE);
-                        }
+                if($filter_value2=='print'){
+                  echo $this->load->view('template/pos_content',$data,TRUE);
+                }
+                else{
+                  echo $this->load->view('template/pos_content',$data,TRUE);
+                  echo $this->load->view('template/pos_menu',$data,TRUE);
+                }
             break;
 
             case 'journal': //delivery invoice
@@ -200,8 +211,10 @@ class Templates extends CORE_Controller {
                                     );
                         $data['delivery_info']=$info[0];
                         $data['company_info']=$company[0];
-                        $data['footer_info']=$footer[0];
-
+                        if(count($footer)>0)
+                        {
+                            $data['footer_info']=$footer[0];
+                        }
 
                         if($filter_value2=='print'){
                           echo $this->load->view('template/pos_content',$data,TRUE);
@@ -319,24 +332,20 @@ class Templates extends CORE_Controller {
                         break;
 
             case 'zreading': //delivery invoice
-                        $m_invoice=$this->Pos_payment_model;
-                        $m_invoice_items=$this->Purchase_items_model;
-                        $m_company=$this->Company_model;
-                                    $m_notes=$this->Notes_model;
-                                    $m_user=$this->Users_model;
-                                    $user_id=$this->session->user_id;
+                $m_invoice=$this->Pos_payment_model;
+                $m_invoice_items=$this->Purchase_items_model;
+                $m_company=$this->Company_model;
+                $m_notes=$this->Notes_model;
+                $m_user=$this->Users_model;
+                $user_id=$this->session->user_id;
 
-                        $company=$m_company->get_list();
-                                    $data['company_info']=$company[0];
-                                    $notes=$m_notes->get_list();
-                                    if (count($notes)>0)
-                                    {
-                                        $data['notes']=$notes[0];
-                                    }
+                $company=$m_company->get_list();
+                $data['company_info']=$company[0];
+                $notes=$m_notes->get_list();
+                $data['notes']=$notes[0];
 
-                        echo $this->load->view('template/zreading_content',$data,TRUE);
-
-                        break;
+                echo $this->load->view('template/zreading_content',$data,TRUE);
+                break;
 
             case 'bin':
                         $m_product=$this->Products_model;

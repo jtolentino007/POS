@@ -35,9 +35,6 @@
 	}
 
 	.btn {
-		-webkit-box-shadow: 0px 0px 8px 0px rgba(115,110,115,1);
-		-moz-box-shadow: 0px 0px 8px 0px rgba(115,110,115,1);
-		box-shadow: 0px 0px 8px 0px rgba(115,110,115,1);
 	}
 
 	.panel-heading{
@@ -67,7 +64,6 @@
 
 	.form-control {
 		transition: all 0.5s ease;
-      	border:1px solid #95a5a6 !important;
     }
 
     textarea.form-control:focus,

@@ -22,7 +22,6 @@
         font-family: tahoma;
         font-size: 11px;
         position: absolute;
-        border: 1px solid red;
     }
 </style>
 </head>
@@ -69,7 +68,7 @@ $time = date("H:i:s", strtotime($date));
                 </td>
 
                 <td width="50%" align="right">
-						<img height="50px" width="50px" src="<?php echo $company_info->logo_path; ?>" ></img>
+						<img height="50px" width="50px" src="<?php echo base_url($company_info->logo_path); ?>" ></img>
                 </td>
             </tr>
         </table></center>
@@ -94,11 +93,10 @@ $time = date("H:i:s", strtotime($date));
 <?php
 
 			$query = $this->db->query('SELECT receipt_no,pos_invoice.*,customers.customer_name,pos_payment.pos_payment_id FROM pos_payment
-							LEFT JOIN pos_invoice
-							ON pos_payment.pos_invoice_id=pos_invoice.pos_invoice_id
-
-							LEFT JOIN customers
-							ON pos_invoice.customer_id=customers.customer_id ');
+				LEFT JOIN pos_invoice
+				ON pos_payment.pos_invoice_id=pos_invoice.pos_invoice_id
+				LEFT JOIN customers
+				ON pos_invoice.customer_id=customers.customer_id ');
 			$gtotal = $query->row();
 //$grandtotal = $gtotal->grand_total;
 
@@ -216,7 +214,7 @@ foreach ($query->result() as $row)
 					$product_id = $row->product_id;
 					$product_name = $row->product_desc;
 
-					$getproducts = $this->db->query('SELECT SUM(pos_qty) as prodsum,pos_price FROM pos_invoice_items WHERE product_id='.$product_id);
+					$getproducts = $this->db->query('SELECT pos_qty as prodsum,pos_price FROM pos_invoice_items WHERE product_id='.$product_id);
 				foreach($getproducts->result() as $row){
 					$itemprice=$row->prodsum*$row->pos_price;
 					$itemtotal+=$itemprice;

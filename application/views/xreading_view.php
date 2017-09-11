@@ -4,7 +4,7 @@
 <!-- Mirrored from avenxo.kaijuthemes.com/ui-typography.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 06 Jun 2016 12:09:25 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>JCORE - <?php echo $title; ?></title>
+    <title><?php echo $title; ?></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -27,7 +27,7 @@
     <link href="assets/plugins/twittertypehead/twitter.typehead.css" rel="stylesheet">
 
 
-    <!-- Datepicker --->
+    <!-- Datepicker -->
     <link href="assets/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
 
 
@@ -156,12 +156,9 @@
 <div class="col-md-12">
 
 <div id="div_user_list">
-
-
-
-
     <div class="panel panel-default">
-        <div class="panel-body table-responsive">
+        <div class="panel-body table-responsive" style="border-top: 5px solid #2196f3;">
+            <h1>X-Reading</h1>
             <table id="tbl_transaction_receipt" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
@@ -170,17 +167,9 @@
                 </tr>
                 </thead>
                 <tbody>
-
-
-
                 </tbody>
             </table>
         </div>
-
-
-
-
-
         <div class="panel-footer"></div>
     </div>
 
@@ -189,26 +178,12 @@
 
 <div id="div_user_fields" style="display: none;">
 <div class="panel panel-default">
-<div class="panel-heading">
-    <h2>Receiving Stock</h2>
-
-
-
-    <div class="pull-right"><strong>[ <a id="btn_receive_po" href="#" style="text-decoration: underline;">Receive from Purchase Order</a> ]</strong></div>
-    <div class="panel-ctrls" data-actions-container=""></div>
+    <div class="panel-heading">
+        <h2>Receiving Stock</h2>
+        <div class="pull-right"><strong>[ <a id="btn_receive_po" href="#" style="text-decoration: underline;">Receive from Purchase Order</a> ]</strong></div>
+        <div class="panel-ctrls" data-actions-container=""></div>
+    </div>
 </div>
-
-
-
-
-
-
-
-
-
-</div>
-
-
 <div class="panel-footer">
     <div class="row">
         <div class="col-sm-12">
@@ -313,7 +288,6 @@
 <footer role="contentinfo">
     <div class="clearfix">
         <ul class="list-unstyled list-inline pull-left">
-            <li><h6 style="margin: 0;">&copy; 2017 - JDEV IT Business Solutions</h6></li>
         </ul>
         <button class="pull-right btn btn-link btn-xs hidden-print" id="back-to-top"><i class="ti ti-arrow-up"></i></button>
     </div>

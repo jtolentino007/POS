@@ -6,7 +6,7 @@
 
     <meta charset="utf-8">
 
-    <title>JCORE - <?php echo $title; ?></title>
+    <title><?php echo $title; ?></title>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
@@ -72,12 +72,6 @@
         <div class="static-content-wrapper white-bg">
             <div class="static-content"  >
                 <div class="page-content"><!-- #page-content -->
-
-                    <ol class="breadcrumb">
-                        <li><a href="dashboard">Dashboard</a></li>
-                        <li><a href="cards">Cards</a></li>
-                    </ol>
-
                     <div class="container-fluid">
                         <div data-widget-group="group1">
                             <div class="row">
@@ -85,7 +79,8 @@
 
                                     <div id="div_card_list">
                                         <div class="panel panel-default">
-                                            <div class="panel-body table-responsive">
+                                            <div class="panel-body table-responsive" style="border-top: 3px solid #2196f3;">
+                                            <h1>Cards</h1>
                                                 <table id="tbl_cards" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                                     <thead>
                                                     <tr>
@@ -148,9 +143,9 @@
             <div id="modal_card" class="modal fade" tabindex="-1" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header" style="background-color:#2ecc71;">
-                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 id="category_title" class="modal-title" style="color: #ecf0f1;"><span id="modal_mode">Card Information</span></h4>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 id="category_title" class="modal-title"><span id="modal_mode">Card Information</span></h4>
                         </div>
                         <div class="modal-body">
                             <div class="row">
@@ -183,7 +178,7 @@
 
             <div id="modal_confirmation" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-sm">
-                    <div class="modal-content"><!---content--->
+                    <div class="modal-content"><!---content-->
                         <div class="modal-header">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
                             <h4 class="modal-title"><span id="modal_mode"> </span>Confirm Deletion</h4>
@@ -204,7 +199,6 @@
             <footer role="contentinfo">
                 <div class="clearfix">
                     <ul class="list-unstyled list-inline pull-left">
-                        <li><h6 style="margin: 0;">&copy; 2017 - JDEV IT Business Solutions</h6></li>
                     </ul>
                     <button class="pull-right btn btn-link btn-xs hidden-print" id="back-to-top"><i class="ti ti-arrow-up"></i></button>
                 </div>
@@ -241,10 +235,10 @@ $(document).ready(function(){
                 {
                     targets:[1],
                     render: function (data, type, full, meta){
-                        var btn_edit='<button class="btn btn-default btn-sm" name="edit_info"  style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
-                        var btn_trash='<button class="btn btn-default btn-sm" name="remove_info" style="margin-right:0px;" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+                        var btn_edit='<button class="btn btn-primary btn-sm" name="edit_info"  style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
+                        var btn_trash='<button class="btn btn-danger btn-sm" name="remove_info" style="margin-right:0px;" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
 
-                        return '<center>'+btn_edit+btn_trash+'</center>';
+                        return '<center>'+btn_edit+' '+btn_trash+'</center>';
                     }
                 }
             ]

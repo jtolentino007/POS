@@ -114,33 +114,34 @@ class Deliveries extends CORE_Controller
                 $dr_tax_amount=$this->input->post('dr_tax_amount',TRUE);
                 $dr_non_tax_amount=$this->input->post('dr_non_tax_amount',TRUE);
 
-						$i=0;
-						foreach($prod_id as $item)
-						{
-							$minus="-";
-							$data[] =
-							   array(
-								  'dr_invoice_id' => $dr_invoice_id,
-								  'product_id' => $prod_id[$i],
-								  'dr_qty' => $dr_qty[$i],
-								  'dr_price' => $dr_price[$i],
-								  'dr_discount' => $dr_discount[$i],
-								  'dr_line_total_discount' => $dr_line_total_discount[$i],
-								  'dr_tax_rate' => $dr_tax_rate[$i],
-								  'dr_line_total_price' => $dr_line_total_price[$i],
-								  'dr_tax_amount' => $dr_tax_amount[$i],
-								  'dr_non_tax_amount' => $dr_non_tax_amount[$i]
-							   );
+				$i=0;
+				foreach($prod_id as $item)
+				{
+					$minus="-";
+					$data[] =
+					   array(
+						  'dr_invoice_id' => $dr_invoice_id,
+						  'product_id' => $prod_id[$i],
+						  'dr_qty' => $dr_qty[$i],
+						  'dr_price' => $dr_price[$i],
+						  'dr_discount' => $dr_discount[$i],
+						  'dr_line_total_discount' => $dr_line_total_discount[$i],
+						  'dr_tax_rate' => $dr_tax_rate[$i],
+						  'dr_line_total_price' => $dr_line_total_price[$i],
+						  'dr_tax_amount' => $dr_tax_amount[$i],
+						  'dr_non_tax_amount' => $dr_non_tax_amount[$i]
+					   );
 
 
-							$i++;
-						}
-					$this->db->insert_batch('delivery_invoice_items', $data);
+					$i++;
+				}
+				
+                $this->db->insert_batch('delivery_invoice_items', $data);
 
-          $response['title'] = 'Success!';
-          $response['stat'] = 'success';
-          $response['msg'] = 'Delivery invoice successfully created.';
-					$response['row_added']=$this->response_rows($dr_invoice_id);
+                $response['title'] = 'Success!';
+                $response['stat'] = 'success';
+                $response['msg'] = 'Delivery invoice successfully created.';
+			    $response['row_added']=$this->response_rows($dr_invoice_id);
 
                     echo json_encode($response);
 

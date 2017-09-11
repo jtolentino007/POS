@@ -21,10 +21,10 @@ class Notes extends CORE_Controller
         $data['_top_navigation'] = $this->load->view('template/elements/top_navigation', '', TRUE);
         $data['title'] = 'Notes Information';
         $data['tax_type']=$this->Tax_model->get_list();
-        $info=$this->Notes_model->get_list(null,
-                    'notes.*'
-
-                    );
+        $info=$this->Notes_model->get_list(
+            null,
+            'notes.*'
+        );
 		$data['notes']=$info[0];
 		
         $this->load->view('notes_view', $data);
@@ -36,8 +36,6 @@ class Notes extends CORE_Controller
             case 'list':
                 $m_notes=$this->Notes_model;
                 $response['data']=$m_notes->get_list(
-
-                    null,
                     'notes.*'
                 );
                 echo json_encode($response);

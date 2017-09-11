@@ -6,7 +6,7 @@
 
     <meta charset="utf-8">
 
-    <title>JCORE - <?php echo $title; ?></title>
+    <title><?php echo $title; ?></title>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
@@ -131,8 +131,7 @@
 			height:80px;
 			margin-bottom:3px;
 			margin-top: 2px;
-			border-radius: 10px !important;
-			box-shadow: 0px 5px 10px #444;
+			border-radius: 5px !important;
 		}
 
 		.backcolorconcrete{
@@ -361,7 +360,7 @@
 				                                                <th style="display: none;">V.I</th> <!-- vat input -->
 				                                                <th style="display: none;">N.V</th> <!-- net of vat -->
 				                                                <td style="display: none;">Item ID</td><!-- product id -->
-				                                                <th><center>Action</center></th>
+				                                                <th align="center"><center>Action</center></th>
 
 				                                            </tr>
 				                                            </thead>
@@ -430,18 +429,18 @@
 										</form>
 											<h4 class="amounttitle" style="font-weight:bold;color: #616161;padding-left: 0px !important;font-size: 14px !important;">Payment</h2>
 
-                        <table class="table table-responsive smalltable" cellspacing="0" width="100%">
+                        		<table class="table table-responsive smalltable" cellspacing="0" width="100%">
 
-													<thead style="background-color:#27ae60;">
-						                            <tr>
-						                                <th>#</th>
-						                                <th>Method</th>
-						                                <th>Amount</th>
-						                                <th>Action</th>
-						                            </tr>
-													</thead>
-                          							<tbody>
-													<tr>
+									<thead style="background-color:#27ae60;">
+		                            <tr>
+		                                <th>#</th>
+		                                <th>Method</th>
+		                                <th>Amount</th>
+		                                <th>Action</th>
+		                            </tr>
+									</thead>
+          							<tbody>
+									<tr>
 								<!-- USER SESSION ID --><td hidden><input type="text" id="session_id" style="width:10px !important;border:none;" name="session_id" value="<?php echo $user_session; ?>" readonly></td>
 														<td><input type="text" id="method1" style="width:10px !important;border:none;" name="post_method1" value="1" readonly></td>
 														<td>Cash</td>
@@ -492,12 +491,12 @@
 												<!--<option value="clist">[ Browse Customers ]</option>
 												<option value="ccreate">[ Create Customer ]</option>-->
 												<option value="0">Walk-In</option>
-                                                                <?php
-                                                                foreach($customers as $row)
-                                                                {
-                                                                    echo '<option value="'.$row->customer_id.'">'.$row->customer_name.'</option>';
-                                                                }
-                                                                ?>
+                                                <?php
+                                                foreach($customers as $row)
+                                                {
+                                                    echo '<option value="'.$row->customer_id.'">'.$row->customer_name.'</option>';
+                                                }
+                                                ?>
 											</select>
 											  <span class="input-group-btn">
 												<button class="btn btn-default" type="button" tabindex="-1" data-toggle="modal" data-target="#modal_customers_list"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span></button>
@@ -531,16 +530,14 @@
             <div id="modal_browse_products" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content"><!---content-->
-                        <div class="modal-header" style="background-color:#2980b9;">
+                        <div class="modal-header">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title" style="color:white;">Items/Products</h4>
-
+                            <h4 class="modal-title">Items/Products</h4>
                         </div>
-
                         <div class="modal-body">
 							<div class="container-fluid">
 								<div id="div_product_list">
-                                    <table id="tbl_products" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                    <table id="tbl_products" class="table table-striped table-bordered" cellspacing="0" width="100%" style="margin-top: 10px;">
                                         <thead>
                                         <tr>
                                             <th></th>
@@ -560,7 +557,7 @@
                                 </div>
 							</div>
 						</div>
-                    </div><!---content---->
+                    </div><!---content-->
                 </div>
             </div><!---modal-->
 
@@ -568,20 +565,20 @@
 
             <div id="modal_journal" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-lg">
-                    <div class="modal-content"><!---content--->
-                        <div class="modal-header" style="background-color:#2980b9;">
+                    <div class="modal-content"><!---content-->
+                        <div class="modal-header">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title" style="color:white;">Journal</h4>
+                            <h4 class="modal-title">Journal</h4>
                         </div>
                         <div class="modal-body">
-            							<div class="container-fluid">
-            								<div id="div_journal_list">
-                              <table id="tbl_journal" class="table table-striped table-bordered" cellspacing="0" width="100%">
+							<div class="container-fluid">
+								<div id="div_journal_list">
+                              	<table id="tbl_journal" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                   <thead>
-                                  <tr>
-                                      <th></th>
-          														<th>Invoice #</th>
-          														<th>Transaction Date</th>
+                                  	<tr>
+                                      	<th></th>
+										<th>Invoice #</th>
+										<th>Transaction Date</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -589,9 +586,9 @@
                                     </tbody>
                                 </table>
                             </div>
-            							</div>
-            						</div>
-                    </div><!---content---->
+							</div>
+						</div>
+                    </div><!---content-->
                 </div>
             </div><!---modal-->
 
@@ -599,10 +596,10 @@
 
             <div id="modal_admin_login" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-sm">
-                    <div class="modal-content"><!---content--->
-                        <div class="modal-header" style="background-color:#2980b9;">
+                    <div class="modal-content"><!---content-->
+                        <div class="modal-header">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title" style="color:white;">Admin Login</h4>
+                            <h4 class="modal-title">Admin Login</h4>
 
                         </div>
                         <div class="modal-body">
@@ -614,16 +611,16 @@
 									</div>
 									<div class="form-group" style="margin:10px;">
 									  <label for="pwd">Password:</label>
-									  <input type="password" name="user_pword" id="user_pword"class="form-control" id="pwd">
+									  <input type="password" name="user_pword" id="user_pword" class="form-control" id="pwd">
 									</div>
 								</div>
 								</form>
 						      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="voidlogin">Login</button>
-		 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-      </div>
+						        <button type="button" class="btn btn-primary" id="voidlogin">Login</button>
+								 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+						      </div>
 						</div>
-                    </div><!---content---->
+                    </div><!---content-->
                 </div>
             </div><!---modal-->
 
@@ -631,45 +628,40 @@
 
             <div id="modal_customers_list" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-lg">
-                    <div class="modal-content"><!---content--->
+                    <div class="modal-content"><!---content-->
                         <div class="modal-header" style="background-color:#2980b9;">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
                             <h4 class="modal-title" style="color:white;">Customers List</h4>
-
                         </div>
-
                         <div class="modal-body">
 							<div class="container-fluid">
 								<div id="div_product_list">
-                                                <table id="tbl_customers" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                                                    <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>Customer Name</th>
-                                                        <th>Address</th>
-                                                        <th>Landline</th>
-                                                        <th>Mobile</th>
-                                                        <th>ID</th>
-                                                        <th><center>Action</center></th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-
-
-
-                                                    </tbody>
-                                                </table>
-                                    </div>
+                                    <table id="tbl_customers" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Customer Name</th>
+                                            <th>Address</th>
+                                            <th>Landline</th>
+                                            <th>Mobile</th>
+                                            <th>ID</th>
+                                            <th><center>Action</center></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                            	</div>
 							</div>
 						</div>
-                    </div><!---content---->
+                    </div><!---content-->
                 </div>
             </div><!---modal-->
 
 <!-- start modal for create customers modal -->
             <div id="modal_customers_create" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-md">
-                    <div class="modal-content"><!---content--->
+                    <div class="modal-content"><!---content-->
                         <div class="modal-header">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
                             <h4 class="modal-title"><span id="modal_mode"> </span>New Category Group</h4>
@@ -703,7 +695,7 @@
                             <button id="btn_create_category_group" type="button" class="btn btn-primary"  style="text-transform: capitalize;"><span class=""></span> Create</button>
                             <button id="btn_close_unit_group" type="button" class="btn btn-default" data-dismiss="modal" style="text-transform: capitalize;">Cancel</button>
                         </div>
-                    </div><!---content---->
+                    </div><!--content-->
                 </div>
             </div><!---modal-->
 
@@ -712,23 +704,21 @@
             <div id="modal_payment" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content"><!---content-->
-                        <div class="modal-header" style="background-color:#2ecc71">
-                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title" style="color:white;">Payment</h4>
+                        <div class="modal-header">
+                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Payment</h4>
 
                         </div>
 
                         <div class="modal-body">
-									<ul class="nav nav-tabs">
-										<li class="active"><a data-toggle="tab" href="#cash_tab">Cash</a></li>
-										<li><a data-toggle="tab" href="#check_tab">Check</a></li>
-										<li><a data-toggle="tab" href="#card_tab">Card</a></li>
-										<li><a data-toggle="tab" href="#charge_tab">Charge</a></li>
-
-									  </ul>
-
-									  </div>
-
+							<ul class="nav nav-tabs" style="margin-top: 10px;">
+								<li class="active"><a data-toggle="tab" href="#cash_tab">Cash</a></li>
+								<li><a data-toggle="tab" href="#check_tab" class="hidden">Check</a></li>
+								<li><a data-toggle="tab" href="#card_tab" class="hidden">Card</a></li>
+								<li><a data-toggle="tab" href="#charge_tab" class="hidden">Charge</a></li>
+					        </ul>
+						</div>
+ 
 									  <div class="tab-content">
 									<div id="cash_tab" class="tab-pane fade in active">
 									<div class="row">
@@ -794,10 +784,10 @@
 												 <label for="Type of Payment" style="font-weight:bold;">Remarks:</label>
 												  <textarea type="text" class="form-control" id="cash_remarks"></textarea>
 													 <label for="Type of Payment" style="font-weight:bold;">Cash Amount Receive:</label>
-													<input type="text" class="form-control" id="cash" placeholder="0.00" value="0.00" style="color:#e74c3c;text-align:right;font-size:18pt">
+													<input type="text" class="form-control numeric" id="cash" placeholder="0.00" value="0.00" style="color:#e74c3c;text-align:right;font-size:18pt" disabled>
 												</div>
 												</form>
-												<button class="btn btncash finalize" style="background-color:#2980b9 !important; height:60px !important;width: 100% !important;">Finalize</button>
+												<button class="btn btncash finalize" id="btn_cash_finalize" style="background-color:#2980b9 !important; height:60px !important;width: 100% !important;">Finalize</button>
 											</div>
 										</div>
 									</div>
@@ -876,7 +866,9 @@
 												<input type="text" class="form-control" id="check" placeholder="0.00" value="0.00" style="color:#e74c3c;text-align:right;font-size:18pt">
 											</div>
 											</form>
-												<button class="btn btncash finalize" style="background-color:#2980b9 !important; height:60px !important; width: 100% !important;">Finalize</button>
+												<button class="btn btncash finalize" style="background-color:#2980b9 !important; height:60px !important; width: 100% !important;">
+													Finalize
+												</button>
 										</div>
 									</div>
 									</div>
@@ -1126,23 +1118,23 @@
 
 
 
-                    </div><!---content---->
+                    </div><!---content-->
                 </div></div>
             </div><!---modal-->
 
 <!-- start modal for empty cart -->
 
-            <div id="modal_cart_empty" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
-                <div class="modal-dialog modal-md">
-                    <div class="modal-content"><!---content--->
-                        <div class="modal-header" style="background-color:#c0392b;border-bottom:0px;">
-                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <center><h4 class="modal-title" style="color:white;">Warning : Cart is Empty</h4></center>
-                        </div>
+        <div id="modal_cart_empty" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
+            <div class="modal-dialog modal-md">
+                <div class="modal-content"><!---content-->
+                    <div class="modal-header" style="background-color:#c0392b;border-bottom:0px;">
+                        <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
+                        <center><h4 class="modal-title" style="color:white;">Warning : Cart is Empty</h4></center>
+                    </div>
 
-                    </div><!---content---->
-                </div>
-            </div><!---modal-->
+                </div><!---content-->
+            </div>
+        </div><!---modal-->
 
 
 <?php echo $_switcher_settings; ?>
@@ -1237,20 +1229,12 @@ $(function(){
 		}
 	});
 
-	$(document).ready(function () {
-	    $("body").on("contextmenu",function(e){
-	    	return false;  //Prevent from right mouse click
-	    });
-
-	    /*$("body").on("click",function(e){
-	    	e.preventDefault();
-	    	return false;  //Prevent from left mouse click
-	    });*/
-	});
 })
 
 $(document).ready(function(){
-	    var reInitializeNumeric=function(){
+	var _LastInsertedID;
+
+    var reInitializeNumeric=function(){
         $('.numeric').autoNumeric('init');
     };
 
@@ -1259,10 +1243,10 @@ $(document).ready(function(){
 		var string = "rows";
 		/*var total = itemcount +" "+ string;*/
 		var total = itemcount;
-		$('#cart_count').text(total);
+			$('#cart_count').text(total);
         };
 
-			var synchronizeFields=function(){
+		var synchronizeFields=function(){
 			var cashremarks = $("#cash_remarks").val();
 			$("#post_cash_remarks").val(cashremarks);
 
@@ -1270,6 +1254,7 @@ $(document).ready(function(){
 			var achecknumber = $("#check_number").val();
 			var acheckaddress = $("#check_address").val();
 			var acheckdate = $("#check_date").val();
+
 			$("#post_check_bank").val(acheckbank);
 			$("#post_check_number").val(achecknumber);
 			$("#post_check_address").val(acheckaddress);
@@ -1280,6 +1265,7 @@ $(document).ready(function(){
 			var acardnum = $("#cardnum").val();
 			var aapprovalnum = $("#approvalnum").val();
 			var acardexpiry = $("#cardexpiry").val();
+
 			$("#post_card_type").val(atypeofcard);
 			$("#post_card_holder").val(acardholder);
 			$("#post_card_number").val(acardnum);
@@ -1289,58 +1275,49 @@ $(document).ready(function(){
 			var achargeto = $("#chargeto").val();
 			var achargeremarks = $("#charge_remarks").val();
 			var achargedate = $("#charge_date").val();
+
 			$("#post_chargeto").val(achargeto);
 			$("#post_charge_remarks").val(achargeremarks);
 			$("#post_charge_date").val(achargedate);
-
-
-
     };
 
-reInitializeNumeric();
+	reInitializeNumeric();
 
 		$('#removecash').click(function(){
-		$("#cash").val(0);
+			$("#cash").val(0);
 			reComputeChange();
 		});
 
 		$('#removecheck').click(function(){
-		$("#check").val(0);
+			$("#check").val(0);
 			reComputeChange();
 		});
 
 		$('#removecard').click(function(){
-		$("#card").val(0);
+			$("#card").val(0);
 			reComputeChange();
 		});
 
 		$('#removecharge').click(function(){
-		$("#charge").val(0);
+			$("#charge").val(0);
 			reComputeChange();
 		});
 
 		$('.finalize').click(function(){
 			var samountdue = $("#amountdue").val();
-			var amountdue = samountdue.replace(/,/g, "");
+			var amountdue = parseInt(samountdue);
 			var stendered = $("#tendered").val();
-			var tendered = stendered.replace(/,/g, "");
+			var tendered = parseInt(stendered);
 			synchronizeFields();
-			if(amountdue==0){
+			if(amountdue==0)
 				cartempty();
-			}
 			else{
-			if(parseFloat(tendered)>=parseFloat(amountdue)){
-
-			validaterequirefields();
-
-				//go to validate requirefields function if true
+				if(parseFloat(tendered)>=parseFloat(amountdue)) {
+					validaterequirefields();
+				}
+				else
+					alert("Not Enough Funds");
 			}
-			else{
-				alert("Not Enough Funds");
-			}
-			}
-
-
 		});
 
 		/*$('#browse_journal').click(function(){
@@ -1368,7 +1345,8 @@ reInitializeNumeric();
 				var cash = parseFloat(scurrentcash) + parseFloat(value);
 				$("#cash").val(cash);
 				reChange();
-			reComputeChange();
+				reComputeChange();
+				$("#cash").val(accounting.formatNumber(cash,2));
 			}
 			else{
 				var currentcash =  scurrentcash.replace(/,/g, "");
@@ -1376,7 +1354,8 @@ reInitializeNumeric();
 				var cash = parseFloat(currentcash) + parseFloat(value);
 				$("#cash").val(cash);
 				reChange();
-							reComputeChange();
+				reComputeChange();
+				$("#cash").val(accounting.formatNumber(cash,2));
 			}
         });
 
@@ -1385,9 +1364,10 @@ reInitializeNumeric();
 			var currentcash =  scurrentcash.replace(/,/g, "");
             var value = ($(this).attr('value'));
 			var cash2 = parseFloat(currentcash) + parseFloat(value);
-			$("#cash").val(cash2);
+			$("#cash").val(cash2,2);
 			reChange();
-						reComputeChange();
+			reComputeChange();
+			$("#cash").val(accounting.formatNumber(cash2,2));
         });
 
 	    $('.click_check').click(function() {
@@ -1488,6 +1468,7 @@ reInitializeNumeric();
 					txtfocus();
 
         });
+
 		$('#clear_cart').click(function(){
 			$('#tbl_items > tbody').html('');
 			/*$('#cart_count').text("0 Rows");*/
@@ -1583,19 +1564,19 @@ reInitializeNumeric();
 			$("#charge").val(zero);
         };
 
-			var PrintReceipt=function(){
-				alert("print receipt here");
-			}
+		var PrintReceipt=function(print_id){
+			window.open('Templates/layout/pospr/'+print_id+'/print');
+		};
 
-			var showloginmodal=function(){
-				$('#modal_admin_login').modal('show');
-			}
+		var showloginmodal=function(){
+			$('#modal_admin_login').modal('show');
+		};
 
-			var PrintChecklist=function(){
-				alert("print Checklist here");
-			}
+		var PrintChecklist=function(){
+			alert("print Checklist here");
+		};
 
-			var reComputeChange=function(){
+		var reComputeChange=function(){
 			var stotalcash = $("#cash").val();
 			var stotalcheck = $("#check").val();
 			var stotalcard = $("#card").val();
@@ -1622,9 +1603,9 @@ reInitializeNumeric();
 			$("#tendered").val(accounting.formatNumber(sumofpayment,2));
 			$("#change").val(accounting.formatNumber(change,2));
 
-    };
+    	};
 
-			var reChange=function(){
+		var reChange=function(){
 			var stotalcash = $("#cash").val();
 			var stotalcheck = $("#check").val();
 			var stotalcard = $("#card").val();
@@ -1639,11 +1620,11 @@ reInitializeNumeric();
 
 			$("#total_payment").val(accounting.formatNumber(sumofpayment,2));
 
-    };
+    	};
 
 
 
-			var validaterequirefields=function(){
+		var validaterequirefields=function(){
 			var scheckamount = $('#checkamount').val();
 			var checkamount = scheckamount.replace(/,/g, "");
 			var scardamount = $('#cardamount').val();
@@ -1661,62 +1642,61 @@ reInitializeNumeric();
 			var chargeto = $('#chargeto').val();
 
 			if(parseFloat(checkamount)!="0"){
-					if(checkbank==""){
-					bankisrequired();
-					return;
-					}
-					if(checknumber==""){
-					checknumberisrequired();
-					return;
-					}
+				if(checkbank==""){
+				bankisrequired();
+				return;
+				}
+				if(checknumber==""){
+				checknumberisrequired();
+				return;
+				}
 
-				}
+			}
+
 			if(parseFloat(cardamount)!="0"){
-					if(cardholder==""){
-					cardholderisrequired();
-					return;
-					}
-					if(cardnumber==""){
-					cardnumberisrequired();
-					return;
-					}
-					if(cardapprovalnum==""){
-					cardapprovalisrequired();
-					return;
-					}
+				if(cardholder==""){
+				cardholderisrequired();
+				return;
 				}
+				if(cardnumber==""){
+				cardnumberisrequired();
+				return;
+				}
+				if(cardapprovalnum==""){
+				cardapprovalisrequired();
+				return;
+				}
+			}
 
 			if(parseFloat(chargeamount)!="0"){
-					if(chargeto==""){
-					chargetofieldisrequired();
-					return;
-					}
+				if(chargeto==""){
+				chargetofieldisrequired();
+				return;
 				}
-					//if all condtion is false -> proceed
-				createPurchaseOrder().done(function(response){   //Create Purchase
+			}
+			
+			//if all condtion is false -> proceed
+			createPurchaseOrder().done(function(response){   //Create Purchase
                 showNotification(response);
-				var payment_id=response.pos_payment_id;
+                var payment_id = response.pos_payment_id;
 				$("#payment_id").val(payment_id);
 				clearFields();
 				reComputeTotal();
 				txtfocus();
 				$('#cart_count').text("0 rows");
 				$("#modal_payment").modal('hide');
-				window.open("Templates/layout/pospr/"+payment_id+"/print");
-				});
-
+				window.open('Templates/layout/pospr/'+payment_id+'/print');
+			});
 
     };
 
 
 
 		var CheckPayments=function() {       //Function for checking payments
-					$("#modal_payment").modal('hide');
-					reComputeChange();
-					paymentaddnotif();
-					txtfocus();
-
-
+			$("#modal_payment").modal('hide');
+			reComputeChange();
+			paymentaddnotif();
+			txtfocus();
         };
 
 
@@ -1970,17 +1950,13 @@ reInitializeNumeric();
                         detailRows.push( tr.attr('id') );
                     }
                 });
-
-
-
-
             }
         } );
 
         $('#browse_products').click(function(){
           $('#tbl_products').dataTable().fnDestroy();
           getproducts();
-    		});
+    	});
 
         var getproducts=function(){
           dt=$('#tbl_products').DataTable({
@@ -1992,7 +1968,7 @@ reInitializeNumeric();
                  "searchPlaceholder": "Search Products"
              },
              "columns": [
-                 {
+                 {	"visible":false,
                      "targets": [0],
                      "class":          "details-control",
                      "orderable":      false,
@@ -2004,24 +1980,18 @@ reInitializeNumeric();
 			            { targets:[3],data: "sale_cost" },
 		 				{ targets:[4],data: "tax_rate" },
 		 				{ targets:[5],data: "stock_onhand" },
-		 				{ targets:[6],data: "product_id"  },
+		 				{ visible:false,targets:[6],data: "product_id"  },
                  {
                      targets:[7],
                      render: function (data, type, full, meta){
-                         var btn_addtocart_close='<button class="btn btn-default btn-sm" name="addtocart_close"  style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="add and close"><span class="glyphicon glyphicon-ok"></span> </button>';
-                         var btn_addtocart='<button class="btn btn-default btn-sm" name="addtocart" style="margin-right:0px;" data-toggle="tooltip" data-placement="top" title="Add to Cart"><i class="fa fa-plus" aria-hidden="true"></i> </button>';
+                         var btn_addtocart_close='<button class="btn btn-success" name="addtocart_close"  style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="add and close"><span class="glyphicon glyphicon-ok"></span> </button>';
+                         var btn_addtocart='<button class="btn btn-primary" name="addtocart" style="margin-right:0px;" data-toggle="tooltip" data-placement="top" title="Add to Cart"><i class="fa fa-plus" aria-hidden="true"></i> </button>';
 
-                         return '<center>'+btn_addtocart_close+btn_addtocart+'</center>';
+                         return '<center>'+btn_addtocart_close+' '+btn_addtocart+'</center>';
                      }
                  },
-
-
-
-
-
              ],
              "rowCallback":function( row, data, index ){
-
                  $(row).find('td').eq(5).attr({
                      "align": "right"
                  });
@@ -2251,9 +2221,9 @@ reInitializeNumeric();
         $(f).find('input:first').focus();
         $('#tbl_items > tbody').html('');
 		$('#cash').val("0.00"); //add 0.00
-    $('#card').val("0.00"); //add 0.00
-    $('#check').val("0.00"); //add 0.00
-    $('#charge').val("0.00"); //add 0.00
+	    $('#card').val("0.00"); //add 0.00
+	    $('#check').val("0.00"); //add 0.00
+	    $('#charge').val("0.00"); //add 0.00
 		$('#amountdue').val(accounting.formatNumber(0.00,2));
 		$('#tendered').val(accounting.formatNumber(0.00,2));
 		$('#change').val(accounting.formatNumber(0.00,2));
@@ -2283,8 +2253,6 @@ reInitializeNumeric();
     };
 
     var newRowItem=function(d){
-
-
         return '<tr>'+
                         '<td width="10%"><input name="pos_qty[]" type="text" class="numeric form-control" value="'+ d.po_qty+'"></td>'+
                         '<td width="30%">'+d.product_desc+'</td>'+
@@ -2339,6 +2307,7 @@ reInitializeNumeric();
         return $.ajax({
             "dataType":"json",
             "type":"POST",
+            "async":false,
             "url":"Purchases/transaction/create",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_save'))
@@ -2374,96 +2343,95 @@ reInitializeNumeric();
     };
 	//add to cart then close modal
     $('#tbl_products tbody').on( 'click', 'button[name="addtocart_close"]', function () {
-			var tds = $(this).closest('tr').children('td');
-			var dataArray =[];
-			for(i=1;i < tds.length;i++)
-				dataArray.push($(tds[i]).html());
+			_selectRowObj = $(this).closest('tr');
+			var _objData = dt.row(_selectRowObj).data();
 
-			var d_product_code = dataArray[0];
-			var d_product_desc = dataArray[1];
-			var d_sale_cost = dataArray[2];
-			var d_tax_rate = dataArray[3];
-			var d_on_hand = dataArray[4];
-			var d_product_id = dataArray[5];
+			var d_product_code = _objData.product_code;
+			var d_product_desc = _objData.product_desc;
+			var d_sale_cost = _objData.sale_cost;
+			var d_tax_rate = _objData.tax_rate;
+			var d_on_hand = _objData.stock_onhand;
+			var d_product_id = _objData.product_id;
 
-			    var tax_id="1";
-                var tax_rate=d_tax_rate;
+		    var tax_id="1";
+            var tax_rate=d_tax_rate;
 
-                var total=getFloat(d_sale_cost);
-                var net_vat=0;
-                var vat_input=0;
+            var total=getFloat(d_sale_cost);
+            var net_vat=0;
+            var vat_input=0;
 
 
-                    net_vat=total/(1+(getFloat(tax_rate)/100));
-                    vat_input=total-net_vat;
+            net_vat=total/(1+(getFloat(tax_rate)/100));
+            vat_input=total-net_vat;
 			//Use dataArray here
-					$('#tbl_items > tbody').prepend(newRowItem({
-                    po_qty : "1",
-                    product_code : d_product_code,
-                    product_id: d_product_id,
-                    product_desc : d_product_desc,
-					po_line_total_discount : "0.00",
-                    tax_exempt : false,
-                    po_tax_rate : d_tax_rate,
-                    po_price : d_sale_cost,
-                    po_discount : "0.00",
-                    tax_type_id : null,
-                    po_line_total : total,
-                    po_non_tax_amount: net_vat,
-                    po_tax_amount:vat_input,
-                }));
-			     reInitializeNumeric();
-				reComputeTotal();
-				reComputeChange();
-				countCart();
-				$('#modal_browse_products').modal('hide');
+			$('#tbl_items > tbody').prepend(newRowItem({
+                po_qty : "1",
+                product_code : d_product_code,
+                product_id: d_product_id,
+                product_desc : d_product_desc,
+				po_line_total_discount : "0.00",
+                tax_exempt : false,
+                po_tax_rate : d_tax_rate,
+                po_price : d_sale_cost,
+                po_discount : "0.00",
+                tax_type_id : null,
+                po_line_total : total,
+                po_non_tax_amount: net_vat,
+                po_tax_amount:vat_input,
+            }));
+		    
+		    reInitializeNumeric();
+			reComputeTotal();
+			reComputeChange();
+			countCart();
+
+			$('#modal_browse_products').modal('hide');
 
 			return false;
     } );
 		//add to cart without closing modal
 	$('#tbl_products tbody').on('click','button[name="addtocart"]',function(){
-			var tds = $(this).closest('tr').children('td');
-			var dataArray =[];
-			for(i=1;i < tds.length;i++)
-				dataArray.push($(tds[i]).html());
-			var d_product_code = dataArray[0];
-			var d_product_desc = dataArray[1];
-			var d_sale_cost = dataArray[2];
-			var d_tax_rate = dataArray[3];
-			var d_on_hand = dataArray[4];
-			var d_product_id = dataArray[5];
+			_selectRowObj = $(this).closest('tr');
+			var _objData = dt.row(_selectRowObj).data();
+
+			var d_product_code = _objData.product_code;
+			var d_product_desc = _objData.product_desc;
+			var d_sale_cost =  _objData.sale_cost;
+			var d_tax_rate = _objData.tax_rate;
+			var d_on_hand = _objData.stock_onhand;
+			var d_product_id = _objData.product_id;
 
 
-			    var tax_id="1";
-                var tax_rate=d_tax_rate;
+		    var tax_id="1";
+            var tax_rate=d_tax_rate;
 
-                var total=getFloat(d_sale_cost);
-                var net_vat=0;
-                var vat_input=0;
+            var total=getFloat(d_sale_cost);
+            var net_vat=0;
+            var vat_input=0;
 
 
-                    net_vat=total/(1+(getFloat(tax_rate)/100));
-                    vat_input=total-net_vat;
+            net_vat=total/(1+(getFloat(tax_rate)/100));
+            vat_input=total-net_vat;
 			//Use dataArray here
-					$('#tbl_items > tbody').prepend(newRowItem({
-                    po_qty : "1",
-                    product_code : d_product_code,
-                    product_id: d_product_id,
-                    product_desc : d_product_desc,
-					po_line_total_discount : "0.00",
-                    tax_exempt : false,
-                    po_tax_rate : d_tax_rate,
-                    po_price : d_sale_cost,
-                    po_discount : "0.00",
-                    tax_type_id : null,
-                    po_line_total : total,
-                    po_non_tax_amount: net_vat,
-                    po_tax_amount:vat_input,
-                }));
-			     reInitializeNumeric();
-				reComputeTotal();
-				reComputeChange();
-				countCart();
+			$('#tbl_items > tbody').prepend(newRowItem({
+                po_qty : "1",
+                product_code : d_product_code,
+                product_id: d_product_id,
+                product_desc : d_product_desc,
+				po_line_total_discount : "0.00",
+                tax_exempt : false,
+                po_tax_rate : d_tax_rate,
+                po_price : d_sale_cost,
+                po_discount : "0.00",
+                tax_type_id : null,
+                po_line_total : total,
+                po_non_tax_amount: net_vat,
+                po_tax_amount:vat_input,
+            }));
+		    reInitializeNumeric();
+			reComputeTotal();
+			reComputeChange();
+			countCart();
         });
 
 	//add customer then close modal
@@ -2530,25 +2498,24 @@ reInitializeNumeric();
         '<thead>' +
         '</thead>' +
         '<tbody>' +
-                    '<tr>' +
-                    '<td width="20%">Name : </td><td width="50%"><b>'+ d.customer_name+'</b></td>' +
-                    '<td rowspan="5" valign="top"><div class="avatar">'+
-                    '<img src="'+ d.photo_path+'" class="img-circle" style="margin-top:0px;height: 100px;width: 100px;">'+
-                    '</div></td>' +
-                    '</tr>' +
-                    '<tr>' +
-                    '<td>Address : </td><td><b>'+ d.address+'</b></td>' +
-                    '</tr>' +
-                    '<tr>' +
-                    '<td>Email : </td><td>'+ d.email_address+'</td>' +
-                    '</tr>' +
-                    '<tr>' +
-                    '<td>Mobile Nos. : </td><td>'+ d.mobile_no+'</td>' +
-                    '</tr>' +
-                    '<tr>' +
-                    '<td>Landline. : </td><td>'+ d.landline+'</td>' +
-                    '</tr>' +
-
+            '<tr>' +
+            '<td width="20%">Name : </td><td width="50%"><b>'+ d.customer_name+'</b></td>' +
+            '<td rowspan="5" valign="top"><div class="avatar">'+
+            '<img src="'+ d.photo_path+'" class="img-circle" style="margin-top:0px;height: 100px;width: 100px;">'+
+            '</div></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>Address : </td><td><b>'+ d.address+'</b></td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>Email : </td><td>'+ d.email_address+'</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>Mobile Nos. : </td><td>'+ d.mobile_no+'</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td>Landline. : </td><td>'+ d.landline+'</td>' +
+            '</tr>' +
         '</tbody></table><br />';
     };
 
@@ -2562,19 +2529,22 @@ reInitializeNumeric();
 	$(window).load(function(){
 		$('#txtsearch').focus();
 	});
+
 	var txtfocus=function(){
 		$('#txtsearch').focus();
-	}
+	};
 
-$('#modal_payment').on('hidden.bs.modal', function (e) {
- txtfocus();
-})
+	$('#modal_payment').on('hidden.bs.modal', function (e) {
+	 txtfocus();
+	});
+
 	$('#modal_browse_products').on('hidden.bs.modal', function (e) {
- txtfocus();
-})
+	 txtfocus();
+	});
+
 	$('#modal_cart_empty').on('hidden.bs.modal', function (e) {
- txtfocus();
-})
+	 txtfocus();
+	});
 
 	$('.btncash').click(function() {
 		$('.btncash').css('color','white');

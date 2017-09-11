@@ -4,7 +4,7 @@
 <!-- Mirrored from avenxo.kaijuthemes.com/ui-typography.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 06 Jun 2016 12:09:25 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>JCORE - <?php echo $title; ?></title>
+    <title><?php echo $title; ?></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -117,89 +117,54 @@
 <div class="static-content"  >
 <div class="page-content">
 
-<ol class="breadcrumb"  style="margin-bottom: 10px;">
-    <li><a href="Dashboard">Dashboard</a></li>
-    <li><a href="Issuance">Issuance</a></li>
-</ol>
-
-
 <div class="container-fluid">
 <div data-widget-group="group1">
 <div class="row">
 <div class="col-md-12">
 
 <div id="div_user_list">
-
-
-
-
     <div class="panel panel-default">
-        <div class="panel-body table-responsive">
+        <div class="panel-body table-responsive" style="border-top: 3px solid #2196f3;">
+        <h1>Item Issuance</h1>
             <table id="tbl_delivery_invoice" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
                     <th></th>
                     <th>Issuance #</th>
                     <th>Supplier</th>
-
                     <th>Date Issued</th>
                     <th><center>Action</center></th>
                 </tr>
                 </thead>
                 <tbody>
 
-
-
                 </tbody>
             </table>
         </div>
-
-
-
-
-
-        <div class="panel-footer"></div>
     </div>
-
 </div>
 
 
 <div id="div_user_fields" style="display: none;">
 <div class="panel panel-default">
-<div class="panel-heading">
-    <h2>Issuance</h2>
 
-
-
-    <!-- <div class="pull-right"><strong>[ <a id="btn_receive_po" href="#" style="text-decoration: underline;">Receive from Purchase Order</a> ]</strong></div>
-    <div class="panel-ctrls" data-actions-container=""></div> -->
-</div>
-
-<div class="panel-body">
-
-
-
-
-
-<div class="row custom_frame">
+<div class="panel-body" style="border-top: 3px solid #2196f3;">
+<h1>Item Issuance</h1>
+<div class="row">
     <form id="frm_Issuance" role="form" class="form-horizontal">
-
         <br />
-
         <div class="row">
             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 form-group">
                 <label class="col-md-3  control-label boldlabel">* Issuance No. # :</label>
                 <div class="col-md-9">
                     <div class="input-group">
-                                                    <span class="input-group-addon ">
-                                                        <i class="fa fa-code"></i>
-                                                    </span>
+                        <span class="input-group-addon ">
+                            <i class="fa fa-code"></i>
+                        </span>
                         <input type="text" name="issuance_no" class="form-control inputhighlight" placeholder="Doc No" data-error-msg="Doc # is required." required>
                     </div>
                 </div>
-
             </div>
-
             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 form-group">
                 <label class="col-md-3  control-label boldlabel">Date Issued: </label>
                 <div class="col-md-9">
@@ -211,14 +176,9 @@
                     </div>
                 </div>
             </div>
-
-
             </div>
-
-
             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 form-group">
                 <label class="col-md-3 control-label boldlabel">* Supplier :</label>
-
                 <div class="col-md-9">
                     <select name="supplier" id="cbo_suppliers" data-error-msg="Supplier is required." required>
                         <option value="newsupp" class="inputhighlight">[ Create New Supplier ]</option>
@@ -226,111 +186,87 @@
                             <option value="<?php echo $supplier->supplier_id; ?>"><?php echo $supplier->supplier_name; ?></option>
                         <?php } ?>
                     </select>
-
-
                 </div>
-
             </div>
             <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12  form-group">
                 <label class="col-md-3  control-label boldlabel">Remarks :</label>
                 <div class="col-md-9">
                     <textarea style="border:solid 1px #27ae60;" name="remarks" class="form-control" placeholder="Remarks"></textarea>
-
                 </div>
             </div>
-
-
-
-
-
-
-
-
         </div>
-
-
         <div class="row">
-
-
-
-
-
-
-
     </form>
 </div>
-
-<div class="row custom_frame">
-
-
-
+<hr>
+<div class="row">
+    <div class="container-fluid">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br />
-        <label class="control-label boldlabel" ><strong>Enter PLU or Search Item :</strong></label>
-        <div id="custom-templates">
-            <input class="typeahead" style="border:1px solid #27ae60 !important;" type="text" placeholder="Enter PLU or Search Item">
-        </div><br />
-
-        <form id="frm_items">
-            <div class="table-responsive" style="overflow-x: auto;overflow-y: scroll; height: 300px;">
-                <table id="tbl_items" class="table table-striped table-bordered " cellspacing="0" width="100%">
-                <thead style="background-color:#2c3e50;color:white;">
-                <tr>
-
-                    <th width="10%">Qty</th>
-
-                    <th width="30%">Item</th>
-                    <th width="12%" style="text-align: right">Cost</th>
-                    <th width="12%" style="text-align: right">Discount</th>
-                    <th style="display: none;">T.D</th> <!-- total discount -->
-                    <th>Tax %</th>
-                    <th width="12%" style="text-align: right">Total</th>
-                    <th style="display: none;">V.I</th> <!-- vat input -->
-                    <th style="display: none;">N.V</th> <!-- net of vat -->
-                    <td style="display: none;">Item ID</td><!-- product id -->
-                    <th><center>Action</center></th>
-
-                </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-
-
-            </table>
-            </div>
-        </form>
-
-        <div class="row">
-            <div class="col-lg-3 col-lg-offset-9">
-                <table id="tbl_delivery_summary" class="table invoice-total">
+            <label class="control-label boldlabel" ><strong>Enter PLU or Search Item :</strong></label>
+            <div id="custom-templates">
+                <input class="typeahead" style="border:1px solid #27ae60 !important;" type="text" placeholder="Enter PLU or Search Item">
+            </div><br />
+    
+            <form id="frm_items">
+                <div class="table-responsive" style="overflow-x: auto;overflow-y: scroll; height: 300px;">
+                    <table id="tbl_items" class="table table-striped table-bordered " cellspacing="0" width="100%">
+                    <thead style="background-color:#2c3e50;color:white;">
+                    <tr>
+    
+                        <th width="10%">Qty</th>
+    
+                        <th width="30%">Item</th>
+                        <th width="12%" style="text-align: right">Cost</th>
+                        <th width="12%" style="text-align: right">Discount</th>
+                        <th style="display: none;">T.D</th> <!-- total discount -->
+                        <th>Tax %</th>
+                        <th width="12%" style="text-align: right">Total</th>
+                        <th style="display: none;">V.I</th> <!-- vat input -->
+                        <th style="display: none;">N.V</th> <!-- net of vat -->
+                        <td style="display: none;">Item ID</td><!-- product id -->
+                        <th><center>Action</center></th>
+    
+                    </tr>
+                    </thead>
                     <tbody>
-
-                    <tr>
-                        <td class="black">Discount :</td>
-                        <td align="right" class="black">0.00</td>
-                    </tr>
-
-                    <tr>
-                        <td class="black">Total before Tax :</td>
-                        <td align="right" class="black">0.00</td>
-                    </tr>
-                    <tr>
-                        <td class="black">Tax :</td>
-                        <td align="right" class="black">0.00</td>
-                    </tr>
-                    <tr>
-                        <td ><strong class="boldlabel">Total After Tax :</strong></td>
-                        <td class="green" align="right"><b>0.00</b></td>
-                    </tr>
-
-
+    
                     </tbody>
+    
+    
                 </table>
+                </div>
+            </form>
+    
+            <div class="row">
+                <div class="col-lg-3 col-lg-offset-9">
+                    <table id="tbl_delivery_summary" class="table invoice-total">
+                        <tbody>
+    
+                        <tr>
+                            <td class="black">Discount :</td>
+                            <td align="right" class="black">0.00</td>
+                        </tr>
+    
+                        <tr>
+                            <td class="black">Total before Tax :</td>
+                            <td align="right" class="black">0.00</td>
+                        </tr>
+                        <tr>
+                            <td class="black">Tax :</td>
+                            <td align="right" class="black">0.00</td>
+                        </tr>
+                        <tr>
+                            <td ><strong class="boldlabel">Total After Tax :</strong></td>
+                            <td class="green" align="right"><b>0.00</b></td>
+                        </tr>
+    
+    
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-
-
-    </div>
+        </div>
 </div>
 
 
@@ -488,7 +424,6 @@
 <footer role="contentinfo">
     <div class="clearfix">
         <ul class="list-unstyled list-inline pull-left">
-            <li><h6 style="margin: 0;">&copy; 2017 - JDEV IT Business Solutions</h6></li>
         </ul>
         <button class="pull-right btn btn-link btn-xs hidden-print" id="back-to-top"><i class="ti ti-arrow-up"></i></button>
     </div>

@@ -17,6 +17,10 @@
    }
 </script>
 <style>
+    @media print {
+      @page { margin: 0; }
+    }
+
     .receipt {
         width: 250px;
         font-family: tahoma;
@@ -130,16 +134,16 @@
                             <div id="header">
                                 <?php echo $company_info->company_name; ?><br>
                                 <?php echo $company_info->company_address; ?><br>
-                                Contact:&nbsp;<?php echo $company_info->landline; ?><br>
+                                <?php echo $company_info->landline; ?><br>
                             </div>
-                            <div id="middle1">
+                            <div id="middle1" style="display: none;">
                                 VAT&nbsp;Reg&nbsp;TIN:&nbsp;<?php echo $company_info->tin_no; ?><br>
                             </div>
                         </div>
                     </div><br>
 
                     <div class="row">
-                        <div id="" class="col-md-12">
+                        <div id="" class="col-md-12" style="display: none;">
                             MIN#&nbsp;<br>
                             SN#&nbsp;<br>
                             FP#&nbsp;<br>
@@ -147,7 +151,7 @@
                     </div><br>
 
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="display: none;">
                             <div id="left2">
                                 Date&nbsp;<br>
                                 Cashier&nbsp;<br>
@@ -198,7 +202,7 @@
                             <?php } ?>
 
                             </tbody>
-                            <tfoot>
+                            <tfoot style="display: none;">
                             <tr>
                                 <td colspan="2" style="text-align: right;height: 15px;padding-top: 10px;"></td>
                                 <td colspan="2" style="text-align: left;height: 15px;padding-top: 10px;">Sub Total : </td>
@@ -294,9 +298,17 @@
                                 <?php echo $qty; ?><br>
                             </div>
                         </div>
+                    </div><br>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                            <p>.</p>
+                        </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" style="display: none;">
                         <div class="col-md-12">
                             <div id="left5">
                                 Net&nbsp;Vat&nbsp;Sales&nbsp;<br>
@@ -319,7 +331,7 @@
                         </div>
                     </div><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-                    <div class="row">
+                    <div class="row" style="display: none;">
                         <div class="col-md-12">
                             <div id="left1">
                                 Buyer's&nbsp;Name<br>
@@ -333,8 +345,7 @@
                             </div>
                         </div>
                     </div><br><br><br><br>
-
-                    <div class="row">
+                    <div class="row" style="display: none;">
                         <div id="middle2" class="col-md-12">
                             <?php echo $footer_info->note1; ?><br>
                             <?php echo $footer_info->note2; ?><br>

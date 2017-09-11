@@ -19,21 +19,78 @@
 
 
     <style>
+      html {
+        height:100%;
+      }
 
+      body {
+        margin:0;
+      }
+
+      .bg {
+        animation:slide 3s ease-in-out infinite alternate;
+        background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
+        bottom:0;
+        left:-50%;
+        opacity:.5;
+        position:fixed;
+        right:-50%;
+        top:0;
+        z-index:-1;
+      }
+
+      .bg2 {
+        animation-direction:alternate-reverse;
+        animation-duration:4s;
+      }
+
+      .bg3 {
+        animation-duration:5s;
+      }
+
+      .content {
+        background-color:rgba(255,255,255,.8);
+        border-radius:.25em;
+        box-shadow:0 0 .25em rgba(0,0,0,.25);
+        box-sizing:border-box;
+        left:50%;
+        padding:10vmin;
+        position:fixed;
+        text-align:center;
+        top:50%;
+        transform:translate(-50%, -50%);
+      }
+
+      h1 {
+        font-family:monospace;
+      }
+
+      @keyframes slide {
+        0% {
+          transform:translateX(-25%);
+        }
+        100% {
+          transform:translateX(25%);
+        }
+      }
     </style>
 
     </head>
 
     <body class="focused-form animated-content">
 
-
+<div style="z-index: -9999999;">
+    <div class="bg"></div>
+    <div class="bg bg2"></div>
+    <div class="bg bg3"></div>
+</div>
 <div class="container" id="login-form">
 	<a href="index.html" class="login-logo"></a>
 		<div class="row">
-			<div class="col-md-4 col-md-offset-4">
-				<div class="panel panel-default">
-					<div class="panel-body" style="border-top:5px solid #2196f3; padding-bottom: 50px;">
-            <center><h1>LOGIN <br><small><b>POINT OF SALES</b></small></h1></center><br>
+			<div class="col-md-4 col-md-offset-3">
+				<div class="panel panel-default" style="width:500px;">
+					<div class="panel-body">
+            <center><h1 style="font-family: Arial, sans-serif; font-weight: 200;">LOGIN <br><small><b>POINT OF SALES</b></small></h1></center><br>
             <form class="form-horizontal" id="validate-form">
               <div class="form-group mb-md">
                   <div class="col-xs-12">
@@ -56,6 +113,8 @@
                   </div>
 							</div>
 						</form>
+            <br>
+            <br>
 					</div>
 					<div class="panel-footer">
 						<div class="col-xs-12">

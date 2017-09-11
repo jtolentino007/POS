@@ -4,7 +4,7 @@
 <!-- Mirrored from avenxo.kaijuthemes.com/ui-typography.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 06 Jun 2016 12:09:25 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>POINT OF SALES</title>
+    <title>Point of Sales</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,6 +18,12 @@
     <link href="assets/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
 
    <?php echo $_def_css_files; ?>
+
+   <style type="text/css">
+       html {
+            overflow-x: hidden;
+       }
+   </style>
 
 </head>
 
@@ -46,44 +52,44 @@
                 <div class="page-content">
                     <div class="row">
                         <div class="container-fluid">
-                            <h1 style="margin-left: 20px; font-weight: 400;">POINT OF SALES</h1>
+                            <h1 style="margin-left: 20px; font-weight: 400;">POINT OF SALES <small>Touchscreen</small></h1>
                         </div>
                     </div>
                     <div class="row">
                         <div class="container-fluid">
                             <div class="col-xs-12 col-sm-3 col-md-2">
-                                <a href="Deliveries" class="btn btn-primary btn-block btn-height"><br>
+                                <a href="Deliveries" class="btn btn-primary btn-block btn-height <?php echo (in_array('1-1', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
                                     <i class="fa fa-truck" style="font-size: 50px;"></i><br><br>
                                     <span>Receive Stock</span>
                                 </a>
                             </div>
                             <div class="col-xs-12 col-sm-3 col-md-2">
-                                <a href="Issuance" class="btn btn-primary btn-block btn-height"><br>
+                                <a href="Issuance" class="btn btn-primary btn-block btn-height <?php echo (in_array('1-2', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
                                     <i class="fa fa-cube" style="font-size: 50px;"></i><br><br>
                                     <span>Stock Issuance</span>
                                 </a>
                             </div>
                             <div class="col-xs-12 col-sm-3 col-md-2">
-                                <a href="pos" class="btn btn-primary btn-block btn-height"><br>
+                                <a href="pos" class="btn btn-primary btn-block btn-height <?php echo (in_array('1-3', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
                                     <i class="fa fa-shopping-cart" style="font-size: 50px;"></i><br><br>
                                     <span>Point of Sales</span>
                                 </a>
                             </div>
                             <div class="col-xs-12 col-sm-3 col-md-2">
-                                <a href="Receipts" class="btn btn-info btn-block btn-height"><br>
+                                <a href="Receipts" class="btn btn-info btn-block btn-height <?php echo (in_array('1-4', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
                                     <i class="fa fa-file" style="font-size: 50px;"></i><br><br>
                                     <span>Receipts</span>
                                 </a>
                             </div>
                             <div class="col-xs-12 col-sm-3 col-md-2">
-                                <button class="sales_reportsjs btn btn-info btn-block btn-height" id="btn_sales_report">
+                                <button class="sales_reportsjs btn btn-info btn-block btn-height <?php echo (in_array('1-5', $this->session->user_rights) ? '' : 'hidden') ?>" id="btn_sales_report">
                                     <br>
                                     <i class="fa fa-book" style="font-size: 50px;"></i><br><br>
                                     <span>Daily Sales Report</span>
                                 </button>
                             </div>
                             <div class="col-xs-12 col-sm-3 col-md-2">
-                                <button class="btn btn-info btn-block btn-height" id="btn_inventory_report"><br>
+                                <button class="btn btn-info btn-block btn-height <?php echo (in_array('1-6', $this->session->user_rights) ? '' : 'hidden') ?>" id="btn_inventory_report"><br>
                                     <i class="fa fa-archive" style="font-size: 50px;"></i><br><br>
                                     <span>Inventory Report</span>
                                 </button>
@@ -93,105 +99,91 @@
                     <div class="row">
                         <div class="container-fluid">
                             <div class="col-xs-12 col-sm-6">
-                                <div class="panel panel-custom">
-                                    <div class="panel-heading" style="background: #2196f3!important;">
-                                        <h5 style="color: white;"><i class="fa fa-book"></i> REFERENCES</h5>
+                                <div class="row">
+                                    <div class="container-fluid">
+                                        <div class="col-xs-12 col-sm-4">
+                                            <a href="categories" class="btn btn-success btn-block btn-height <?php echo (in_array('1-7', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #009688!important; border-color: #009688!important;"><br>
+                                                <i class="fa fa-cubes" style="font-size: 50px;"></i><br><br>
+                                                <span>Categories</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-4">
+                                            <a href="units" class="btn btn-success btn-block btn-height <?php echo (in_array('1-8', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #d39e00!important; border-color: #d39e00!important;"><br>
+                                                <i class="fa fa-cube" style="font-size: 50px;"></i><br><br>
+                                                <span>Units</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-4">
+                                            <a href="brands" class="btn btn-success btn-block btn-height <?php echo (in_array('1-9', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #00bcd4!important; border-color: #00bcd4!important;"><br>
+                                                <i class="fa fa-bars" style="font-size: 50px;"></i><br><br>
+                                                <span>Brands</span>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="panel-body" style="min-height: 400px;">
-                                        <div class="row">
-                                            <div class="container-fluid">
-                                                <div class="col-xs-12 col-sm-4">
-                                                    <a href="categories" class="btn btn-success btn-block btn-height" style="background: #009688!important; border-color: #009688!important;"><br>
-                                                        <i class="fa fa-cubes" style="font-size: 50px;"></i><br><br>
-                                                        <span>Categories</span>
-                                                    </a>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4">
-                                                    <a href="units" class="btn btn-success btn-block btn-height" style="background: #d39e00!important; border-color: #d39e00!important;"><br>
-                                                        <i class="fa fa-cube" style="font-size: 50px;"></i><br><br>
-                                                        <span>Units</span>
-                                                    </a>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4">
-                                                    <a href="brands" class="btn btn-success btn-block btn-height" style="background: #00bcd4!important; border-color: #00bcd4!important;"><br>
-                                                        <i class="fa fa-bars" style="font-size: 50px;"></i><br><br>
-                                                        <span>Brands</span>
-                                                    </a>
-                                                </div>
-                                            </div>
+                                </div>
+                                <div class="row">
+                                    <div class="container-fluid">
+                                        <div class="col-xs-12 col-sm-4">
+                                            <a href="discounts" class="btn btn-success btn-block btn-height <?php echo (in_array('1-10', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #5364c3!important; border-color: #5364c3!important;"><br>
+                                                <i class="fa fa-database" style="font-size: 50px;"></i><br><br>
+                                                <span>Discounts</span>
+                                            </a>
                                         </div>
-                                        <div class="row">
-                                            <div class="container-fluid">
-                                                <div class="col-xs-12 col-sm-4">
-                                                    <a href="discounts" class="btn btn-success btn-block btn-height" style="background: #5364c3!important; border-color: #5364c3!important;"><br>
-                                                        <i class="fa fa-database" style="font-size: 50px;"></i><br><br>
-                                                        <span>Discounts</span>
-                                                    </a>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4">
-                                                    <a href="cards" class="btn btn-success btn-block btn-height" style="background: #9c27b0!important; border-color: #9c27b0!important;"><br>
-                                                        <i class="fa fa-credit-card" style="font-size: 50px;"></i><br><br>
-                                                        <span>Cards</span>
-                                                    </a>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-4">
-                                                    <a href="generics" class="btn btn-success btn-block btn-height" style="background: #607d8b!important; border-color: #607d8b!important;"><br>
-                                                        <i class="fa fa-square-o" style="font-size: 50px;"></i><br><br>
-                                                        <span>Generics</span>
-                                                    </a>
-                                                </div>
-                                            </div>
+                                        <div class="col-xs-12 col-sm-4">
+                                            <a href="cards" class="btn btn-success btn-block btn-height <?php echo (in_array('1-11', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #9c27b0!important; border-color: #9c27b0!important;"><br>
+                                                <i class="fa fa-credit-card" style="font-size: 50px;"></i><br><br>
+                                                <span>Cards</span>
+                                            </a>
                                         </div>
-                                        <div class="row">
-                                            <div class="container-fluid">
-                                                <div class="col-xs-12">
-                                                    <a href="locations" class="btn btn-success btn-block btn-height" style="background: #7CB342!important; border-color: #7CB342!important;"><br>
-                                                        <i class="fa fa-institution" style="font-size: 50px;"></i><br><br>
-                                                        <span>Locations</span>
-                                                    </a>
-                                                </div>
-                                            </div>
+                                        <div class="col-xs-12 col-sm-4">
+                                            <a href="generics" class="btn btn-success btn-block btn-height <?php echo (in_array('1-12', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #607d8b!important; border-color: #607d8b!important;"><br>
+                                                <i class="fa fa-square-o" style="font-size: 50px;"></i><br><br>
+                                                <span>Generics</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="container-fluid">
+                                        <div class="col-xs-12">
+                                            <a href="locations" class="btn btn-success btn-block btn-height <?php echo (in_array('1-13', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #7CB342!important; border-color: #7CB342!important;"><br>
+                                                <i class="fa fa-institution" style="font-size: 50px;"></i><br><br>
+                                                <span>Locations</span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-6">
-                                <div class="panel panel-custom">
-                                    <div class="panel-heading" style="background: #2196f3!important;">
-                                        <h5 style="color: white;"><i class="fa fa-cube"></i> MASTERFILES</h5>
-                                    </div>
-                                    <div class="panel-body" style="min-height: 595px;">
-                                        <div class="row">
-                                            <div class="container-fluid">
-                                                <div class="col-xs-12 col-sm-6">
-                                                    <a href="products" class="btn btn-success btn-block btn-height" style="background: #e67e22!important; border-color: #e67e22!important;"><br>
-                                                        <i class="fa fa-archive" style="font-size: 50px;"></i><br><br>
-                                                        <span>PRODUCTS</span>
-                                                    </a>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-6">
-                                                    <a href="suppliers" class="btn btn-success btn-block btn-height" style="background: #27ae60!important; border-color: #27ae60!important;"><br>
-                                                        <i class="fa fa-truck" style="font-size: 50px;"></i><br><br>
-                                                        <span>SUPPLIERS</span>
-                                                    </a>
-                                                </div>
-                                            </div>
+                                <div class="row">
+                                    <div class="container-fluid">
+                                        <div class="col-xs-12 col-sm-6">
+                                            <a href="products" class="btn btn-success btn-block btn-height <?php echo (in_array('1-14', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #e67e22!important; border-color: #e67e22!important;"><br>
+                                                <i class="fa fa-archive" style="font-size: 50px;"></i><br><br>
+                                                <span>PRODUCTS</span>
+                                            </a>
                                         </div>
-                                        <div class="row">
-                                            <div class="container-fluid">
-                                                <div class="col-xs-12 col-sm-6">
-                                                    <a href="customers" class="btn btn-success btn-block btn-height" style="background: #8e44ad!important; border-color: #8e44ad!important;"><br>
-                                                        <i class="fa fa-users" style="font-size: 50px;"></i><br><br>
-                                                        <span>CUSTOMERS</span>
-                                                    </a>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-6">
-                                                    <a href="stock" class="btn btn-success btn-block btn-height" style="background: #2980b9!important; border-color: #2980b9!important;"><br>
-                                                        <i class="fa fa-archive" style="font-size: 50px;"></i><br><br>
-                                                        <span>STOCKS</span>
-                                                    </a>
-                                                </div>
-                                            </div>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <a href="suppliers" class="btn btn-success btn-block btn-height <?php echo (in_array('1-15', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #27ae60!important; border-color: #27ae60!important;"><br>
+                                                <i class="fa fa-truck" style="font-size: 50px;"></i><br><br>
+                                                <span>SUPPLIERS</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="container-fluid">
+                                        <div class="col-xs-12 col-sm-6">
+                                            <a href="customers" class="btn btn-success btn-block btn-height <?php echo (in_array('1-16', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #8e44ad!important; border-color: #8e44ad!important;"><br>
+                                                <i class="fa fa-users" style="font-size: 50px;"></i><br><br>
+                                                <span>CUSTOMERS</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <a href="stock" class="btn btn-success btn-block btn-height <?php echo (in_array('1-17', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #2980b9!important; border-color: #2980b9!important;"><br>
+                                                <i class="fa fa-archive" style="font-size: 50px;"></i><br><br>
+                                                <span>STOCKS</span>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -201,36 +193,29 @@
                     <div class="row">
                         <div class="container-fluid">
                             <div class="col-xs-12 col-sm-12">
-                                <div class="panel panel-custom">
-                                    <div class="panel-heading" style="background: #2196f3!important;">
-                                        <h5 style="color: white;"><i class="fa fa-user-circle-o"></i> ADMINISTRATION</h5>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="col-xs-12 col-sm-3">
-                                            <a href="xreading" class="btn btn-success btn-block btn-height"><br>
-                                                <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
-                                                <span>X-READING</span>
-                                            </a>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-3">
-                                            <button class="btn btn-primary btn-block btn-height" id="btn_z_reading"><br>
-                                                <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
-                                                <span>Z-READING</span>
-                                            </a>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-3">
-                                            <a href="users" class="btn btn-info btn-block btn-height"><br>
-                                                <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
-                                                <span>USER ACCOUNTS</span>
-                                            </a>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-3">
-                                            <a href="rights" class="btn btn-warning btn-block btn-height"><br>
-                                                <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
-                                                <span>USER RIGHTS</span>
-                                            </a>
-                                        </div>
-                                    </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <a href="xreading" class="btn btn-success btn-block btn-height <?php echo (in_array('1-18', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
+                                        <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
+                                        <span>X-READING</span>
+                                    </a>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <button class="btn btn-primary btn-block btn-height <?php echo (in_array('1-19', $this->session->user_rights) ? '' : 'hidden') ?>" id="btn_z_reading"><br>
+                                        <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
+                                        <span>Z-READING</span>
+                                    </a>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <a href="users" class="btn btn-info btn-block btn-height <?php echo (in_array('1-20', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
+                                        <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
+                                        <span>USER ACCOUNTS</span>
+                                    </a>
+                                </div>
+                                <div class="col-xs-12 col-sm-3">
+                                    <a href="user_groups" class="btn btn-warning btn-block btn-height <?php echo (in_array('1-21', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
+                                        <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
+                                        <span>USER RIGHTS</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -246,7 +231,6 @@
             </footer>
         </div>
         </div>
-
 </div>
 
 

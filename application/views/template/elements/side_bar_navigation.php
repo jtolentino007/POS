@@ -170,9 +170,9 @@
 
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header" style="background-color:#2ecc71;">
+        <div class="modal-header">
           <a type="button" href="Dashboard" class="close" >&times;</a>
-          <h4 class="modal-title bold" style="color:white;">Sales Reports</h4>
+          <h4 class="modal-title bold">Sales Reports</h4>
         </div>
         <div class="modal-body">
     		<div class="col-md-12">
@@ -213,9 +213,9 @@
 
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header" style="background-color:#2ecc71;">
+        <div class="modal-header">
           <a type="button" href="Dashboard" class="close" >&times;</a>
-          <h4 class="modal-title bold" style="color:white;">Inventory Reports</h4>
+          <h4 class="modal-title bold">Inventory Reports</h4>
         </div>
 	        <div class="modal-body">
 						<div class="col-md-12">
