@@ -251,7 +251,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2" style="text-align: right;height: 15px;padding: 6px;"></td>
-                                <td colspan="2" style="border-bottom: 1px solid gray;text-align: left;height: 15px;padding: 6px;">Tax Amount : </td>
+                                <td colspan="2" style="border-bottom: 1px solid gray;text-align: left;height: 15px;padding: 6px;">Tax : </td>
                                 <td style="border-bottom: 1px solid gray;text-align: right;height: 15px;padding: 6px;"><?php echo number_format($delivery_info->tax_amount,2); ?></td>
                             </tr>
                             <tr>
@@ -276,9 +276,9 @@
                                 . . . . . . . . . . . . . . <br>
                             </div>
                             <div id="right3">
-                                <?php echo $delivery_info->amount_due; ?><br>
-                                <?php echo $delivery_info->tendered; ?><br>
-                                <?php echo $delivery_info->change; ?><br>
+                                <?php echo number_format($delivery_info->amount_due,2); ?><br>
+                                <?php echo number_format($delivery_info->tendered,2); ?><br>
+                                <?php echo number_format($delivery_info->change,2); ?><br>
                             </div>
                         </div>
                     </div>

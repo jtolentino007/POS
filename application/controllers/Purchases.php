@@ -128,11 +128,11 @@ class Purchases extends CORE_Controller
 					$pos_invoice_summary->user_id=$this->session->user_id;
 					$pos_invoice_summary->save();
 
-
-
-
 					$pos_invoice_id=$pos_invoice_summary->last_insert_id();
+
 					$m_po_items=$this->Purchase_items_model;
+
+					$m_po_items->delete_via_fk($pos_invoice_id);
 
 					$product_id=$this->input->post('product_id',TRUE);
 					$pos_qty=$this->input->post('pos_qty',TRUE);
@@ -142,27 +142,39 @@ class Purchases extends CORE_Controller
 					$tax_amount=$this->input->post('tax_amount',TRUE);
 					$total=$this->input->post('po_line_total',TRUE);
 
-						$i=0;
-						$a="+";
-						// New function for insert
-						foreach($product_id as $item)
-						{
-							$minus="-";
-							$data[] =
-							   array(
-								  'pos_invoice_id' => $pos_invoice_id,
-								  'product_id' => $product_id[$i],
-								  'pos_qty' => $this->get_numeric_value($pos_qty[$i]),
-								  'pos_price' => $this->get_numeric_value($pos_price[$i]),
-								  'pos_discount' => $this->get_numeric_value($pos_discount[$i]),
-								  'tax_rate' => $this->get_numeric_value($tax_rate[$i]),
-								  'tax_amount' => $this->get_numeric_value($tax_amount[$i]),
-								  'total' => $this->get_numeric_value($total[$i])
-							   );
-							$i++;
-						}
+					for($i=0;$i<count($product_id);$i++)
+					{
+						$m_po_items->pos_invoice_id=$pos_invoice_id;
+						$m_po_items->product_id=$product_id[$i];
+						$m_po_items->pos_qty=$pos_qty[$i];
+						$m_po_items->pos_price=$this->get_numeric_value($pos_price[$i]);
+						$m_po_items->tax_rate=$this->get_numeric_value($tax_rate[$i]);
+						$m_po_items->tax_amount=$this->get_numeric_value($tax_amount[$i]);
+						$m_po_items->total=$this->get_numeric_value($total[$i]);
+						$m_po_items->save();
+					}
 
-					$this->db->insert_batch('pos_invoice_items', $data);
+						// $i=0;
+						// $a="+";
+						// New function for insert
+						// foreach($product_id as $item)
+						// {
+						// 	$minus="-";
+						// 	$data[] =
+						// 	   array(
+						// 		  'pos_invoice_id' => $pos_invoice_id,
+						// 		  'product_id' => $product_id[$i],
+						// 		  'pos_qty' => $this->get_numeric_value($pos_qty[$i]),
+						// 		  'pos_price' => $this->get_numeric_value($pos_price[$i]),
+						// 		  'pos_discount' => $this->get_numeric_value($pos_discount[$i]),
+						// 		  'tax_rate' => $this->get_numeric_value($tax_rate[$i]),
+						// 		  'tax_amount' => $this->get_numeric_value($tax_amount[$i]),
+						// 		  'total' => $this->get_numeric_value($total[$i])
+						// 	   );
+						// 	$i++;
+						// }
+
+					// $this->db->insert_batch('pos_invoice_items', $data);
 
 
 					$pos_payment=$this->Pos_payment_model;
@@ -175,7 +187,7 @@ class Purchases extends CORE_Controller
 					$pos_payment->change=$this->get_numeric_value($post_change);
 					$pos_payment->pos_invoice_id=$this->get_numeric_value($pos_invoice_id);
 					$pos_payment->transaction_date=$today;
-					$pos_payment->set('receipt_no','cr_receipt("T1")');
+					$pos_payment->receipt_no="T".$pos_invoice_id;
 					$pos_payment->save();
 
 					$pos_payment_id=$pos_payment->last_insert_id();

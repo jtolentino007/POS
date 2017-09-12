@@ -531,7 +531,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content"><!---content-->
                         <div class="modal-header">
-                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                             <h4 class="modal-title">Items/Products</h4>
                         </div>
                         <div class="modal-body">
@@ -556,6 +556,9 @@
                                     </table>
                                 </div>
 							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">DONE</button>
 						</div>
                     </div><!---content-->
                 </div>
@@ -1312,7 +1315,7 @@ $(document).ready(function(){
 			if(amountdue==0)
 				cartempty();
 			else{
-				if(parseFloat(tendered)>=parseFloat(amountdue)) {
+				if(parseFloat(accounting.unformat(tendered))>=parseFloat(amountdue)) {
 					validaterequirefields();
 				}
 				else
@@ -1679,6 +1682,7 @@ $(document).ready(function(){
 			createPurchaseOrder().done(function(response){   //Create Purchase
                 showNotification(response);
                 var payment_id = response.pos_payment_id;
+
 				$("#payment_id").val(payment_id);
 				clearFields();
 				reComputeTotal();
@@ -1984,7 +1988,7 @@ $(document).ready(function(){
                  {
                      targets:[7],
                      render: function (data, type, full, meta){
-                         var btn_addtocart_close='<button class="btn btn-success" name="addtocart_close"  style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="add and close"><span class="glyphicon glyphicon-ok"></span> </button>';
+                         var btn_addtocart_close='<button class="btn btn-success hidden" name="addtocart_close"  style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="add and close"><span class="glyphicon glyphicon-ok"></span> </button>';
                          var btn_addtocart='<button class="btn btn-primary" name="addtocart" style="margin-right:0px;" data-toggle="tooltip" data-placement="top" title="Add to Cart"><i class="fa fa-plus" aria-hidden="true"></i> </button>';
 
                          return '<center>'+btn_addtocart_close+' '+btn_addtocart+'</center>';
@@ -2306,8 +2310,8 @@ $(document).ready(function(){
 
         return $.ajax({
             "dataType":"json",
-            "type":"POST",
             "async":false,
+            "type":"POST",
             "url":"Purchases/transaction/create",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_save'))
