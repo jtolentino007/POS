@@ -9,25 +9,13 @@
                         </span>
                     </a>
                 </span>
-			
         <a class="navbar-brand" href="#"></a>
-
-
-
     </div><!-- logo-area -->
 
     <ul class="nav navbar-nav toolbar pull-right">
-
-
-
-        <li class="toolbar-icon-bg hidden-xs" id="trigger-fullscreen">
-            <a href="#" class="toggle-fullscreen"><span class="icon-bg"><i class="ti ti-fullscreen"></i></span></i></a>
-        </li>
-		
-
         <li class="dropdown toolbar-icon-bg">
             <a href="#" class="dropdown-toggle username" data-toggle="dropdown">
-                <img class="img-circle" src="<?php echo $this->session->user_photo; ?>" alt="" />
+                <img class="img-circle" style="border: 1px solid white;" src="<?php echo $this->session->user_photo; ?>" alt="" />
             </a>
             <ul class="dropdown-menu userinfo arrow">
                 <li><a href="#"><i class="ti ti-user"></i><span>Profile</span></a></li>

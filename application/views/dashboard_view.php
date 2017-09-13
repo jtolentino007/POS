@@ -23,6 +23,14 @@
        html {
             overflow-x: hidden;
        }
+
+       #topnav {
+            display: none!important;
+       }
+
+       .navbar-fixed-top + #wrapper, .navbar-fixed-top + #layout-fixed {
+            padding-top: 0!important;
+       }
    </style>
 
 </head>
@@ -100,7 +108,7 @@
                         <div class="container-fluid">
                             <div class="col-xs-12 col-sm-6">
                                 <div class="row">
-                                    <div class="container-fluid">
+                                    <div class="">
                                         <div class="col-xs-12 col-sm-4">
                                             <a href="categories" class="btn btn-success btn-block btn-height <?php echo (in_array('1-7', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #009688!important; border-color: #009688!important;"><br>
                                                 <i class="fa fa-cubes" style="font-size: 50px;"></i><br><br>
@@ -122,7 +130,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="container-fluid">
+                                    <div class="">
                                         <div class="col-xs-12 col-sm-4">
                                             <a href="discounts" class="btn btn-success btn-block btn-height <?php echo (in_array('1-10', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #5364c3!important; border-color: #5364c3!important;"><br>
                                                 <i class="fa fa-database" style="font-size: 50px;"></i><br><br>
@@ -144,11 +152,23 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="container-fluid">
-                                        <div class="col-xs-12">
+                                    <div class="">
+                                        <div class="col-xs-12 col-sm-4">
                                             <a href="locations" class="btn btn-success btn-block btn-height <?php echo (in_array('1-13', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #7CB342!important; border-color: #7CB342!important;"><br>
                                                 <i class="fa fa-institution" style="font-size: 50px;"></i><br><br>
                                                 <span>Locations</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-4">
+                                            <a href="xreading" class="btn btn-success btn-block btn-height <?php echo (in_array('1-18', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
+                                                <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
+                                                <span>X-READING</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-4">
+                                            <button class="btn btn-primary btn-block btn-height <?php echo (in_array('1-19', $this->session->user_rights) ? '' : 'hidden') ?>" id="btn_z_reading"><br>
+                                                <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
+                                                <span>Z-READING</span>
                                             </a>
                                         </div>
                                     </div>
@@ -156,7 +176,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-6">
                                 <div class="row">
-                                    <div class="container-fluid">
+                                    <div class="">
                                         <div class="col-xs-12 col-sm-6">
                                             <a href="products" class="btn btn-success btn-block btn-height <?php echo (in_array('1-14', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #e67e22!important; border-color: #e67e22!important;"><br>
                                                 <i class="fa fa-archive" style="font-size: 50px;"></i><br><br>
@@ -172,7 +192,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="container-fluid">
+                                    <div class="">
                                         <div class="col-xs-12 col-sm-6">
                                             <a href="customers" class="btn btn-success btn-block btn-height <?php echo (in_array('1-16', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #8e44ad!important; border-color: #8e44ad!important;"><br>
                                                 <i class="fa fa-users" style="font-size: 50px;"></i><br><br>
@@ -187,39 +207,26 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="container-fluid">
-                            <div class="col-xs-12 col-sm-12">
-                                <div class="col-xs-12 col-sm-3">
-                                    <a href="xreading" class="btn btn-success btn-block btn-height <?php echo (in_array('1-18', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
-                                        <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
-                                        <span>X-READING</span>
-                                    </a>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <button class="btn btn-primary btn-block btn-height <?php echo (in_array('1-19', $this->session->user_rights) ? '' : 'hidden') ?>" id="btn_z_reading"><br>
-                                        <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
-                                        <span>Z-READING</span>
-                                    </a>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <a href="users" class="btn btn-info btn-block btn-height <?php echo (in_array('1-20', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
-                                        <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
-                                        <span>USER ACCOUNTS</span>
-                                    </a>
-                                </div>
-                                <div class="col-xs-12 col-sm-3">
-                                    <a href="user_groups" class="btn btn-warning btn-block btn-height <?php echo (in_array('1-21', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
-                                        <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
-                                        <span>USER RIGHTS</span>
-                                    </a>
+                                <div class="row">
+                                    <div class="">
+                                        <div class="col-xs-12 col-sm-6">
+                                            <a href="users" class="btn btn-info btn-block btn-height <?php echo (in_array('1-20', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
+                                                <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
+                                                <span>USER ACCOUNTS</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <a href="user_groups" class="btn btn-warning btn-block btn-height <?php echo (in_array('1-21', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
+                                                <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
+                                                <span>USER RIGHTS</span>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
             <footer role="contentinfo">

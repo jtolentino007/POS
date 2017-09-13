@@ -23,8 +23,11 @@ class Login extends CORE_Controller {
         $data['_def_css_files']=$this->load->view('template/assets/css_files','',TRUE);
         $data['_def_js_files']=$this->load->view('template/assets/js_files','',TRUE);
 
-        $this->load->view('login_view',$data);
-
+        if($this->session->userdata('logged_in') == 1) {
+            redirect(base_url('Dashboard'));
+        } else {
+            $this->load->view('login_view',$data); 
+        }
     }
 
 
