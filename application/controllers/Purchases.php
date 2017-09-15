@@ -107,7 +107,7 @@ class Purchases extends CORE_Controller
                     break;
 
 
-        case 'create':
+        	case 'create':
 					$today = date("Y-m-d");
 					$pos_invoice_summary=$this->Invoice_model;
 					$m_products=$this->Products_model;

@@ -13,6 +13,7 @@ class Login extends CORE_Controller {
         $this->load->model('Order_status_model');
         $this->load->model('User_group_right_model');
         $this->load->model('Rights_link_model');
+        $this->load->model('Table_types_model');
     }
 
 
@@ -55,6 +56,9 @@ class Login extends CORE_Controller {
 
         $rights=$this->Rights_link_model;
         $rights->create_default_link_list();
+
+        $m_table_types=$this->Table_types_model;
+        $m_table_types->create_default_table_type();
     }
 
 

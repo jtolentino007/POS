@@ -9,7 +9,10 @@
 			parent::__construct('');
 			$this->validate_session();
 			$this->load->model(
-				array('Categories_model')
+				array(
+					'Categories_model',
+					'Products_model'
+				)
 			);
 		}
 
@@ -25,6 +28,25 @@
         		'category_desc'
         	);
 			$this->load->view('pos_v2_view',$data);
+		}
+
+		public function getList($type=null, $category=null)
+		{
+			switch ($type) {
+				case 'product-by-category':
+						$m_products=$this->Products_model;
+
+						$data['response'] = $m_products->get_list(
+							'is_active=TRUE AND is_deleted=FALSE AND category_id='.$category
+						);
+
+						echo json_encode($data);
+					break;
+				
+				default:
+					# code...
+					break;
+			}
 		}
 	}
 ?>

@@ -78,7 +78,7 @@
                                 </a>
                             </div>
                             <div class="col-xs-12 col-sm-3 col-md-2">
-                                <a href="pos" class="btn btn-primary btn-block btn-height <?php echo (in_array('1-3', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
+                                <a href="pos_v2" class="btn btn-primary btn-block btn-height <?php echo (in_array('1-3', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
                                     <i class="fa fa-shopping-cart" style="font-size: 50px;"></i><br><br>
                                     <span>Point of Sales</span>
                                 </a>
@@ -144,9 +144,9 @@
                                             </a>
                                         </div>
                                         <div class="col-xs-12 col-sm-4">
-                                            <a href="generics" class="btn btn-success btn-block btn-height <?php echo (in_array('1-12', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #607d8b!important; border-color: #607d8b!important;"><br>
-                                                <i class="fa fa-square-o" style="font-size: 50px;"></i><br><br>
-                                                <span>Generics</span>
+                                            <a href="tables" class="btn btn-success btn-block btn-height <?php echo (in_array('1-12', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #607d8b!important; border-color: #607d8b!important;"><br>
+                                                <i class="fa fa-table" style="font-size: 50px;"></i><br><br>
+                                                <span>Tables</span>
                                             </a>
                                         </div>
                                     </div>
