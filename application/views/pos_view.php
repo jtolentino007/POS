@@ -34,6 +34,10 @@
     		zoom: 0.828;
     	}
 
+    	.btn-wheight {
+    		height: 40px;
+    	}
+
         .toolbar{
             float: left;
         }
@@ -303,6 +307,26 @@
 			padding-right: 370px;
 		}
 
+		.panel {
+			box-shadow: none;
+		}
+
+		/* Scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: auto;
+        }
+
+        ::-webkit-scrollbar-track {
+            border-radius: 0;
+            border: 1px solid #ddd;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            border-radius: 0;
+            background: #2196f3; 
+        }
+
     </style>
 
 </head>
@@ -310,12 +334,12 @@
 
 <?php echo $_top_navigation; ?>
 
-<div id="wrapper" style="background: #e2e2e2;">
+<div id="wrapper" style="background: white;">
         <div id="layout-static">
                 <div class="page-content"><!-- #page-content -->
-                    <div class="container-fluid">
-                                <div class="col-md-8">
-									<div class="panel panel-default" style="height: 721px !important;box-shadow: 0px 5px 30px #888888;padding-top: 15px !important;padding-left: 15px !important;padding-right: 15px !important;">
+                    <div class="">
+                                <div class="col-md-8" style="border-right: 1px solid #ddd;">
+									<div class="panel panel-default" style="height: 721px !important;padding-top: 15px !important;padding-left: 15px !important;padding-right: 15px !important;">
 										<div class="col-md-12" style="padding: 0px;">
 											<div class="col-md-3" style="padding-left: 0px;padding-right: 5px;">
 												<button class="btn browse_products" id="browse_products" style="width: 100%;height:55px;background-color:#2980b9;color:white;box-shadow: 0px 5px 10px #888888;" data-toggle="modal" data-target="#modal_browse_products">Browse List<br>ALT-2</button>
@@ -335,7 +359,7 @@
 		                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><br />
 		                                        <label class="control-label"><strong>Enter PLU or Search Item :</strong></label>
 		                                        <div style="float: right;text-align: left;">
-		                                        	<label class="control-label"><strong>Item Row :</strong></label>
+		                                        	<label class="control-label"><strong>Item(s) :</strong></label>
 		                                        	<div style="float: right;text-align: right;">
 					                        			<h4 id="cart_count" style="margin: 0px;padding-left: 15px;padding-right: 10px;color: black;">0</h4>
 					                        		</div>
@@ -346,7 +370,7 @@
 		                                        </div><br />
 
 		                                        <form id="frm_items">
-		                                            <div class="table-responsive" style="overflow-x: auto;overflow-y: scroll; height: 300px;">
+		                                            <div class="table-responsive" style="overflow-x: auto;overflow-y: scroll; height: 300px; border: 1px solid #ddd;">
 		                                                <table id="tbl_items" class="table table-striped table-bordered " cellspacing="0" width="100%" >
 				                                            <thead style="background-color:#16a085;">
 				                                            <tr>
@@ -402,7 +426,7 @@
 									</div>
 								</div>
 								<div class="col-md-4" style="margin-top: 5px;">
-								  <div class="panel panel-default" style="box-shadow: 0px 5px 30px #888888;">
+								  <div class="panel panel-default">
 									 <div class="panel-body">
 									 	<form id="payment_invoice">
 										<div class="box">
@@ -504,14 +528,14 @@
 											</div>
 
 											</form>
-											<button class="btn btngreen btn100" id="buttontransact" style="margin-top:5px;" data-toggle="modal" data-target="#modal_payment">Make Payment | ALT-6</button>
-											<button class="btn btnblue btn100 finalize" id="buttontransact">Finalize</button>
+											<button class="btn btngreen btn100 btn-wheight" id="buttontransact" style="margin-top:5px;" data-toggle="modal" data-target="#modal_payment">Make Payment</button>
+											<button class="btn btnblue btn100 finalize btn-wheight" id="buttontransact">Finalize</button>
 											<!-- <div class="col-md-6" style="padding:0px !important;">
 											<button class="btn btnconcrete" id="printreceipt">Print Receipt</button>
 											</div> -->
 											
 											<form action="Templates/layout/endbatch/0/preview" method="post" target="_blank">
-											<button class="btn btnconcrete btn100" id="end_batch" style="width: 100% !important;">End Batch</button>
+											<button class="btn btnconcrete btn100 btn-wheight" id="end_batch" style="width: 100% !important;">End Batch</button>
 											</form>
 											
 										</div>
@@ -704,13 +728,12 @@
 
 			<!-- start modal for payment -->
 
-            <div id="modal_payment" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
+            <div id="modal_payment" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" href="#"><!--modal-->
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content"><!---content-->
                         <div class="modal-header">
-                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <!-- <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">&times;</button> -->
                             <h4 class="modal-title">Payment</h4>
-
                         </div>
 
                         <div class="modal-body">
@@ -722,7 +745,7 @@
 					        </ul>
 						</div>
  
-									  <div class="tab-content">
+							  <div class="tab-content">
 									<div id="cash_tab" class="tab-pane fade in active">
 									<div class="row">
 									<div class="col-md-12">
@@ -1182,7 +1205,6 @@
 
 
 $(function(){
-
 	$(document).keydown(function(event){
 		if(event.which == 118){
 			//$("#modal_payment").modal('show');
@@ -1236,6 +1258,8 @@ $(function(){
 
 $(document).ready(function(){
 	var _LastInsertedID;
+
+	enablePayment();
 
     var reInitializeNumeric=function(){
         $('.numeric').autoNumeric('init');
@@ -1338,7 +1362,6 @@ $(document).ready(function(){
 		/*$('#browse_journal2').click(function(){
 			$('#browse_journal').click();
 		});*/
-
 
 	    $('.click_class').click(function() {
 		    var scurrentcash = $('#cash').val();
@@ -1478,6 +1501,7 @@ $(document).ready(function(){
 			$('#cart_count').text("0");
 			clearFields();
 			reComputeTotal();
+			enablePayment();
 			removeditemnotif();
 		});
 
@@ -1514,7 +1538,7 @@ $(document).ready(function(){
 		$('.clearcash').click(function(){
 			ClearCashInput();
 			reChange();
-			reComputeChange();
+			//reComputeChange();
 		});
 
 		$('.clearcheck').click(function(){
@@ -1549,7 +1573,9 @@ $(document).ready(function(){
 
 		var ClearCashInput=function() {
 			var zero = "0.00";
+			$("#tendered").val(zero);
 			$("#cash").val(zero);
+			$("#change").val(zero);
         };
 
 		var ClearCheckInput=function() {
@@ -1696,12 +1722,12 @@ $(document).ready(function(){
 
 
 
-		var CheckPayments=function() {       //Function for checking payments
-			$("#modal_payment").modal('hide');
-			reComputeChange();
-			paymentaddnotif();
-			txtfocus();
-        };
+	var CheckPayments=function() {       //Function for checking payments
+		$("#modal_payment").modal('hide');
+		reComputeChange();
+		paymentaddnotif();
+		txtfocus();
+    };
 
 
     var dt; var _txnMode; var _selectedID; var _selectRowObj; var _cboSuppliers; var _cboTaxType;
@@ -1868,7 +1894,8 @@ $(document).ready(function(){
 				$("#tempcode").val("");
                 reInitializeNumeric();
 				reComputeTotal();
-				reComputeChange();
+				//reComputeChange();
+				enablePayment();
 				countCart();
                 //alert("dd")
             });
@@ -2092,8 +2119,8 @@ $(document).ready(function(){
         $('#tbl_items > tbody').on('click','button[name="remove_item"]',function(){
                 $(this).closest('tr').remove();
                 reComputeTotal();
-				reComputeChange();
-
+				//reComputeChange();
+				enablePayment();
         });
 
 
@@ -2241,14 +2268,16 @@ $(document).ready(function(){
 		$('#method4').val(4);
     };
 
-
-    function format ( d ) {
-
-        //return
-
-
+    function enablePayment() {
+    	if($('#tbl_items tbody tr').length > 0){
+    		$('#buttontransact').prop('disabled',false);
+    		$('.finalize').prop('disabled',false);
+    	}
+    	else{
+    		$('#buttontransact').prop('disabled',true);
+    		$('.finalize').prop('disabled',true);
+    	}
     };
-
 
     var getFloat=function(f){
         return parseFloat(accounting.unformat(f));
@@ -2256,18 +2285,18 @@ $(document).ready(function(){
 
     var newRowItem=function(d){
         return '<tr>'+
-                        '<td width="10%"><input name="pos_qty[]" type="text" class="numeric form-control" value="'+ d.po_qty+'"></td>'+
-                        '<td width="30%">'+d.product_desc+'</td>'+
-                        '<td width="11%"><input name="pos_price[]" type="text" class="numeric form-control" value="'+accounting.formatNumber(d.po_price,2)+'" style="text-align:right;"></td>'+
-                        '<td width="11%"><input name="pos_discount[]" type="text" class="numeric form-control" value="'+ accounting.formatNumber(d.po_discount,2)+'" style="text-align:right;"></td>'+
-                        '<td style="display: none;" width="11%"><input name="po_line_total_discount[]" type="text" class="numeric form-control" value="'+ accounting.formatNumber(d.po_line_total_discount,2)+'" readonly></td>'+
-                        '<td width="11%"><input name="pos_tax_rate[]" type="text" class="numeric form-control" value="'+ accounting.formatNumber(d.po_tax_rate,2)+'"></td>'+
-                        '<td width="11%" align="right"><input name="po_line_total[]" type="text" class="numeric form-control" value="'+ accounting.formatNumber(d.po_line_total,2)+'" readonly></td>'+
-                        '<td style="display: none;"><input name="tax_amount[]" type="text" class="numeric form-control" value="'+ d.po_tax_amount+'" readonly></td>'+
-                        '<td style="display: none;"><input name="non_tax_amount[]" type="text" class="numeric form-control" value="'+ d.po_non_tax_amount+'" readonly></td>'+
-                        '<td style="display: none;"><input name="product_id[]" type="text" class="numeric form-control" value="'+ d.product_id+'" readonly></td>'+
-                        '<td align="center"><button type="button" name="remove_item" class="btn btn-default remove_item" disabled><i class="fa fa-trash"></i></button></td>'+
-                    '</tr>';
+		            '<td width="10%"><input name="pos_qty[]" type="text" class="numeric form-control" value="'+ d.po_qty+'"></td>'+
+		            '<td width="30%">'+d.product_desc+'</td>'+
+		            '<td width="11%"><input name="pos_price[]" type="text" class="numeric form-control" value="'+accounting.formatNumber(d.po_price,2)+'" style="text-align:right;"></td>'+
+		            '<td width="11%"><input name="pos_discount[]" type="text" class="numeric form-control" value="'+ accounting.formatNumber(d.po_discount,2)+'" style="text-align:right;"></td>'+
+		            '<td style="display: none;" width="11%"><input name="po_line_total_discount[]" type="text" class="numeric form-control" value="'+ accounting.formatNumber(d.po_line_total_discount,2)+'" readonly></td>'+
+		            '<td width="11%"><input name="pos_tax_rate[]" type="text" class="numeric form-control" value="'+ accounting.formatNumber(d.po_tax_rate,2)+'"></td>'+
+		            '<td width="11%" align="right"><input name="po_line_total[]" type="text" class="numeric form-control" value="'+ accounting.formatNumber(d.po_line_total,2)+'" readonly></td>'+
+		            '<td style="display: none;"><input name="tax_amount[]" type="text" class="numeric form-control" value="'+ d.po_tax_amount+'" readonly></td>'+
+		            '<td style="display: none;"><input name="non_tax_amount[]" type="text" class="numeric form-control" value="'+ d.po_non_tax_amount+'" readonly></td>'+
+		            '<td style="display: none;"><input name="product_id[]" type="text" class="numeric form-control" value="'+ d.product_id+'" readonly></td>'+
+		            '<td align="center"><button type="button" name="remove_item" class="btn btn-default remove_item" disabled><i class="fa fa-trash"></i></button></td>'+
+		        '</tr>';
     };
 
 
@@ -2430,10 +2459,13 @@ $(document).ready(function(){
                 po_non_tax_amount: net_vat,
                 po_tax_amount:vat_input,
             }));
+
 		    reInitializeNumeric();
 			reComputeTotal();
-			reComputeChange();
+			// reComputeChange();
+			enablePayment();
 			countCart();
+
         });
 
 	//add customer then close modal
