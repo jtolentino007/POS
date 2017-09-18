@@ -1265,47 +1265,51 @@ $(document).ready(function(){
         $('.numeric').autoNumeric('init');
     };
 
-		var countCart=function() {
-        var itemcount= ($('table#tbl_items tr:last').index()+ 1);
-		var string = "rows";
-		/*var total = itemcount +" "+ string;*/
-		var total = itemcount;
-			$('#cart_count').text(total);
-        };
+	var countCart=function() {
+    var itemcount= ($('table#tbl_items tr:last').index()+ 1);
+	var string = "rows";
+	/*var total = itemcount +" "+ string;*/
+	var total = itemcount;
+		$('#cart_count').text(total);
+    };
 
-		var synchronizeFields=function(){
-			var cashremarks = $("#cash_remarks").val();
-			$("#post_cash_remarks").val(cashremarks);
+    $('body').on("contextmenu",function(){
+       return false;
+    });
 
-			var acheckbank = $("#check_bank").val();
-			var achecknumber = $("#check_number").val();
-			var acheckaddress = $("#check_address").val();
-			var acheckdate = $("#check_date").val();
+	var synchronizeFields=function(){
+		var cashremarks = $("#cash_remarks").val();
+		$("#post_cash_remarks").val(cashremarks);
 
-			$("#post_check_bank").val(acheckbank);
-			$("#post_check_number").val(achecknumber);
-			$("#post_check_address").val(acheckaddress);
-			$("#post_check_date").val(acheckdate);
+		var acheckbank = $("#check_bank").val();
+		var achecknumber = $("#check_number").val();
+		var acheckaddress = $("#check_address").val();
+		var acheckdate = $("#check_date").val();
 
-			var atypeofcard = $("#typeofcard").val();
-			var acardholder = $("#cardholder").val();
-			var acardnum = $("#cardnum").val();
-			var aapprovalnum = $("#approvalnum").val();
-			var acardexpiry = $("#cardexpiry").val();
+		$("#post_check_bank").val(acheckbank);
+		$("#post_check_number").val(achecknumber);
+		$("#post_check_address").val(acheckaddress);
+		$("#post_check_date").val(acheckdate);
 
-			$("#post_card_type").val(atypeofcard);
-			$("#post_card_holder").val(acardholder);
-			$("#post_card_number").val(acardnum);
-			$("#post_card_apnumber").val(aapprovalnum);
-			$("#post_card_expdate").val(acardexpiry);
+		var atypeofcard = $("#typeofcard").val();
+		var acardholder = $("#cardholder").val();
+		var acardnum = $("#cardnum").val();
+		var aapprovalnum = $("#approvalnum").val();
+		var acardexpiry = $("#cardexpiry").val();
 
-			var achargeto = $("#chargeto").val();
-			var achargeremarks = $("#charge_remarks").val();
-			var achargedate = $("#charge_date").val();
+		$("#post_card_type").val(atypeofcard);
+		$("#post_card_holder").val(acardholder);
+		$("#post_card_number").val(acardnum);
+		$("#post_card_apnumber").val(aapprovalnum);
+		$("#post_card_expdate").val(acardexpiry);
 
-			$("#post_chargeto").val(achargeto);
-			$("#post_charge_remarks").val(achargeremarks);
-			$("#post_charge_date").val(achargedate);
+		var achargeto = $("#chargeto").val();
+		var achargeremarks = $("#charge_remarks").val();
+		var achargedate = $("#charge_date").val();
+
+		$("#post_chargeto").val(achargeto);
+		$("#post_charge_remarks").val(achargeremarks);
+		$("#post_charge_date").val(achargedate);
     };
 
 	reInitializeNumeric();
@@ -1599,6 +1603,7 @@ $(document).ready(function(){
 
 		var showloginmodal=function(){
 			$('#modal_admin_login').modal('show');
+			$('#user_name').focus();
 		};
 
 		var PrintChecklist=function(){
