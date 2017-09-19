@@ -17,7 +17,7 @@ class Tax extends CORE_Controller {
         $data['_switcher_settings']=$this->load->view('template/elements/switcher','',TRUE);
         $data['_side_bar_navigation']=$this->load->view('template/elements/side_bar_navigation','',TRUE);
         $data['_top_navigation']=$this->load->view('template/elements/top_navigation','',TRUE);
-        $data['title']='Supplier Management';
+        $data['title']='Tax Management';
         $data['tax_type']=$this->Tax_types_model->get_list();
         $this->load->view('tax_view',$data);
     }

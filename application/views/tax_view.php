@@ -66,24 +66,17 @@
 
     </head>
 
-    <body class="animated-content">
+<body class="animated-content">
 
-    <?php echo $_top_navigation; ?>
+<?php echo $_top_navigation; ?>
 
-        <div id="wrapper">
-            <div id="layout-static">
+    <div id="wrapper">
+        <div id="layout-static">
 
         <?php echo $_side_bar_navigation;?>
-
-
         <div class="static-content-wrapper white-bg">
             <div class="static-content"  >
                 <div class="page-content"><!-- #page-content -->
-
-                    <ol class="breadcrumb">
-                        <li><a href="dashboard">Dashboard</a></li>
-                        <li><a href="tax">Tax</a></li>
-                    </ol>
 
                     <div class="container-fluid">
                         <div data-widget-group="group1">
@@ -92,7 +85,8 @@
 
                                     <div id="div_tax_list">
                                         <div class="panel panel-default">
-                                            <div class="panel-body table-responsive">
+                                            <div class="panel-body table-responsive" style="border-top: 5px solid #2196f3;">
+                                                <h1>Tax Management</h1>
                                                 <table id="tbl_tax" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                                     <thead>
                                                     <tr>
@@ -125,9 +119,9 @@
                                                         <label class="col-md-4 control-label">* Tax Name :</label>
                                                         <div class="col-md-4">
                                                             <div class="input-group">
-                                                                            <span class="input-group-addon">
-                                                                                <i class="fa fa-users"></i>
-                                                                            </span>
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-users"></i>
+                                                                </span>
                                                                 <input type="text" name="tax_type" class="form-control" placeholder="Tax Name" data-error-msg="Tax Type Name is required!" required>
                                                             </div>
                                                         </div>
@@ -137,9 +131,9 @@
                                                         <label class="col-md-4 control-label">* Tax rate :</label>
                                                         <div class="col-md-4">
                                                             <div class="input-group">
-                                                                            <span class="input-group-addon">
-                                                                                <i class="fa fa-users"></i>
-                                                                            </span>
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-users"></i>
+                                                                </span>
                                                                 <input type="number" name="tax_rate" class="form-control" placeholder="Tax Rate" data-error-msg="Tax Rate is required!" required>
                                                             </div>
                                                         </div>
@@ -149,18 +143,15 @@
                                                         <label class="col-md-4 control-label"> Description :</label>
                                                         <div class="col-md-4">
                                                             <textarea name="description" class="form-control" data-error-msg="Description address is required!" placeholder="Description"></textarea>
+                                                        </div>
                                                     </div>
-                                                    </div>
-
-
-                                                        <br /><br />
+                                                    <br /><br />
                                                 </form>
-
                                             </div>
 
                                             <div class="panel-footer">
                                                 <div class="row">
-                                                    <div class="col-sm-10 col-sm-offset-2">
+                                                    <div class="col-sm-10 col-sm-offset-5">
                                                         <button id="btn_save" class="btn-primary btn" style="text-transform: capitalize;font-family: Tahoma, Georgia, Serif;""><span class=""></span>  Save Changes</button>
                                                         <button id="btn_cancel" class="btn-default btn" style="text-transform: capitalize;font-family: Tahoma, Georgia, Serif;"">Cancel</button>
                                                     </div>
@@ -168,19 +159,17 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div> <!-- .container-fluid -->
-
                 </div> <!-- #page-content -->
             </div>
 
 
             <div id="modal_confirmation" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-sm">
-                    <div class="modal-content"><!---content--->
+                    <div class="modal-content"><!---content-->
                         <div class="modal-header">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
                             <h4 class="modal-title"><span id="modal_mode"> </span>Confirm Deletion</h4>
@@ -195,13 +184,13 @@
                             <button id="btn_yes" type="button" class="btn btn-danger" data-dismiss="modal">Yes</button>
                             <button id="btn_close" type="button" class="btn btn-default" data-dismiss="modal">No</button>
                         </div>
-                    </div><!---content---->
+                    </div><!--content-->
                 </div>
             </div><!---modal-->
 
             <div id="modal__group" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
                 <div class="modal-dialog modal-md">
-                    <div class="modal-content"><!---content--->
+                    <div class="modal-content"><!---content-->
                         <div class="modal-header">
                             <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
                             <h4 class="modal-title"><span id="modal_mode"> </span>New Tax Group</h4>
@@ -213,9 +202,9 @@
                                 <div class="form-group">
                                     <label>* Tax Group :</label>
                                     <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <i class="fa fa-envelope-o"></i>
-                                                </span>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-envelope-o"></i>
+                                        </span>
                                         <input type="text" name="tax_name" class="form-control" placeholder="Tax group" data-error-msg="Tax name is required." required>
                                     </div>
                                 </div>
@@ -223,14 +212,12 @@
                                 <div class="form-group">
                                     <label>* Tax Rate :</label>
                                     <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <i class="fa fa-envelope-o"></i>
-                                                </span>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-envelope-o"></i>
+                                        </span>
                                         <input type="number" name="tax_rate" class="form-control" placeholder="Tax group" data-error-msg="Tax name is required." required>
                                     </div>
                                 </div>
-
-
                                 <div class="form-group">
                                     <label>Description :</label>
                                     <div class="input-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -238,15 +225,13 @@
                                     </div>
                                 </div>
                             </form>
-
-
                         </div>
 
                         <div class="modal-footer">
                             <button id="btn_create_tax_group" type="button" class="btn btn-primary"  style="text-transform: capitalize;font-family: Tahoma, Georgia, Serif;"><span class=""></span> Create</button>
                             <button id="btn_close_user_group" type="button" class="btn btn-default" data-dismiss="modal" style="text-transform: capitalize;font-family: Tahoma, Georgia, Serif;">Cancel</button>
                         </div>
-                    </div><!---content---->
+                    </div><!--content-->
                 </div>
             </div><!---modal-->
 
@@ -286,6 +271,7 @@
                 "ajax" : "Tax/transaction/list",
                 "columns": [
                     {
+                        "visible":false,
                         "targets": [0],
                         "class":          "details-control",
                         "orderable":      false,
@@ -298,10 +284,10 @@
                     {
                         targets:[4],
                         render: function (data, type, full, meta){
-                            var btn_edit='<button class="btn btn-default btn-sm" name="edit_info"  style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
-                            var btn_trash='<button class="btn btn-default btn-sm" name="remove_info" style="margin-right:0px;" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+                            var btn_edit='<button class="btn btn-primary btn-sm" name="edit_info"  style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
+                            var btn_trash='<button class="btn btn-danger btn-sm" name="remove_info" style="margin-right:0px;" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
 
-                            return '<center>'+btn_edit+btn_trash+'</center>';
+                            return '<center>'+btn_edit+' '+btn_trash+'</center>';
                         }
                     }
                 ]
