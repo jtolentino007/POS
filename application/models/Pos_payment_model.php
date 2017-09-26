@@ -9,7 +9,25 @@ class Pos_payment_model extends CORE_Model {
         parent::__construct();
     }
 	
+    function get_receipt_list()
+    {
+        $sql = "SELECT
+                MAX(pp.receipt_no) receipt_no,
+                MAX(c.customer_name) customer_name,
+                group_concat(t.table_name) table_name,
+                MAX(pp.amount_due) amount_due,
+                MAX(pp.tendered) tendered,
+                MAX(pp.change) change_amount
+                FROM
+                pos_payment pp
+                LEFT JOIN pos_invoice pi ON pi.pos_invoice_id = pp.pos_invoice_id
+                LEFT JOIN customers c ON c.customer_id = pi.customer_id
+                INNER JOIN order_tables ot ON ot.pos_invoice_id = pi.pos_invoice_id
+                LEFT JOIN tables t ON t.table_id = ot.table_id
+                GROUP BY pp.receipt_no";
 
+        return $this->db->query($sql)->result();
+    }
 
     function get_products_with_balance_qty($purchase_order_id){
         $sql="SELECT o.*,(o.po_line_total-o.non_tax_amount)as tax_amount FROM

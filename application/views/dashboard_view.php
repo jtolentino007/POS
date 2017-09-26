@@ -52,7 +52,7 @@
     $products = $this->db->query('SELECT product_id,product_desc FROM products');
 ?>
 
-<div id="wrapper">
+<div id="wrapper" style="border-top: 5px solid #2196f3;">
         <div id="layout-static">
         <?php echo $_side_bar_navigation; ?>
         <div class="static-content-wrapper">
@@ -78,7 +78,7 @@
                                 </a>
                             </div>
                             <div class="col-xs-12 col-sm-3 col-md-2">
-                                <a href="pos_v2" class="btn btn-primary btn-block btn-height <?php echo (in_array('1-3', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
+                                <a id="btn_pos" href="pos_v2" class="btn btn-primary btn-block btn-height <?php echo (in_array('1-3', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
                                     <i class="fa fa-shopping-cart" style="font-size: 50px;"></i><br><br>
                                     <span>Point of Sales</span>
                                 </a>
