@@ -19,6 +19,8 @@ class Templates extends CORE_Controller {
         $this->load->model('Issuance_item_model');
         $this->load->model('Issuance_model');
         $this->load->model('User_group_right_model');
+        $this->load->model('Pos_model');
+        $this->load->model('Order_tables_model');
     }
 
     public function index() {
@@ -27,10 +29,7 @@ class Templates extends CORE_Controller {
     }
 
 
-    function layout($layout=null,$filter_value=null,$filter_value2=null){
-
-
-
+    function layout($layout=null,$filter_value=null,$filter_value2=null,$filter_value3=null){
 
         switch($layout){
             case 'po': //purchase order
@@ -139,11 +138,82 @@ class Templates extends CORE_Controller {
 
             break;
 
+            case 'pospr-kitchen-bar':
+                    $m_invoice_payment=$this->Pos_payment_model;
+                    $m_invoice=$this->Pos_model;
+                    $m_invoice_items=$this->Purchase_items_model;
+                    $m_company=$this->Company_model;
+                    $m_info=$this->Notes_model;
+                    $m_order_tables=$this->Order_tables_model;
+
+                    $vendor_id = $this->input->get('vendor',TRUE);
+
+                    $info=$m_invoice->get_list(
+                        'pos_invoice.pos_invoice_id='.$filter_value.' AND products.vendor_id='.$vendor_id,
+                        'pos_invoice.*,pos_invoice_items.*,customers.customer_name,user_accounts.*,CONCAT(user_fname, " ", user_mname, " ", user_lname) AS cashier, vendors.vendor_name',
+                        array(
+                            array('customers','customers.customer_id=pos_invoice.customer_id','left'),
+                            array('user_accounts','user_accounts.user_id=pos_invoice.user_id','left'),
+                            array('pos_invoice_items','pos_invoice_items.pos_invoice_id=pos_invoice.pos_invoice_id','left'),
+                            array('products','products.product_id=pos_invoice_items.product_id','left'),                      //join
+                            array('vendors','vendors.vendor_id=products.vendor_id','left')    
+                        )
+                    );
+
+                    if (count($info) > 0) {
+                        $invoice_id=$info[0]->pos_invoice_id;
+                        $vendor_name=$info[0]->vendor_name;
+                        $data['vendor_name']=$vendor_name;
+                        $data['info']=$invoice_id;
+                        $footer=$m_info->get_list();
+                        $company=$m_company->get_list();
+                        $tables = $m_order_tables->get_list(
+                            'pos_invoice_id='.$invoice_id,
+                            'GROUP_CONCAT(table_name) table_names',
+                            array(
+                                array('tables', 'tables.table_id = order_tables.table_id', 'left')
+                            ),
+                            null,
+                            'pos_invoice_id'
+                        );
+
+                        $data['tables']=$tables[0]->table_names;
+                        $data['pos_invoice_item']=$m_invoice_items->get_list(
+                            'pos_invoice_items.pos_invoice_id='.$invoice_id.' AND products.vendor_id='.$vendor_id,
+                                'pos_invoice_items.*,products.product_desc',
+                            array(
+                                array('products','products.product_id=pos_invoice_items.product_id','left')
+                            )
+                        );
+
+                        $data['vendor'] = $this->input->get('vendor',TRUE);
+                        $data['footer_info']=$footer[0];
+                        $data['delivery_info']=$info[0];
+                        $data['company_info']=$company[0];
+                        $data['_def_js_files'] =  $this->load->view('template/assets/js_files', '', TRUE);
+
+                        if($filter_value2=='print'){
+                            echo $this->load->view('template/pos_content_kitchen_bar',$data,TRUE);
+                        }
+                        else{
+                          echo $this->load->view('template/pos_content_kitchen_bar',$data,TRUE);
+                          echo $this->load->view('template/pos_menu',$data,TRUE);
+                        }
+                    } else {
+                        if ($vendor_id == 2) {
+                            redirect(base_url('Templates/layout/pospr-kitchen-bar/'.$filter_value.'/print?vendor=3'));
+                        } else if ($vendor_id == 3) {
+                            redirect(base_url('Pos_v2'));
+                        }
+                    }
+                break;
+
             case 'pospr': //delivery invoice
                 $m_invoice=$this->Pos_payment_model;
                 $m_invoice_items=$this->Purchase_items_model;
                 $m_company=$this->Company_model;
                 $m_info=$this->Notes_model;
+                $m_order_tables=$this->Order_tables_model;
 
                 $info=$m_invoice->get_list(
                     $filter_value,
@@ -160,6 +230,16 @@ class Templates extends CORE_Controller {
                 $data['info']=$invoice_id;
                 $footer=$m_info->get_list();
                 $company=$m_company->get_list();
+                $tables = $m_order_tables->get_list(
+                    'pos_invoice_id='.$invoice_id,
+                    'GROUP_CONCAT(table_name) table_names',
+                    array(
+                        array('tables', 'tables.table_id = order_tables.table_id', 'left')
+                    ),
+                    null,
+                    'pos_invoice_id'
+                );
+                $data['tables']=$tables[0]->table_names;
                 $data['pos_invoice_item']=$m_invoice_items->get_list(
                     array('pos_invoice_items.pos_invoice_id'=>$invoice_id),
                         'pos_invoice_items.*,products.product_desc',
@@ -277,59 +357,61 @@ class Templates extends CORE_Controller {
                         break;
 
             case 'xreading': //delivery invoice
-                        $m_invoice=$this->Pos_payment_model;
-                        $m_invoice_items=$this->Purchase_items_model;
-                        $m_company=$this->Company_model;
-                                    $m_notes=$this->Notes_model;
-                                    $m_user=$this->Users_model;
-                                    $user_id=$this->session->user_id;
+                $m_invoice=$this->Pos_payment_model;
+                $m_invoice_items=$this->Purchase_items_model;
+                $m_company=$this->Company_model;
+                $m_notes=$this->Notes_model;
+                $m_user=$this->Users_model;
+                $user_id=$this->session->user_id;
 
-                                    $company=$m_company->get_list();
-                                    $data['company_info']=$company[0];
-                                    $notes=$m_notes->get_list();
-                                    $data['notes']=$notes[0];
+                $company=$m_company->get_list();
+                $data['company_info']=$company[0];
+                $notes=$m_notes->get_list();
+                $data['notes']=$notes[0];
 
-                                    $user=$m_user->get_user_list(
-                                                    $filter_value
-                                    );
-                                    $data['user_info']=$user[0];
+                $user=$m_user->get_user_list(
+                    $filter_value
+                );
+                $data['user_info']=$user[0];
 
-                                    $data['id']=$filter_value;
+                $data['id']=$filter_value;
 
-                            echo $this->load->view('template/xreading_content',$data,TRUE);
+                echo $this->load->view('template/xreading_content',$data,TRUE);
 
             break;
 
             case 'endbatch': //delivery invoice
-                        $m_invoice=$this->Pos_payment_model;
-                        $m_invoice_items=$this->Purchase_items_model;
-                        $m_company=$this->Company_model;
-                                    $m_notes=$this->Notes_model;
-                                    $m_user=$this->Users_model;
+                $m_invoice=$this->Pos_payment_model;
+                $m_invoice_items=$this->Purchase_items_model;
+                $m_company=$this->Company_model;
+                $m_notes=$this->Notes_model;
+                $m_user=$this->Users_model;
 
-                                    $user_id=$this->session->user_id;
+                $user_id=$this->session->user_id;
 
-                                    $company=$m_company->get_list();
-                                    $data['company_info']=$company[0];
-                                    $notes=$m_notes->get_list();
-                                    $data['notes']=$notes[0];
+                $company=$m_company->get_list();
+                $data['company_info']=$company[0];
+                $notes=$m_notes->get_list();
+                $data['notes']=$notes[0];
 
-                                    $user=$m_user->get_user_list(
-                                                    $user_id
-                                    );
+                $user=$m_user->get_user_list(
+                    $user_id
+                );
 
-                                    $data['user_info']=$user[0];
+                $data['user_info']=$user[0];
 
-                        if($filter_value2=='print'){
-                          echo $this->load->view('template/end_batch',$data,TRUE);
-                        }
-                        else{
-                          echo $this->load->view('template/end_batch',$data,TRUE);
-                          // echo $this->load->view('template/pos_menu',$data,TRUE);
-                        }
+                $data['_def_js_files'] = $this->load->view('template/assets/js_files', '', TRUE);
+
+                if($filter_value2=='print'){
+                  echo $this->load->view('template/end_batch',$data,TRUE);
+                }
+                else{
+                  echo $this->load->view('template/end_batch',$data,TRUE);
+                  // echo $this->load->view('template/pos_menu',$data,TRUE);
+                }
 
 
-                        break;
+            break;
 
             case 'zreading': //delivery invoice
                 $m_invoice=$this->Pos_payment_model;

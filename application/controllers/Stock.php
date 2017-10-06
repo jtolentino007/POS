@@ -41,7 +41,7 @@ class Stock extends CORE_Controller
 
         $data['products']=$this->Products_model->get_list();
 
-        $data['title'] = 'Delivery Invoice';
+        $data['title'] = 'Stock Management';
         $this->load->view('stock_view', $data);
 
 

@@ -12,8 +12,12 @@
 </style>
  <script type="text/javascript">
       window.onload = function() {
-       window.print();
-		window.onfocus=function(){ window.close();}
+      window.print();
+      setTimeout(function(){
+        var url = window.location.origin;
+        url = url + "/POS/Login/transaction/logout";  // this number is dynamic actually
+        window.location.href = url;
+      },100);
    }
  </script>
 </head>
@@ -43,15 +47,6 @@ $user_id=$this->session->user_id;
 <center><?php echo "<h3 style='font-size:11px;text-align:center;font-family:tahoma;margin:0px;margin-bottom:5px;'>".$company_info->landline."</h3>"; ?></center>
     <div><table width="95%" cellpadding="5" style="font-family: tahoma;font-size: 8px;">
             <tr>
-               <!-- <td width="45%" valign="top">
-                    <span>Company Name :</span>
-                    <companyname>
-                        <strong><?php // echo $company_info->company_name; ?></strong><br>
-                        <?php// echo "Address :".$company_info->company_address; ?><br>
-                        <?php //echo "Email Address :".$company_info->email_address; ?><br>
-                        <abbr title="Phone">Phone :</abbr> <?php// echo $company_info->landline; ?>
-                    </companyname>
-                </td>  -->
 				<td width="45%" valign="top">
                     <companyname>
                         <h3 style="margin-bottom: 3px !important;margin-top: 0px !important;"><strong><?php  echo "Date :<u>".$today."</u>";?></strong></h3>
@@ -59,20 +54,10 @@ $user_id=$this->session->user_id;
                         <h3 style="margin-bottom: 3px !important;margin-top: 0px !important;"><strong><?php echo "Cashier Name :<br>".$user_info->full_name; ?> </strong></h3>
                     </companyname>
                 </td>
-
-                <!-- <td width="50%" align="right">
-						<img height="50px" width="50px" src="<?php echo $company_info->logo_path; ?>" ></img>
-                </td> -->
             </tr>
         </table></div>
-<table width='95%' style='border-collapse: collapse;border-spacing: 0;font-family: tahoma;font-size: 8'>
-			<thead>
-			<!--<tr>
-				<th width='30%' style='text-align: left;'><?php echo "Date: <u>".$fromdate."</u>"; ?></th>
-            </tr>
-			<tr>
-				<th width='30%' style='text-align: left;'><?php echo "Cashier Name: <u>".$this->session->user_fullname."</u>"; ?></th>
-			</tr> -->
+<table width='95%' style='border-collapse: collapse;border-spacing: 0;font-family: tahoma;font-size: 8;'>
+		<thead>
             <tr>
 				<th width='25%' style='border-bottom: 2px solid gray;text-align: left;'>Receipt #</th>
                 <th width='12%' style='border-bottom: 2px solid gray;text-align: left;'>Customer</th>
@@ -81,17 +66,18 @@ $user_id=$this->session->user_id;
 				<th width='6%' style='border-bottom: 2px solid gray;text-align: left;'>Qty</th>
 				<th width='12%' style='border-bottom: 2px solid gray;text-align: right;'>Total</th>
             </tr>
-            </thead>
- <tbody>
-<?php
+        </thead>
+ 		<tbody>
+		<?php
 
-			$query = $this->db->query('SELECT receipt_no,pos_invoice.*,customers.customer_name,pos_payment.pos_payment_id FROM pos_payment
-							LEFT JOIN pos_invoice
-							ON pos_payment.pos_invoice_id=pos_invoice.pos_invoice_id
+			$query = $this->db->query('SELECT receipt_no,pos_invoice.*,customers.customer_name,pos_payment.pos_payment_id FROM 	
+						pos_payment
+						LEFT JOIN pos_invoice
+						ON pos_payment.pos_invoice_id=pos_invoice.pos_invoice_id
 
-							LEFT JOIN customers
-							ON pos_invoice.customer_id=customers.customer_id WHERE user_id='.$user_id.' AND end_batch=0');
-			$gtotal = $query->row();
+						LEFT JOIN customers
+						ON pos_invoice.customer_id=customers.customer_id WHERE user_id='.$user_id.' AND end_batch=1 AND batch_id='.$this->session->batch_id);
+							$gtotal = $query->row();
 //$grandtotal = $gtotal->grand_total;
 
 						$grandtotal=0; //start value of grandtotal
@@ -99,15 +85,16 @@ $user_id=$this->session->user_id;
 						$card_amount=0;
 						$tendered=0;
 						$change=0;
-foreach ($query->result() as $row)
-{
-       $receiptno=  $row->receipt_no;
-	   $invoiceid=  $row->pos_invoice_id;
-	   $customer=  $row->customer_name;
-	   $pos_payment_id=  $row->pos_payment_id;
+
+						foreach ($query->result() as $row)
+						{
+						   $receiptno=  $row->receipt_no;
+						   $invoiceid=  $row->pos_invoice_id;
+						   $customer=  $row->customer_name;
+						   $pos_payment_id=  $row->pos_payment_id;
 
 
-		?>
+						?>
 						<tr>
 						<td width='25%' style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;text-align: left;'><?php echo $receiptno; ?></td>
 						<td width='12%' style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'><?php echo $customer; ?></td>
@@ -118,7 +105,7 @@ foreach ($query->result() as $row)
 						</tr>
 
 
-		<?php
+				<?php
 					$query1 = $this->db->query('SELECT products.product_desc,pos_invoice_items.* FROM pos_invoice_items LEFT JOIN products
 							ON pos_invoice_items.product_id=products.product_id
 							WHERE pos_invoice_id='.$invoiceid);
@@ -136,9 +123,9 @@ foreach ($query->result() as $row)
 						<td width='12%' style='text-align: right;'><?php echo $prod->total; ?></td></tr>
 
 				<?php
-					$grandtotal+=$prod->total; //computing for grandtotal
-				}
-	?>
+						$grandtotal+=$prod->total; //computing for grandtotal
+					}
+				?>
 						<tr>
 						<td width='12%' style='text-align: left;'></td>
 						<td width='12%' style='text-align: left;'></td>
@@ -151,7 +138,7 @@ foreach ($query->result() as $row)
 						<td width='6%' style='text-align: left;'></td>
 						<td width='6%' style='text-align: left;'></td>
 						<td width='12%' style='text-align: left;'></td>
-						</tr><br><br>
+						</tr>
 <?php
 
 				$getcash = $this->db->query('SELECT pos_payment_details.card_amount FROM pos_payment_details WHERE pos_payment_id='.$pos_payment_id);
@@ -210,7 +197,7 @@ foreach ($query->result() as $row)
             </tr>
             </tfoot>
 			</table>
-			<?php
+			<!-- <?php
 				$invoice = $this->db->query('SELECT pos_invoice.pos_invoice_id FROM pos_invoice WHERE user_id='.$user_id);
 					foreach ($invoice->result() as $row)
 					{
@@ -218,9 +205,9 @@ foreach ($query->result() as $row)
 					$updateArray[] = array(
 						'pos_invoice_id'=>$pos_invoice_id,                      // <-----End BatcH!
 						'end_batch' => "1",
-							);
+						);
 					}
 					$this->db->update_batch('pos_invoice',$updateArray, 'pos_invoice_id');
-			?>
+			?> -->
 </body>
 </html>

@@ -119,6 +119,7 @@
 					<div class="panel-footer">
 						<div class="col-xs-12">
 							<button id="btn_login" class="btn btn-primary ladda-button btn-block" data-style="expand-left" data-spinner-color="white" data-size="l"><span class=""></span> Login</button>
+              <button id="btn_close_window" class="btn btn-danger ladda-button btn-block hidden" data-style="expand-left" data-spinner-color="white" data-size="l"><span class=""></span> Close</button>
 						</div>
 					</div>
 				</div>
@@ -127,7 +128,6 @@
 </div>
 
 <?php echo $_def_js_files; ?>
-
 <script src="assets/plugins/spinner/dist/spin.min.js"></script>
 <script src="assets/plugins/spinner/dist/ladda.min.js"></script>
 
@@ -135,7 +135,6 @@
 
     <script>
         $(document).ready(function(){
-
 
             var bindEventHandlers=(function(){
 
@@ -149,9 +148,13 @@
 
                         showNotification(response);
 
-                        if(response.stat=="success"){
+                        if(response.stat=="success" && response.user_group_id!=2){
                             setTimeout(function(){
                                 window.location.href = "dashboard";
+                            },600);
+                        } else {
+                            setTimeout(function(){
+                                window.location.href = "pos_v2";
                             },600);
                         }
 
@@ -162,6 +165,9 @@
 
                 });
 
+                $('#btn_close_window').on('click', function(){
+                  window.close();
+                });
 
                 $('input').keypress(function(evt){
                     if(evt.keyCode==13){ $('#btn_login').click(); }

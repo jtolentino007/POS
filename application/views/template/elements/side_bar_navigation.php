@@ -268,7 +268,7 @@
 		<form action="Templates/layout/zreading/0/pdf" method="post" target="_blank">
 			<input type="text" style="display:none;" id="fromdatepdf" name="fromdatepdf" class="date-picker form-control" value="<?php echo date("m/d/Y"); ?>" placeholder="Due Date" data-error-msg="Due Date is required!" required>
 			<input type="text" style="display:none;" id="tilldatepdf" name="tilldatepdf" class="date-picker form-control" value="<?php echo date("m/d/Y"); ?>" placeholder="Due Date" data-error-msg="Due Date is required!" required>
-		  <button type="submit" style="margin-top:50px;background-color:#2ecc71 !important;color:white;padding:20px !important;width:100%;" href="Dashboard" class="btn btn-default">Dowload Report as PDF</button>
+		  <button type="submit" style="margin-top:50px;background-color:#2ecc71 !important;color:white;padding:20px !important;width:100%;" href="Dashboard" class="btn btn-default hidden">Dowload Report as PDF</button>
 		  </form>
 		</div>
         <div class="modal-footer">

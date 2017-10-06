@@ -14,6 +14,7 @@ class Login extends CORE_Controller {
         $this->load->model('User_group_right_model');
         $this->load->model('Rights_link_model');
         $this->load->model('Table_types_model');
+        $this->load->model('Batches_model');
     }
 
 
@@ -24,8 +25,15 @@ class Login extends CORE_Controller {
         $data['_def_css_files']=$this->load->view('template/assets/css_files','',TRUE);
         $data['_def_js_files']=$this->load->view('template/assets/js_files','',TRUE);
 
+        $this->db->truncate('pos_invoice_items_ajax');
+        $this->db->truncate('pos_invoice_ajax');
+
         if($this->session->userdata('logged_in') == 1) {
-            redirect(base_url('Dashboard'));
+            if ($this->session->user_group_id == 2)
+                redirect(base_url('Pos_v2'));
+            else 
+                redirect(base_url('Dashboard'));
+
         } else {
             $this->load->view('login_view',$data); 
         }
@@ -119,6 +127,28 @@ class Login extends CORE_Controller {
 
                         $token_id = $tktToken;
 
+                        $m_batches = $this->Batches_model;
+
+                        $m_batches->begin();
+
+                        $m_batches->time_in = date("h:i:sa");
+                        $m_batches->user_id = $this->session->user_id;
+                        $m_batches->batch_date = date('Y-m-d');
+                        $m_batches->save();
+
+                        $batch_id = $m_batches->last_insert_id();
+
+                        $m_batches->batch_code = 'B-'.date('Ymd').'-'.$batch_id;
+
+                        $m_batches->modify($batch_id);
+
+                        $m_batches->commit();
+
+                        $this->session->set_userdata(
+                            array('batch_id' => $batch_id)
+                        );
+
+                        $response['user_group_id']=$this->session->user_group_id;
                         $response['stat']='success';
                         $response['msg']='User successfully authenticated.';
 
@@ -134,25 +164,27 @@ class Login extends CORE_Controller {
 
                     break;
 					
+                
 					
                 case 'validatevoid' :
                     $uname=$this->input->post('uname');
                     $pword=$this->input->post('pword');
 
                     $users=$this->Users_model;
-                    $result=$users->authenticate_user($uname,$pword);
+                    $result=$users->authenticate_manager($uname,$pword);
 
                     if($result->num_rows()>0){//valid username and pword
                         //set session data here and response data
 
 
+                        $response['title']='Success!';
                         $response['stat']='success';
                         $response['msg']='Successfully authenticated.';
 
                         echo json_encode($response);
 
                     }else{ //not valid
-
+                        $response['title']='Authentication Failed';
                         $response['stat']='error';
                         $response['msg']='Invalid username or password.';
                         echo json_encode($response);

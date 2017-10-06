@@ -9,12 +9,12 @@
     thead { display:table-header-group }
     tfoot { display:table-footer-group }
 </style>
-<!-- <script type="text/javascript">
+<script type="text/javascript">
       window.onload = function() {
        window.print();
 		window.onfocus=function(){ window.close();}
    }
- </script> -->
+ </script>
 
 <style>
 	.zreading {
@@ -58,7 +58,7 @@ $time = date("H:i:s", strtotime($date));
                         <abbr title="Phone">Phone :</abbr> <?php// echo $company_info->landline; ?>
                     </companyname>
                 </td>  -->
-				<td width="50%" valign="top">
+				<td width="100%" valign="top">
                     <companyname>
                         <?php echo ""; ?><br>
                         <strong><?php  echo "Date :".$today;?></strong><br>
@@ -83,10 +83,9 @@ $time = date("H:i:s", strtotime($date));
             <tr>
 				<th style='border-bottom: 1px solid black;text-align: left;'>Receipt No</th>
         <th style='border-bottom: 1px solid black;text-align: left;'>Customer</th>
-				<th style='border-bottom: 1px solid black;text-align: left;'>Item</th>
-        <th style='border-bottom: 1px solid black;text-align: left;'>SRP</th>
-				<th style='border-bottom: 1px solid black;text-align: left;'>Qty</th>
-				<th style='border-bottom: 1px solid black;text-align: right;'>Total</th>
+				<th style='border-bottom: 1px solid black;text-align: left;'></th>
+				<th style='border-bottom: 1px solid black;text-align: left;'></th>
+				<th style='border-bottom: 1px solid black;text-align: right;'></th>
             </tr>
             </thead>
  <tbody>
@@ -127,14 +126,20 @@ foreach ($query->result() as $row)
 					$query1 = $this->db->query('SELECT products.product_desc,pos_invoice_items.* FROM pos_invoice_items LEFT JOIN products
 							ON pos_invoice_items.product_id=products.product_id
 							WHERE pos_invoice_id='.$invoiceid);
+		?>				
 
+					<tr>
+						<td style='border-bottom: 1px solid gray;text-align: left;'>Item</td>
+						<td style='border-bottom: 1px solid gray;text-align: left;'>SRP</td>
+						<td style='border-bottom: 1px solid gray;text-align: left;'>Qty</td>
+						<td style='border-bottom: 1px solid gray;text-align: left;'>Total</td>
+						</tr>
+		<?php				
 					foreach ($query1->result() as $prod)
 					{
 
 						?>
 						<tr>
-						<td style='text-align: left;'></td>
-						<td style='text-align: left;'></td>
 						<td style='text-align: left;'><?php echo $prod->product_desc; ?></td>
 						<td style='text-align: left;'><?php echo $prod->pos_price; ?></td>
 						<td style='text-align: left;'><?php echo $prod->pos_qty; ?></td>
@@ -146,10 +151,7 @@ foreach ($query->result() as $row)
 	?>
 						<tr>
 						<td style='text-align: left;'></td>
-						<td style='text-align: left;'></td>
-						<td style='text-align: left;'></td>
-						<td style='text-align: left;'></td>
-						<td style='border-bottom:1px solid black;text-align: left;'><b>Sub Total :</b></td>
+						<td style='text-align: left;'></td>						<td style='border-bottom:1px solid black;text-align: left;'><b>Sub Total :</b></td>
 						<td style='border-bottom:1px solid black;text-align: right;'><?php echo "<b>".number_format($row->total_after_tax)."</b>"; ?></tr>
 						<tr>
 						<td style='text-align: left;'></td>
@@ -170,38 +172,8 @@ foreach ($query->result() as $row)
 	}
 			?></tbody>
 			<tfoot>
-			<tr>
-				<td ></td><td></td><td></td><td></td>
-                <td style="border-bottom: 1px solid black;"><strong>Grand Total : </strong></td>
-                <td style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format($grandtotal,2); ?></strong></td>
-            </tr>
-			<tr>
-				<td ></td><td></td><td></td><td></td>
-                <td><strong>BreakDown : </strong></td>
-                <td><strong></strong></td>
-            </tr>
-			<tr>
-				<td ></td><td></td><td></td><td></td>
-                <td style="border-bottom: 1px solid black;"><strong>Cash Sale : </strong></td>
-                <td style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format($grandtotal-$card_amount,2); ?></strong></td>
-            </tr>
-			<tr>
-				<td ></td><td></td><td></td><td></td>
-                <td style="border-bottom: 1px solid black;"><strong>Card Sale : </strong></td>
-                <td style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format($card_amount,2); ?></strong></td>
-            </tr>
-			<tr>
-				<td ></td><td></td><td></td><td></td>
-                <td style="border-bottom: 1px solid black;"><strong>Gift Cert : </strong></td>
-                <td style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format(0,2); ?></strong></td>
-            </tr>
-			<tr>
-				<td ></td><td></td><td></td><td></td>
-                <td style="border-bottom: 1px solid black;"><strong>Total : </strong></td>
-                <td style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format($grandtotal-$card_amount+$card_amount,2); ?></strong></td>
-            </tr>
-			<tr>
-				<td ></td><td></td><td></td>
+		
+			<tr style="display: none;">
 				<td style="border-bottom: 1px solid black;"><strong>Items : </strong></td>
                 <td style="border-bottom: 1px solid black;"><strong>Qty : </strong></td>
                 <td style="border-bottom: 1px solid black;text-align:right;"><strong>Amount</strong></td>
@@ -220,7 +192,6 @@ foreach ($query->result() as $row)
 					$itemtotal+=$itemprice;
 			?>
 			<tr>
-				<td ></td><td></td><td></td>
 				<td style="border-bottom: 1px solid black;"><strong><?php echo $product_name; ?> </strong></td>
                 <td style="border-bottom: 1px solid black;"><strong><?php echo $row->prodsum; ?> </strong></td>
                 <td style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format($itemprice,2); ?></strong></td>
@@ -230,7 +201,6 @@ foreach ($query->result() as $row)
 			}
 			?>
 			<tr>
-				<td ></td><td></td><td></td>
 				<td style="border-bottom: 1px solid black;"><strong>Total :</strong></td>
                 <td style="border-bottom: 1px solid black;"><strong></strong></td>
                 <td style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format($itemtotal,2); ?></strong></td>

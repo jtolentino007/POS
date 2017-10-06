@@ -285,6 +285,20 @@ class Users_model extends CORE_Model{
 
     }
 
+    function authenticate_manager($uname,$pword){
+        $this->db->select('ua.user_id,ua.user_name,ua.user_group_id,ua.photo_path,ua.is_online,ua.user_email,CONCAT_WS(" ",ua.user_fname,ua.user_mname,ua.user_lname) as user_fullname');
+        $this->db->from('user_accounts as ua');
+        $this->db->join('user_groups as ug', 'ua.user_group_id = ug.user_group_id','left');
+        $this->db->where('ua.user_name', $uname);
+        $this->db->where('ua.user_pword', sha1($pword));
+        $this->db->where('ua.is_active', 1);
+        $this->db->where('ua.is_deleted', 0);
+        $this->db->where('ua.user_group_id', 1);
+        // $this->db->where('ua.is_online', 0);
+
+        return $this->db->get();
+
+    }
 
     function get_user_invoice_counter(){
         $sql="SELECT ua.user_id,

@@ -55,6 +55,7 @@ class Products extends CORE_Controller
                 $m_products->markup_percent = $this->input->post('markup_percent', TRUE);
                 $m_products->minstock_order = $this->input->post('minstock_order', TRUE);
                 $m_products->maxstock_order = $this->input->post('maxstock_order', TRUE);
+                $m_products->img_path = $this->input->post('img_path', TRUE);
 				$m_products->sale_cost =$this->get_numeric_value($this->input->post('sale_cost', TRUE));
 				$m_products->quantity =$this->get_numeric_value($this->input->post('quantity', TRUE));
                 $m_products->purchase_cost =$this->get_numeric_value($this->input->post('purchase_cost', TRUE));
@@ -104,6 +105,7 @@ class Products extends CORE_Controller
                 $m_products->markup_percent = $this->input->post('markup_percent', TRUE);
                 $m_products->minstock_order = $this->input->post('minstock_order', TRUE);
                 $m_products->maxstock_order = $this->input->post('maxstock_order', TRUE);
+                $m_products->img_path = $this->input->post('img_path', TRUE);
 				$m_products->sale_cost =$this->get_numeric_value($this->input->post('sale_cost', TRUE));
 				$m_products->quantity =$this->get_numeric_value($this->input->post('quantity', TRUE));
                 $m_products->purchase_cost =$this->get_numeric_value($this->input->post('purchase_cost', TRUE));
@@ -118,6 +120,39 @@ class Products extends CORE_Controller
                 $response['row_updated'] = $m_products->getProductInventoryInfo($product_id);
                 echo json_encode($response);
 
+                break;
+
+            case 'upload':
+                $allowed = array('png', 'jpg', 'jpeg','bmp');
+
+                $data=array();
+                $files=array();
+                $directory='assets/img/products/';
+
+
+                foreach($_FILES as $file){
+
+                    $server_file_name=uniqid('');
+                    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                    $file_path=$directory.$server_file_name.'.'.$extension;
+                    $orig_file_name=$file['name'];
+
+                    if(!in_array(strtolower($extension), $allowed)){
+                        $response['title']='Invalid!';
+                        $response['stat']='error';
+                        $response['msg']='Image is invalid. Please select a valid photo!';
+                        die(json_encode($response));
+                    }
+
+                    if(move_uploaded_file($file['tmp_name'],$file_path)){
+                        $response['title']='Success!';
+                        $response['stat']='success';
+                        $response['msg']='Image successfully uploaded.';
+                        $response['path']=$file_path;
+                        echo json_encode($response);
+                    }
+
+                }
                 break;
         }
     }

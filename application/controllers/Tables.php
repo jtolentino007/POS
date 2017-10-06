@@ -33,6 +33,14 @@
 		function transaction($txn=null)
 		{
 			switch ($txn) {
+				case 'unused-tables':
+					$m_tables = $this->Tables_model;
+
+					$response['data'] = $m_tables->get_unused_tables();
+
+					echo json_encode($response);
+					break;
+
 				case 'list':
 					$m_tables = $this->Tables_model;
 

@@ -112,6 +112,7 @@
                                                         <th>PLU</th>
                                                         <th>Description</th>
                                                         <th>SRP</th>
+                                                        <th>Vendor</th>
                                                         <th>On hand</th>
                                                         <th><center>Action</center></th>
                                                     </tr>
@@ -327,7 +328,7 @@
                         <div class="modal-body" style="overflow:hidden;">
                             <form id="frm_product">
                                 <div class="row">
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <div class="form-group" style="margin-bottom:0px;">
                                             <label class="">PLU * :</label>
                                             <div class="input-group">
@@ -379,7 +380,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <div class="form-group" style="margin-bottom:0px;">
                                             <label class="">Tax Rate % :</label>
                                             <div class="input-group">
@@ -430,7 +431,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <div class="form-group" style="margin-bottom:0px;">
                                             <label class="">Category * :</label>
                                             <select name="category_id" id="product_category" data-error-msg="Category is required." required>
@@ -482,6 +483,16 @@
                                                 ?>
                                             </select>
                                         </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <img src="assets/img/default_product.png" name="img_path" style="border: 1px solid #ddd; max-height: 200px; max-width: 190px;">
+                                        <button type="button" id="btn_browse" class="btn btn-primary btn-block">
+                                            Browse Photo
+                                        </button>
+                                        <button type="button" id="btn_remove_photo" class="btn btn-danger btn-block" style="margin-top: 0;">
+                                            Remove Photo
+                                        </button>
+                                         <input type="file" name="file_upload[]" class="hidden">
                                     </div>
                                 </div>
                             </form>
@@ -789,9 +800,10 @@ $(document).ready(function(){
                 { targets:[1],data: "product_code" },
                 { targets:[2],data: "product_desc" },
                 { targets:[3],data: "sale_cost" },
-                { targets:[4],data: "stock_onhand" },
+                { targets:[4],data: "vendor_name" },
+                { targets:[5],data: "stock_onhand" },
                 {
-                    targets:[5],
+                    targets:[6],
                     render: function (data, type, full, meta){
                         var btn_edit='<button class="btn btn-primary btn-sm" name="edit_info"  style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
                         var btn_trash='<button class="btn btn-danger btn-sm" name="remove_info" style="margin-right:0px;" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
@@ -1147,10 +1159,13 @@ $(document).ready(function(){
             $('#product_brand').select2('val',data.brand_id);
             $('#product_unit').select2('val',data.unit_id);
             $('#product_vendor').select2('val',data.vendor_id);
+            $('button').prop('disabled',false);
 
            // alert($('input[name="tax_exempt"]').length);
             //$('input[name="tax_exempt"]').val(0);
             //$('input[name="inventory"]').val(data.is_inventory);
+
+            $('img[name="img_path"]').attr('src', data.img_path);
 
             $('input,textarea').each(function(){
                 var _elem=$(this);
@@ -1178,18 +1193,23 @@ $(document).ready(function(){
             });
         });
 
+        $('#btn_browse').on('click', function(e){
+            e.preventDefault();
+            $('input[name="file_upload[]"]').click();
+        });
+
+        $('#btn_remove_photo').click(function(event){
+            event.preventDefault();
+            $('img[name="img_path"]').attr('src','assets/img/product_default.png');
+        });
+
         $('input[name="file_upload[]"]').change(function(event){
             var _files=event.target.files;
-
-            $('#div_img_product').hide();
-            $('#div_img_loader').show();
 
             var data=new FormData();
             $.each(_files,function(key,value){
                 data.append(key,value);
             });
-
-            console.log(_files);
 
             $.ajax({
                 url : 'Products/transaction/upload',
@@ -1200,8 +1220,7 @@ $(document).ready(function(){
                 processData : false,
                 contentType : false,
                 success : function(response){
-                    $('#div_img_loader').hide();
-                    $('#div_img_product').show();
+                    $('img[name="img_path"]').attr('src',response.path);
                 }
             });
         });
@@ -1270,6 +1289,7 @@ $(document).ready(function(){
 
     var createProduct=function(){
         var _data=$('#frm_product').serializeArray();
+        _data.push({name : "img_path" ,value : $('img[name="img_path"]').attr('src')});
 
         return $.ajax({
             "dataType":"json",
@@ -1282,12 +1302,10 @@ $(document).ready(function(){
 
     var updateProduct=function(){
         var _data=$('#frm_product').serializeArray();
+        _data.push({name : "img_path" ,value : $('img[name="img_path"]').attr('src')});
 
-        console.log(_data);
         _data.push({name : "product_id" ,value : _selectedID});
-        //_data.push({name:"is_inventory",value: $('input[name="is_inventory"]').val()});
 
-        //alert($('input[name="is_inventory"]').val());
         return $.ajax({
             "dataType":"json",
             "type":"POST",

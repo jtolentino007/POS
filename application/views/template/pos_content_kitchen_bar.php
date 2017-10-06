@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Receipt</title>
+<title><?php echo $vendor_name; ?> COPY</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -10,14 +10,41 @@
 <meta name="description" content="Avenxo Admin Theme">
 <meta name="author" content="">
 
+<?php echo $_def_js_files; ?>
+
 <script type="text/javascript">
-      window.onload = function() {
-       window.print();
-        setTimeout(function(){
-            var url = window.location.origin;
-            url = url + "/POS/Pos_v2";  // this number is dynamic actually
-            window.location.href = url;
-        },100);
+  window.onload = function() {
+        window.print();
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+        
+        var url = window.location.origin;
+
+        var _vendor = getParameterByName('vendor');
+
+        if (_vendor == 2) {
+            var a = url.indexOf("?");
+            var b =  url.substring(a);
+            var c = url.replace(b,"");
+            var newUrl = c;
+            setTimeout(function(){
+                url = newUrl + '?vendor=3';  // this number is dynamic actually
+                window.location.href = url;
+            },100);
+        } else {
+            setTimeout(function(){
+                url = url + "/POS/Pos_v2";  // this number is dynamic actually
+                window.location.href = url;
+            },100);
+        }
    }
 </script>
 <style>
@@ -135,10 +162,16 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12"> 
-                            <div id="header">
-                                <span style="font-weight: bolder; font-size: 13px;"><?php echo $company_info->company_name; ?></span><br>
+                            <input id="txt_vendor" type="hidden" value="<?php echo $vendor; ?>">
+                            <div id="header" style="display: none;">
+                                
                                 <?php echo $company_info->company_address; ?><br>
                                 <?php echo $company_info->landline; ?><br>
+                            </div>
+                            <div id="header">
+                                <span style="font-size: 14px; font-weight: bolder;"><?php echo $company_info->company_name; ?></span><br>
+                            	<h4><?php echo $vendor_name; ?> COPY</h4>
+                                <h5><?php echo $tables; ?></h5>
                             </div>
                             <div id="middle1" style="display: none;">
                                 VAT&nbsp;Reg&nbsp;TIN:&nbsp;<?php echo $company_info->tin_no; ?><br>
@@ -152,15 +185,15 @@
                             SN#&nbsp;<br>
                             FP#&nbsp;<br>
                         </div>  
-                    </div><br>
+                    </div>
 
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="display: none;">
                             <div id="left2">
                                 Date&nbsp;<br>
                                 Cashier&nbsp;<br>
                                 Terminal&nbsp;<br>
-                                Invoice&nbsp;<br>
+                                Receipt&nbsp;<br>
                                 Table(s)&nbsp;<br>
                             </div>
                             <div id="right2">
@@ -173,10 +206,10 @@
                                 #&nbsp;:&nbsp;<?php echo $delivery_info->cashier; ?><br>
                                 #&nbsp;:&nbsp;<?php echo $company_info->terminal; ?><br>
                                 #&nbsp;:&nbsp;<?php echo $delivery_info->receipt_no; ?><br>
-                                &nbsp;&nbsp;:&nbsp;<?php echo $tables; ?><br>
+                                &nbsp;&nbsp;:&nbsp;<?php echo $vendor_name; ?><br>
                             </div>
                         </div>
-                    </div><br><br><br><br><br><br>
+                    </div>
 
                     <center>
 
@@ -186,8 +219,8 @@
                                 <td width="15%" style="border-bottom: 2px dashed gray;text-align: left;height: 15px;padding: 6px;">Qty</td>
                                 <td width="50%" style="border-bottom: 2px dashed gray;text-align: left;height: 15px;padding: 6px;">Description</td>
                                 <td width="11%" style="border-bottom: 2px dashed gray;text-align: right;height: 15px;padding: 6px;"></td>
-                                <td width="11%" style="border-bottom: 2px dashed gray;text-align: left;height: 15px;padding: 6px;">Price</td>
-                                <td width="11%" style="border-bottom: 2px dashed gray;text-align: right;height: 15px;padding: 6px;">Amount</td>
+                                <td width="11%" style="border-bottom: 2px dashed gray;text-align: left;height: 15px;padding: 6px; display: none;">Price</td>
+                                <td width="11%" style="border-bottom: 2px dashed gray;text-align: right;height: 15px;padding: 6px; display: none;">Amount</td>
                             </tr>
                             </thead>
                             <tbody id="pos_item">
@@ -202,8 +235,8 @@
                                     <td width="15%" style="border-bottom: 1px dashed gray;text-align: left;height: 15px;padding: 6px;"><?php echo number_format($item->pos_qty); ?></td>
                                     <td width="50%" style="border-bottom: 1px dashed gray;text-align: left;height: 15px;padding: 6px;"><?php echo $item->product_desc; ?></td>
                                     <td width="11%" style="border-bottom: 1px dashed gray;text-align: left;height: 15px;padding: 6px;"></td>
-                                    <td width="11%" style="border-bottom: 1px dashed gray;text-align: right;height: 15px;padding: 6px;"><?php echo number_format($item->pos_price,2); ?></td>
-                                    <td width="11%" style="border-bottom: 1px dashed gray;text-align: right;height: 15px;padding: 6px;"><?php echo number_format($item->total,2); ?></td>
+                                    <td width="11%" style="border-bottom: 1px dashed gray;text-align: right;height: 15px;padding: 6px; display: none;"><?php echo number_format($item->pos_price,2); ?></td>
+                                    <td width="11%" style="border-bottom: 1px dashed gray;text-align: right;height: 15px;padding: 6px; display: none;"><?php echo number_format($item->total,2); ?></td>
                                 </tr>
                             <?php } ?>
 
@@ -219,6 +252,7 @@
                                 <td colspan="2" style="text-align: left;height: 15px;">Discount :</td>
                                 <td style="text-align: right;height: 15px;padding-right: 4px;"><?php echo number_format($delivery_info->totaldiscount,2); ?></td>
                             </tr>
+
                             <!-- <tr>
                                 <td colspan="2" style="text-align: left;height: 15px;padding-top: 10px;">Amount&nbsp;Due</td>
                                 <td colspan="2" style="text-align: left;height: 15px;padding-top: 10px;">. . . . . . . . . </td>
@@ -268,9 +302,9 @@
                             </tfoot>
                         </table>
                     </center>
-
+                    <tr><p>.</p></tr>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="display: none;">
                             <div id="left3">
                                 Amount&nbsp;Due&nbsp;<br>
                                 Tendered&nbsp;<br>
@@ -289,7 +323,7 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" style="display: none;">
                         <div class="col-md-12">
                             <div id="left4">
                                 Total&nbsp;Item(s)&nbsp;<br>
@@ -310,7 +344,6 @@
                             <p>&nbsp;</p>
                             <p>&nbsp;</p>
                             <p>&nbsp;</p>
-                            <p>.</p>
                         </div>
                     </div>
 

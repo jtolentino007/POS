@@ -33,9 +33,8 @@ class Customers extends CORE_Controller {
 				   array('customers.is_deleted'=>FALSE),
 				       'customers.*,customer_photos.photo_path',
 				    array(
-                            array('customer_photos','customer_photos.customer_id=customers.customer_id','left')
-
-                        )
+                        array('customer_photos','customer_photos.customer_id=customers.customer_id','left')
+                    )
 				);
                 echo json_encode($response);
                 break;

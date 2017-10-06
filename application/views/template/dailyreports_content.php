@@ -23,15 +23,14 @@
             <td></td>
           </tr>
           <?php
-            foreach($invoice as $invoices){
-              if($receipt->pos_invoice_id==$invoices->pos_invoice_id){
-          ?>
+        foreach($invoice as $invoices){
+              if($receipt->pos_invoice_id==$invoices->pos_invoice_id){  ?>
           <tr>
             <td></td>
             <td><?php echo $invoices->product_desc; ?></td>
-            <td><?php echo $invoices->pos_price; ?></td>
+            <td><?php echo number_format($invoices->pos_price,2); ?></td>
             <td><?php echo $invoices->pos_qty; ?></td>
-            <td><?php echo $invoices->total_after_tax; ?></td>
+            <td><?php echo number_format($invoices->total,2); ?></td>
           </tr>
       <?php
             }

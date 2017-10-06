@@ -60,7 +60,12 @@
                 <div class="page-content">
                     <div class="row">
                         <div class="container-fluid">
-                            <h1 style="margin-left: 20px; font-weight: 400;">POINT OF SALES <small>Touchscreen</small></h1>
+                            <div class="col-xs-12 col-sm-6">
+                                <h1 style="margin-left: 20px; font-weight: 400;">POINT OF SALES <small>ADMINISTRATION</small></h1>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 text-right" style="padding-top: 20px;">
+                                <a href="Login/transaction/logout" class="btn btn-primary  " style="border-radius: 50%;  padding: 10px 15px;"><i class="fa fa-sign-out"></i></a>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
@@ -267,6 +272,10 @@
 $(document).ready(function(){
     $('#btn_z_reading').click(function(){
         $('#modal_zreading_reportsjs').modal('show');
+    });
+
+    $('#btn_exit').on('click', function(){
+        window.close();
     });
 
     $('#btn_sales_report').click(function(){
