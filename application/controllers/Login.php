@@ -31,14 +31,20 @@ class Login extends CORE_Controller {
         if($this->session->userdata('logged_in') == 1) {
             if ($this->session->user_group_id == 2)
                 redirect(base_url('Pos_v2'));
-            else 
+            else
                 redirect(base_url('Dashboard'));
 
         } else {
-            $this->load->view('login_view',$data); 
+            $this->load->view('login_view',$data);
         }
     }
 
+    function closekiosk()
+    {
+      $data['_def_css_files']=$this->load->view('template/assets/css_files','',TRUE);
+      $data['_def_js_files']=$this->load->view('template/assets/js_files','',TRUE);
+      $this->load->view('window_close',$data);
+    }
 
     function create_required_default_data(){
 
@@ -163,9 +169,9 @@ class Login extends CORE_Controller {
                     }
 
                     break;
-					
-                
-					
+
+
+
                 case 'validatevoid' :
                     $uname=$this->input->post('uname');
                     $pword=$this->input->post('pword');
@@ -175,20 +181,17 @@ class Login extends CORE_Controller {
 
                     if($result->num_rows()>0){//valid username and pword
                         //set session data here and response data
-
-
+                        $response['user_id']=$result->row()->user_id;
                         $response['title']='Success!';
                         $response['stat']='success';
                         $response['msg']='Successfully authenticated.';
 
                         echo json_encode($response);
-
                     }else{ //not valid
                         $response['title']='Authentication Failed';
                         $response['stat']='error';
                         $response['msg']='Invalid username or password.';
                         echo json_encode($response);
-
                     }
 
                     break;

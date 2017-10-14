@@ -8,7 +8,7 @@
         .btn-wheight {
             min-height: 120px;
             height: auto;
-            border-radius: 10px!important;
+            border-radius: 0!important;
         }
 
         .btn {
@@ -49,7 +49,7 @@
         .btn-wood {
             background-image: url('assets/img/wood-bg.jpg');
             background-repeat: no-repeat;
-            background-position: center; 
+            background-position: center;
             border:none;
         }
 
@@ -83,14 +83,20 @@
 
         ::-webkit-scrollbar-thumb {
             border-radius: 0;
-            background: #8bc34a; 
+            background: #8bc34a;
         }
 
         .ui-pnotify-title {
             color: white!important;
         }
+
+		input[type=number]::-webkit-inner-spin-button,
+		input[type=number]::-webkit-outer-spin-button {
+		  -webkit-appearance: none;
+		  margin: 0;
+		}
     </style>
-    
+
 
     <link rel="stylesheet" type="text/css" href="assets/css/theme.css">
     <style type="text/css">
@@ -134,14 +140,14 @@
                                         <div style="overflow-y: auto; height: 750px;">
                                             <?php foreach($_product_categories as $_product_category) { ?>
                                                 <div class="col-xs-12 col-sm-4">
-                                                    <button 
-                                                        class="btn btn-primary btn-block btn-wheight btn-categories" 
-                                                        id="<?php echo $_product_category->category_id; ?>" 
+                                                    <button
+                                                        class="btn btn-primary btn-block btn-wheight btn-categories"
+                                                        id="<?php echo $_product_category->category_id; ?>"
                                                         data-name="<?php echo $_product_category->category_name; ?>"
-                                                        style="border-radius: 0; margin-bottom: 25px;"> 
+                                                        style="border-radius: 0; margin-bottom: 25px;">
                                                         <span style="white-space:normal; color: #b4e7fe; font-weight: 600; font-size: 20px;">
                                                             <?php echo $_product_category->category_desc; ?>
-                                                        </span>   
+                                                        </span>
                                                         <h4 style="white-space:normal; color: white; font-weight: 600;">
                                                             <?php echo $_product_category->category_name; ?>
                                                         </h4>
@@ -154,7 +160,7 @@
                                         <h3 id="order_title" style="font-weight: 600;">PLEASE SELECT CUSTOMER...</h3>
                                         <div style="height: 500px; overflow-y: auto; border: 1px solid #ddd;">
                                             <form id="frm_items">
-                                                <table id="tbl_sales" width="100%" class="table table-responsive table-striped">
+                                                <table id="tbl_sales" width="100%" class="table table-responsive">
                                                     <thead style="background-color: #404040; color: white;">
                                                         <th class="hidden">PRODUCT ID</th>
                                                         <th width="10%">QTY</th>
@@ -236,7 +242,6 @@
                             </div>
                             <div class="row">
                                 <div class="container-fluid" style="padding-top: 20px;">
-                                    <div class="col-xs-12 col-sm-1"></div>
                                     <div class="col-xs-12 col-sm-2">
                                         <button id="btn_enter_order" class="btn btn-success btn-block btn-util" style="white-space: normal;">
                                             <h3 style="font-weight: 600; color: white;"><i class="ti ti-receipt"></i><br>SUBMIT ORDER</h3>
@@ -255,6 +260,11 @@
                                     <div class="col-xs-12 col-sm-2">
                                         <button id="btn_void" class="btn btn-danger btn-block btn-util" style="white-space: normal;">
                                             <h3 style="font-weight: 600; color: white;"><i class="ti ti-close"></i><br>VOID</h3>
+                                        </button>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-2">
+                                        <button id="btn_clear" class="btn btn-block btn-util" style="white-space: normal; background: #9c27b0;">
+                                            <h3 style="font-weight: 600; color: white;"><i class="ti ti-eraser"></i><br>CLEAR</h3>
                                         </button>
                                     </div>
                                     <div class="col-xs-12 col-sm-2">
@@ -382,7 +392,7 @@
                                 <div class="row">
                                     <div class="container-fluid">
                                         <table id="tbl_unpaid" class="table table-responsive" width="100%">
-                                            <thead>
+                                            <thead style="border-top: 1px solid #ddd;">
                                                 <th>ORDER #</th>
                                                 <th>CUSTOMER</th>
                                                 <th>TABLE(S)</th>
@@ -390,7 +400,7 @@
                                                 <th><center>ACTION</center></th>
                                             </thead>
                                             <tbody>
-                                                
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -629,32 +639,45 @@
             var _customerID;
             var addedProductCodes = [];
             var tablesList = [];
+            var editAddedProductCodes = [];
             var currentCustomer;
-            var btnTableClickCounter = 0;
             var tableCount = 0;
             var _isEdit = 0;
+            var _isAdditional = 0;
             var _amountDue = 0;
             var _amountTendered = 0;
             var _change = 0;
             var _posInvoiceID;
             var _isBatchEnded = 0;
+            var btnTableClickCounter = 0;
+            var _billOutStatus;
+            var _globalUserID = 0;
+            var _status;
+            var _btnAmountDue = 0;
+            var _btnTotalDiscount = 0;
+            var _btnTotalTax = 0;
+            var _btnTotalBeforeTax = 0;
 
             toggleControls(true);
-
-            $('#btn_home').on('click', function(){
-                InsertProducts();
-            });
 
             $('#btn_enter_order').on('click', function(){
                 if ($('#tbl_sales tbody tr').length > 0) {
                     var _data = $('#frm_items').serializeArray();
 
-                    _data.push({name: "total_discount", value:$('#td_total_discount').text() });
-                    _data.push({name: "before_tax", value: $('#td_total_before_tax').text() });
-                    _data.push({name: "total_tax_amount", value: $('#td_total_tax').text() });
-                    _data.push({name: "total_after_tax", value: $('#td_total_after_tax').text() });
-                    _data.push({name: "customer_id", value: currentCustomer });
+                    if (_isAdditional == 1) {
+                        _data.push({name: "total_discount", value: parseFloat($('#td_total_discount').text()) + parseFloat(_btnTotalDiscount) });
+                        _data.push({name: "before_tax", value: parseFloat($('#td_total_before_tax').text()) + parseFloat(_btnTotalBeforeTax) });
+                        _data.push({name: "total_tax_amount", value: parseFloat($('#td_total_tax').text()) + parseFloat(_btnTotalTax) });
+                        _data.push({name: "total_after_tax", value: parseFloat($('#td_total_after_tax').text()) + parseFloat(_btnAmountDue) });
+                    } else {
+                        _data.push({name: "total_discount", value: $('#td_total_discount').text() });
+                        _data.push({name: "before_tax", value: $('#td_total_before_tax').text() });
+                        _data.push({name: "total_tax_amount", value: $('#td_total_tax').text() });
+                        _data.push({name: "total_after_tax", value: $('#td_total_after_tax').text() });
+                    }
 
+
+                    _data.push({name: "customer_id", value: currentCustomer });
                     _data.push({name: "pos_invoice_id", value: _posInvoiceID });
 
                     $.each(tablesList,function(index, table){
@@ -667,7 +690,31 @@
                             "type":"POST",
                             "url":"Pos_v2/updateInvoice",
                             "data":_data,
-                            "beforeSend": showSpinningProgress($(this))
+                            "beforeSend": showSpinningProgress($('#btn_enter_order'))
+                        }).done(function(response){
+                            showNotification(response);
+                            toggleControls(true);
+                            $('#btn_unpaid').prop('disabled',false);
+                            $('#tbl_sales tbody').html('');
+                            resetSummary();
+                            btnTableClickCounter = 0;
+                            $('#order_title').html('PLEASE SELECT CUSTOMER...');
+                            _isEdit = 0;
+                            _isAdditional = 0;
+                            $('#btn_customers').prop('disabled',false);
+                            $('#btn_tables').prop('disabled',false);
+                            addedProductCodes = [];
+                            window.onbeforeunload = null;
+                            //window.location.replace('Templates/layout/pospr-kitchen-bar/'+response.pos_invoice_id+'/print?vendorid=1&lastid='+response.response_rows[0].is_last);
+                            //pos_invoice_id/print_layout/vendor_id
+                        });
+                    } else if (_isAdditional == 1) {
+                        $.ajax({
+                            "dataType":"json",
+                            "type":"POST",
+                            "url":"Pos_v2/addProductToInvoice",
+                            "data":_data,
+                            "beforeSend": showSpinningProgress($('#btn_enter_order'))
                         }).done(function(response){
                             showNotification(response);
                             toggleControls(true);
@@ -676,11 +723,12 @@
                             btnTableClickCounter = 0;
                             $('#order_title').html('PLEASE SELECT CUSTOMER...');
                             _isEdit = 0;
+                            _isAdditional = 0;
                             $('#btn_customers').prop('disabled',false);
                             $('#btn_tables').prop('disabled',false);
                             addedProductCodes = [];
                             window.onbeforeunload = null;
-                            window.location.replace('Templates/layout/pospr-kitchen-bar/'+response.pos_invoice_id+'/print?vendor=2');
+                            window.location.replace('Templates/layout/pospr-kitchen-bar-add/'+response.pos_invoice_id+'/print?vendorid=1&type=add');
                             //pos_invoice_id/print_layout/vendor_id
                         });
                     } else {
@@ -689,7 +737,7 @@
                             "type":"POST",
                             "url":"Pos_v2/createInvoice",
                             "data":_data,
-                            "beforeSend": showSpinningProgress($(this))
+                            "beforeSend": showSpinningProgress($('#btn_enter_order'))
                         }).done(function(response){
                             showNotification(response);
                             toggleControls(true);
@@ -698,11 +746,12 @@
                             btnTableClickCounter = 0;
                             $('#order_title').html('PLEASE SELECT CUSTOMER...');
                             _isEdit = 0;
+                            _isAdditional = 0;
                             $('#btn_customers').prop('disabled',false);
                             $('#btn_tables').prop('disabled',false);
                             addedProductCodes = [];
                             window.onbeforeunload = null;
-                            window.location.replace('Templates/layout/pospr-kitchen-bar/'+response.pos_invoice_id+'/print?vendor=2');
+                            window.location.replace('Templates/layout/pospr-kitchen-bar/'+response.pos_invoice_id+'/print?vendorid=1');
                             //pos_invoice_id/print_layout/vendor_id
                         });
                     }
@@ -729,40 +778,71 @@
                 }
             });
 
+            $('#btn_clear').on('click', function(){
+                addedProductCodes = [];
+                tablesList = [];
+                editAddedProductCodes = [];
+                _isEdit = 0;
+                _isAdditional = 0;
+                _amountDue = 0;
+                _amountTendered = 0;
+                _change = 0;
+                _posInvoiceID;
+                _isBatchEnded = 0;
+                btnTableClickCounter = 0;
+                _billOutStatus;
+                _globalUserID = 0;
+                _status;
+                _btnAmountDue = 0;
+                _btnTotalDiscount = 0;
+                 _btnTotalTax = 0;
+                _btnTotalBeforeTax = 0;
+                $('#tbl_sales tbody').html('');
+                toggleControls(true);
+                $('#btn_unpaid').prop('disabled',false);
+                $('#btn_customers').prop('disabled',false);
+                recomputeTotal();
+                initializeNumeric();
+            });
+
             $('.btn-categories').on('click',function(){
                 $.ajax({
                     "dataType":"json",
-                    "url":"Pos_v2/getList/product-by-category/"+$(this).attr('id')
+                    "url":"Pos_v2/getList/product-by-category/"+$(this).attr('id'),
+                    beforeSend: function() {
+                        $('.btn-products').prop('disabled',true);
+                    }
                 }).done(function(data){
                     $('#product_container').html('');
+                    $('.btn-products').prop('disabled',false);
                     $.each(data.response, function(index, value){
                         $('#product_container').append(
                             '<div class="col-xs-12 col-sm-4">' +
-                                '<button ' + 
-                                    'id="btn_product"'+ 
-                                    'class="btn btn-success btn-block btn-wheight btn-overlay"'+
+                                '<button ' +
+                                    'id="btn_product"'+
+                                    'class="btn btn-success btn-block btn-wheight btn-overlay btn-products"'+
                                     'style="border-radius: 0; margin-bottom: 25px;white-space:normal;"'+
                                     'data-prod-id="'+value.product_id+'"'+
                                     'data-prod-desc="'+value.product_desc+'"'+
                                     'data-prod-srp="'+value.sale_cost+'"'+
                                     'data-prod-tax="'+value.tax_rate+'"'+
-                                    '>' + 
-                                        '<span style="font-weight:500; font-size:25px;">' + 
-                                            value.product_code + 
+                                    '>' +
+                                        '<span style="font-weight:500; font-size:25px;">' +
+                                            value.product_code +
                                         '</span>' +
-                                        '<br/>' + 
-                                        '<h4 style="font-weight:500;">' + 
-                                            value.product_desc + 
+                                        '<br/>' +
+                                        '<h4 style="font-weight:500;">' +
+                                            value.product_desc +
                                         '</h4>' +
                                         '<h5> ₱ ' +
-                                            value.sale_cost + 
+                                            value.sale_cost +
                                         '</h5>' +
                                 '</button>' +
                             '</div>'
                        );
                     });
                 });
-
+                    
                 $('.modal-title').html($(this).data('name'));
                 $('#modal_products').modal('toggle');
 
@@ -778,22 +858,25 @@
                     $('#tbl_unpaid tbody').html('');
                     $.each(data.response, function(index,value) {
                         $('#tbl_unpaid tbody').prepend(
-                            '<tr>' + 
-                                '<td>' + value.pos_invoice_no + '</td>' +
-                                '<td>' + value.customer_name + '</td>' +
-                                '<td>' + value.table_name + '</td>' +
-                                '<td>' + accounting.formatNumber(value.total_after_tax,2) + '</td>' +
-                                '<td>'+
+                            '<tr style="border-bottom: 1px solid #ddd;">' +
+                                '<td style="vertical-align:middle;">' + value.pos_invoice_no + '</td>' +
+                                '<td style="vertical-align:middle;">' + value.customer_name + '</td>' +
+                                '<td style="vertical-align:middle;">' + value.table_name + '</td>' +
+                                '<td style="vertical-align:middle;">' + accounting.formatNumber(value.total_after_tax,2) + '</td>' +
+                                '<td style="vertical-align:middle;">'+
                                     '<center>' +
-                                        '<button id="btn_pay_order" class="btn btn-success" data-inv-id="'+value.pos_invoice_id+'" data-amount-due="'+value.total_after_tax+'">'+
-                                            'BILL OUT'+
+                                        '<button id="btn_add_order" class="btn btn-info" style="border-radius:0;" data-inv-id="'+value.pos_invoice_id+'" data-before-tax="'+value.before_tax+'" data-total-discount="'+value.total_discount+'"  data-amount-due="'+value.total_after_tax+'" data-total-tax="'+value.total_tax_amount+'">'+
+                                            '<b>ADD ORDER</b>'+
                                         '</button>&nbsp;'+
-                                        '<button id="btn_edit_order" class="btn btn-primary" data-inv-id="'+value.pos_invoice_id+'" data-amount-due="'+value.total_after_tax+'">'+
-                                            'EDIT ORDER'+
+                                        '<button id="btn_edit_order" class="btn btn-primary" style="border-radius:0;" data-inv-id="'+value.pos_invoice_id+'" data-before-tax="'+value.before_tax+'" data-amount-due="'+value.total_after_tax+'" data-total-tax="'+value.total_tax_amount+'">'+
+                                            '<b>EDIT ORDER</b>'+
+                                        '</button>&nbsp;'+
+                                        '<button id="btn_pay_order" class="btn btn-success" style="border-radius:0; padding: 12px 25px 12px 25px;" data-inv-id="'+value.pos_invoice_id+'" data-amount-due="'+value.total_after_tax+'">'+
+                                            '<b>BILL OUT</b>'+
                                         '</button>'+
                                     '</center>'+
                                 '</td>' +
-                            '</tr>' 
+                            '</tr>'
                         );
                     });
                 });
@@ -803,6 +886,60 @@
 
             $('#btn_close_pay').on('click', function(){
                 $('#modal_payment').modal('hide');
+            });
+
+            $('#tbl_unpaid').on('click', '#btn_add_order', function(){
+                var _btn = $(this);
+                $.ajax({
+                    "dataType":"json",
+                    "url":"Pos_v2/getList/pos-items?inv_id="+$(this).data('inv-id'),
+                    beforeSend : function(){
+                        $('#tbl_sales > tbody').html('<tr><td align="center" colspan="7" style="background:white;"><br /><img src="assets/img/loader/ajax-loader-sm.gif" /><br /><br /></td></tr>');
+                    },
+                    success : function(response){
+                        var tablesListArray = [];
+
+                        tablesList = [];
+
+                        _btnAmountDue = 0;
+                        _btnTotalDiscount = 0;
+                        _btnTotalTax = 0;
+                        _btnTotalBeforeTax = 0;
+
+                        addedProductCodes = [];
+
+                        $('#order_title').html('ADDITIONAL ORDER(S) OF ' + response.items[0].customer_name);
+                        _posInvoiceID = response.items[0].pos_invoice_id;
+                        currentCustomer = response.items[0].customer_id;
+
+                        $.each(response.tables, function(index,value){
+                            tablesList.push(value.table_id);
+                            tablesListArray.push(value.table_name);
+                        });
+
+                        $('#tbl_sales > tbody').html('');
+
+                        if (tablesListArray.length == 2)
+                            $('#td_tables').html(tablesListArray.join(' & '));
+                        else
+                            $('#td_tables').html(tablesListArray.join(', '));
+
+                        _btnTotalTax = _btn.data('total-tax');
+                        _btnTotalDiscount = _btn.data('total-discount');
+                        _btnAmountDue = _btn.data('amount-due');
+                        _btnTotalBeforeTax = _btn.data('before-tax');
+
+                        initializeNumeric();
+                        InsertProducts();
+                        _isAdditional = 1;
+                        toggleControls(false);
+                        $('#btn_tables').prop('disabled',true);
+                        $('#btn_customers').prop('disabled',true);
+                        $('#modal_unpaid').modal('hide');
+                        $('#btn_end_batch').prop('disabled',true);
+                        $('#btn_cancel_order').prop('disabled',true);
+                    }
+                });
             });
 
             $('#tbl_unpaid').on('click', '#btn_edit_order', function(){
@@ -816,6 +953,8 @@
                         var tablesListArray = [];
 
                         tablesList = [];
+
+                        addedProductCodes = [];
 
                         $('#order_title').html('ORDER SUMMARY OF ' + response.items[0].customer_name);
                         _posInvoiceID = response.items[0].pos_invoice_id;
@@ -831,14 +970,21 @@
                         $.each(response.items, function(index, value){
 
                             $('#tbl_sales > tbody').prepend(
-                                '<tr>'+
+                                '<tr style="border-bottom: 1px solid #ddd;">'+
                                     '<td class="hidden" width="10%">' +
                                         '<input class="text-center form-control" type="text" value="'+value.product_id+'" name="product_id[]">'+
                                     '</td>' +
-                                    '<td width="10%">' +
-                                        '<input class="text-center form-control" type="text" value="'+value.pos_qty+'" name="pos_qty[]">'+
-                                    '</td>' +
-                                    '<td width="20%">'+
+									'<td width="15%" style="vertical-align: middle;">' +
+		                                '<div class="input-group">' + ' <span class="input-group-btn">' +
+		                                    '<button id="btn_add" class="btn btn-primary btn-sm" type="button" style="border-radius: 50%;" disabled><i class="fa fa-plus"></i></button>' +
+		                                  '</span>' +
+		                                  	'<input type="number" class="form-control text-center" name="pos_qty[]" value="'+value.pos_qty+'" style="border: 1px solid #ddd!important; height: 31px;">' +
+		                                 ' <span class="input-group-btn">' +
+		                                    '<button id="btn_minus" class="btn btn-warning btn-sm" type="button" style="border-radius: 50%;"><i class="fa fa-minus"></i></button>' +
+		                                  '</span>' +
+		                               ' </div>' +
+		                            '</td>' +
+                                    '<td width="20%" style="vertical-align: middle;">'+
                                         '<input class="form-control" type="hidden" value="'+value.product_desc+'">'+value.product_desc+
                                     '</td>'+
                                     '<td width="10%" class="text-center">'+
@@ -856,8 +1002,11 @@
                                     '<td width="10%">'+
                                         '<input id="total" class="numeric text-right form-control" type="text" value="'+value.total+'" name="total[]" readonly />'+
                                     '</td>'+
-                                    '<td width="10%" class="text-center">'+
-                                    '<button type="button" id="btn_delete" class="btn btn-danger btn-remove" disabled>'+
+                                    '<td width="10%" class="hidden">'+
+                                        '<input id="status" class="numeric text-right form-control" type="text" value="0" name="status[]" readonly />'+
+                                    '</td>'+
+                                    '<td width="10%" class="text-center" style="vertical-align: middle;">'+
+                                    '<button type="button" id="btn_delete" class="btn btn-danger btn-remove btn-sm" style="border-radius: 50%;" disabled>'+
                                         '<i class="fa fa-times"></i>'+
                                     '</button>'+
                                     '</td>'+
@@ -865,18 +1014,24 @@
                             );
                             addedProductCodes.push(parseInt(value.product_id));
                         });
-                        
+
                         if (tablesListArray.length == 2)
                             $('#td_tables').html(tablesListArray.join(' & '));
-                        else 
+                        else
                             $('#td_tables').html(tablesListArray.join(', '));
 
                         recomputeTotal();
                         initializeNumeric();
                         InsertProducts();
                         _isEdit = 1;
-                        toggleControls(false);
-                        $('#btn_tables').prop('disabled',true);
+                        toggleControls(true);
+                        $('#btn_clear').prop('disabled',false);
+                        $('#btn_cancel_order').prop('disabled',true);
+                        $('#btn_enter_order').prop('disabled',false);
+                        $('#btn_void').prop('disabled',false);
+                        $('.btn-categories').prop('disabled', true);
+                        $('#btn_unpaid').prop('disabled',true);
+                        $('#btn_tables').prop('disabled',false);
                         $('#btn_customers').prop('disabled',true);
                         $('#modal_unpaid').modal('hide');
                         $('#btn_end_batch').prop('disabled',true);
@@ -886,18 +1041,19 @@
             });
 
             $('#tbl_unpaid').on('click','#btn_pay_order',function(){
-                $('.modal-title').html('PLEASE ENTER PAYMENT');
+                _billOutStatus = "on";
                 _amountTendered = 0;
                 _change = 0;
                 $('#mod_amount_due').html(accounting.formatNumber($(this).data('amount-due'),2));
                 _posInvoiceID = $(this).data('inv-id');
-                $('#modal_payment').modal('show');
+                $('.form-input').val('');
+                $('#modal_login').modal('show');
                 $('#modal_unpaid').modal('hide');
             });
 
-            $('#btn_end_batch').on('click', function(){ 
+            $('#btn_end_batch').on('click', function(){
                 endBatch().done(function(response){
-                    if (response.stat == "success") {   
+                    if (response.stat == "success") {
                         showNotification(response);
                         _isBatchEnded = 1;
                         window.onbeforeunload = null;
@@ -939,7 +1095,7 @@
                 }
                 else {
                     _amountTendered += parseFloat(accounting.unformat($(this).data('amount')));
-                
+
                     var total_amount_due = parseFloat(accounting.unformat($('#mod_amount_due').text()));
                     var total_amount_tendered = parseFloat(accounting.unformat(_amountTendered));
 
@@ -964,7 +1120,7 @@
                     $('#modal_new_customer').modal('show');
                     $('#frm_customers').find('input:first').focus();
                 }
-                
+
                 _isEdit = 0;
                 CreateTempInvoice();
 
@@ -982,15 +1138,15 @@
 
                     $('#customer_container').append(
                         '<div class="col-xs-12 col-sm-3">' +
-                            '<button ' + 
-                                'id="btn_customer_trigger"'+ 
+                            '<button ' +
+                                'id="btn_customer_trigger"'+
                                 'class="btn btn-success btn-wood btn-block btn-wheight"'+
                                 'style="border-radius: 0; margin-bottom: 25px;white-space:normal;"'+
                                 'data-customer-id="0"' +
                                 'data-customer-name="WALK-IN"' +
-                                '>' + 
-                                    '<span style="font-weight:500; font-size:25px;">' + 
-                                        '<i class="fa fa-plus"></i>' + 
+                                '>' +
+                                    '<span style="font-weight:500; font-size:25px;">' +
+                                        '<i class="fa fa-plus"></i>' +
                                     '</span>' +
                             '</button>' +
                         '</div>'
@@ -999,15 +1155,15 @@
                     $.each(response.data, function(index, value){
                         $('#customer_container').append(
                             '<div class="col-xs-12 col-sm-3">' +
-                                '<button ' + 
-                                    'id="btn_customer_trigger"'+ 
+                                '<button ' +
+                                    'id="btn_customer_trigger"'+
                                     'class="btn btn-warning btn-wood btn-block btn-wheight"'+
                                     'style="border-radius: 0; margin-bottom: 25px;white-space:normal;"'+
                                     'data-customer-id="'+value.customer_id+'"' +
                                     'data-customer-name="'+value.customer_name+'"' +
-                                    '>' + 
-                                        '<span style="font-weight:500; font-size:25px;">' + 
-                                            value.customer_name + 
+                                    '>' +
+                                        '<span style="font-weight:500; font-size:25px;">' +
+                                            value.customer_name +
                                         '</span>' +
                                 '</button>' +
                             '</div>'
@@ -1036,7 +1192,7 @@
             $('#modal_tables').on('click', '#btn_close_tables', function(){
                 if (tablesList.length > 0) {
                     toggleControls(false);
-                } else 
+                } else
                     alert('Please Select Table or submit your chosen tables')
             });
 
@@ -1055,14 +1211,14 @@
 
                 if (tablesListArray.length == 2)
                     $('#td_tables').html(tablesListArray.join(' & '));
-                else 
+                else
                     $('#td_tables').html(tablesListArray.join(', '));
 
                 if (tablesList.length > 0) {
                     $('#modal_tables').modal('toggle');
                     toggleControls(false);
-                } else 
-                    alert('Please Select Table...')
+                } else
+                    alert('Please Select Table...');
 
 
                 InsertProducts();
@@ -1071,15 +1227,28 @@
                     $('#btn_void').prop('disabled',true);
                 }
 
+                if (_isEdit == true)
+                {
+                    $('#btn_cancel_order').prop('disabled',true);
+                }
+
             });
 
             $('#btn_login').on('click', function(){
                 validateUser().done(function(response){
                     if(response.stat=="success"){
-                       $('.btn-remove').removeAttr('disabled');
-                       showNotification(response);
-                       $('#btn_void').prop('disabled',true);
-                       $('#modal_login').modal('toggle');
+                        if (_billOutStatus == "off") {
+                           $('.btn-remove').removeAttr('disabled');
+                           showNotification(response);
+                           $('#btn_void').prop('disabled',true);
+                           $('#modal_login').modal('toggle');
+                        } else {
+                            $('.modal-title').html('PLEASE ENTER PAYMENT');
+                            $('#modal_payment').modal('show');
+                            $('#modal_login').modal('hide');
+                            _globalUserID = response.user_id
+                        }
+                       
                     } else {
                         showNotification(response);
                     }
@@ -1105,8 +1274,9 @@
 
             $('#btn_void').on('click', function(){
                 $('.modal-title').html('MANAGER LOGIN');
+                _billOutStatus = "off";
+                $('.form-input').val('');
                 $('#modal_login').modal('show');
-                $('.form-input').text('');
                 addedProductCodes = [];
             });
 
@@ -1116,34 +1286,138 @@
                 btnTableClickCounter += 1;
 
                 if (btnTableClickCounter < 2) {
-                    $.ajax({
-                        "dataType":"json",
-                        "url":"Tables/transaction/unused-tables"
-                    }).done(function(response){
-                        $('#table_container').html('');
-                        $.each(response.data, function(index, value){
-                            $('#table_container').append(
-                                '<div class="col-xs-12 col-sm-3">' +
-                                    '<button ' + 
-                                        'id="btn_table_trigger"'+ 
-                                        'class="btn btn-warning btn-wood btn-block btn-wheight"'+
-                                        'style="border-radius: 0; margin-bottom: 25px;white-space:normal;"'+
-                                        'data-table-id="'+value.table_id+'"' +
-                                        'data-table-name="'+value.table_name+'"' +
-                                        'data-table-click="0"' +
-                                        '>' + 
-                                            '<h1>' + 
-                                                value.table_name + 
-                                            '</h1>' +
-                                    '</button>' +
-                                '</div>'
-                           );
+                    if (_isEdit == 1){
+                        $.ajax({
+                            "dataType":"json",
+                            "url":"Tables/transaction/list-all-tables"
+                        }).done(function(response){
+                            $('#table_container').html('');
+
+                            $.each(response.data, function(index, value){
+                                if (value.status == 1 && value.pos_invoice_id != _posInvoiceID) {
+                                    $('#table_container').append(
+                                        '<div class="col-xs-12 col-sm-3">' +
+                                            '<button ' +
+                                                'id="btn_table_trigger"'+
+                                                'class="btn btn-danger btn-wood btn-block btn-wheight"'+
+                                                'style="border-radius: 0; margin-bottom: 25px;white-space:normal;"'+
+                                                'data-table-id="'+value.table_id+'"' +
+                                                'data-table-name="'+value.table_name+'"' +
+                                                'data-table-click="0"' +
+                                                ' disabled>' +
+                                                    '<h1>' +
+                                                        'IN USE' +
+                                                    '</h1>' +
+                                            '</button>' +
+                                        '</div>'
+                                   );
+                                }
+                                else if (value.status == 1 && value.pos_invoice_id == _posInvoiceID) {
+                                    $('#table_container').append(
+                                        '<div class="col-xs-12 col-sm-3">' +
+                                            '<button ' +
+                                                'id="btn_table_trigger"'+
+                                                'class="btn btn-warning btn-wood btn-block btn-wheight"'+
+                                                'style="border-radius: 0; margin-bottom: 25px;white-space:normal;"'+
+                                                'data-table-id="'+value.table_id+'"' +
+                                                'data-table-name="'+value.table_name+'"' +
+                                                'data-table-click="1"' +
+                                                '>' +
+                                                    '<h1>' +
+                                                        '<i class="fa fa-check"></i>' +
+                                                    '</h1>' +
+                                            '</button>' +
+                                        '</div>'
+                                   );
+                                }
+                                else {
+                                    $('#table_container').append(
+                                        '<div class="col-xs-12 col-sm-3">' +
+                                            '<button ' +
+                                                'id="btn_table_trigger"'+
+                                                'class="btn btn-warning btn-wood btn-block btn-wheight"'+
+                                                'style="border-radius: 0; margin-bottom: 25px;white-space:normal;"'+
+                                                'data-table-id="'+value.table_id+'"' +
+                                                'data-table-name="'+value.table_name+'"' +
+                                                'data-table-click="0"' +
+                                                '>' +
+                                                    '<h1>' +
+                                                        value.table_name +
+                                                    '</h1>' +
+                                            '</button>' +
+                                        '</div>'
+                                   );
+                                }
+                            });
                         });
-                    });
+                    } else {
+                        $.ajax({
+                            "dataType":"json",
+                            "url":"Tables/transaction/list-all-tables"
+                        }).done(function(response){
+                            $('#table_container').html('');
+                            $.each(response.data, function(index, value){
+                                if (value.status == 1) {
+                                    $('#table_container').append(
+                                        '<div class="col-xs-12 col-sm-3">' +
+                                            '<button ' +
+                                                'id="btn_table_trigger"'+
+                                                'class="btn btn-danger btn-wood btn-block btn-wheight"'+
+                                                'style="border-radius: 0; margin-bottom: 25px;white-space:normal;"'+
+                                                'data-table-id="'+value.table_id+'"' +
+                                                'data-table-name="'+value.table_name+'"' +
+                                                'data-table-click="0" ' +
+                                                'disabled>' +
+                                                    '<h1>' +
+                                                        'IN USE' +
+                                                    '</h1>' +
+                                            '</button>' +
+                                        '</div>'
+                                   );
+                                } else {
+                                    $('#table_container').append(
+                                        '<div class="col-xs-12 col-sm-3">' +
+                                            '<button ' +
+                                                'id="btn_table_trigger"'+
+                                                'class="btn btn-warning btn-wood btn-block btn-wheight"'+
+                                                'style="border-radius: 0; margin-bottom: 25px;white-space:normal;"'+
+                                                'data-table-id="'+value.table_id+'"' +
+                                                'data-table-name="'+value.table_name+'"' +
+                                                'data-table-click="0"' +
+                                                '>' +
+                                                    '<h1>' +
+                                                        value.table_name +
+                                                    '</h1>' +
+                                            '</button>' +
+                                        '</div>'
+                                   );
+                                }
+                            });
+                        });
+                    }
+                    
                 }
 
                 $('#modal_tables').modal('toggle');
             });
+
+			$('#tbl_sales tbody').on('click','#btn_add', function(){
+				$(this).closest('tr').find('td').find('input[name="pos_qty[]"]').val(parseInt($(this).closest('tr').find('td').find('input[name="pos_qty[]"]').val()) + 1);
+
+                reComputeRowTotal();
+                recomputeTotal();
+                initializeNumeric();
+                InsertProducts();
+			});
+
+			$('#tbl_sales tbody').on('click','#btn_minus', function(){
+				if (parseInt($(this).closest('tr').find('td').find('input[name="pos_qty[]"]').val()) > 1)
+					$(this).closest('tr').find('td').find('input[name="pos_qty[]"]').val(parseInt($(this).closest('tr').find('td').find('input[name="pos_qty[]"]').val()) - 1);
+                reComputeRowTotal();
+                recomputeTotal();
+                initializeNumeric();
+                InsertProducts();
+			});
 
             $('#table_container').on('click','#btn_table_trigger',function(){
                 var checked = '<h1><i class="fa fa-check"></i></h1>';
@@ -1162,7 +1436,11 @@
             $('#product_container').on('click','#btn_product',function(){
                _btn_product = $(this);
 
-                AppendProductToTable($(this).data('prod-id'), $(this).data('prod-desc'), $(this).data('prod-srp'), 0, $(this).data('prod-tax'), 0, 0);
+               // if (_isEdit == 1) {
+               //      EditAppendProductToTable($(this).data('prod-id'), $(this).data('prod-desc'), $(this).data('prod-srp'), 0, $(this).data('prod-tax'), 0, 0, 1);
+               // } else {
+                    AppendProductToTable($(this).data('prod-id'), $(this).data('prod-desc'), $(this).data('prod-srp'), 0, $(this).data('prod-tax'), 0, 0);
+               // }
                 reComputeRowTotal();
                 recomputeTotal();
                 initializeNumeric();
@@ -1177,12 +1455,17 @@
             $('#tbl_sales').on('change','input.numeric', function(){
                 reComputeRowTotal();
                 recomputeTotal();
+				initializeNumeric();
                 InsertProducts();
             });
 
             $('#tbl_sales').on('change','input[name="pos_qty[]"]', function(){
+				if ($(this).val() == "")
+					$(this).val(1);
+
                 reComputeRowTotal();
                 recomputeTotal();
+				initializeNumeric();
                 InsertProducts();
             });
 
@@ -1196,30 +1479,26 @@
                         if($(this).find('td').find('input[name="product_id[]"]').val() == product_id) {
                             $(this).find('td').find('input[name="pos_qty[]"]').val(parseInt($(this).find('td').find('input[name="pos_qty[]"]').val()) + 1);
                         }
-                        
+
                     });
                 } else {
                     $('#tbl_sales > tbody').prepend(
-                        '<tr>'+
+                        '<tr style="border-bottom: 1px solid #ddd;">'+
                             '<td class="hidden" width="10%">' +
                                 '<input class="text-center form-control" type="text" value="'+product_id+'" name="product_id[]">'+
                             '</td>' +
-                            // 
-                            //     '<button class="btn btn-primary btn-small"><i class="fa fa-plus"></i></button>' +
-                            //     '<input class="text-center form-control" type="text" value="1" name="pos_qty[]">'+
-                            // 
-                            '<td width="10%">' +
+                            '<td width="15%" style="vertical-align: middle;">' +
                                 '<div class="input-group">' +
                                  ' <span class="input-group-btn">' +
-                                    '<button class="btn btn-primary" type="button">Hate it</button>' +
+                                    '<button id="btn_add" class="btn btn-primary btn-sm" type="button" style="border-radius: 50%;"><i class="fa fa-plus"></i></button>' +
                                   '</span>' +
-                                  '<input type="text" class="form-control" placeholder="Product name">' +
+                                  	'<input type="number" class="form-control text-center" name="pos_qty[]" value="1" style="border: 1px solid #ddd!important; height: 31px;">' +
                                  ' <span class="input-group-btn">' +
-                                    '<button class="btn btn-secondary" type="button">Love it</button>' +
+                                    '<button id="btn_minus" class="btn btn-warning btn-sm" type="button" style="border-radius: 50%;"><i class="fa fa-minus"></i></button>' +
                                   '</span>' +
                                ' </div>' +
                             '</td>' +
-                            '<td width="20%">'+
+                            '<td width="20%" style="vertical-align: middle;">'+
                                 '<input class="form-control" type="hidden" value="'+prod_desc+'">'+prod_desc+
                             '</td>'+
                             '<td width="10%" class="text-center">'+
@@ -1237,8 +1516,8 @@
                             '<td width="10%">'+
                                 '<input id="total" class="numeric text-right form-control" type="text" value="'+total+'" name="total[]" readonly />'+
                             '</td>'+
-                            '<td width="10%" class="text-center">'+
-                            '<button type="button" id="btn_delete" class="btn btn-danger btn-remove" disabled>'+
+                            '<td width="10%" class="text-center" style="vertical-align: middle;">'+
+                            '<button type="button" id="btn_delete" style="border-radius:50%;" class="btn btn-danger btn-remove btn-sm" disabled>'+
                                 '<i class="fa fa-times"></i>'+
                             '</button>'+
                             '</td>'+
@@ -1246,6 +1525,68 @@
                     );
 
                     addedProductCodes.push(td_productCode);
+                }
+            };
+
+            var EditAppendProductToTable = function(product_id, prod_desc, pos_price, pos_discount, prod_tax, tax_amount, total, status) {
+                var td_productCode = product_id;
+                var index = $.inArray(td_productCode, editAddedProductCodes);
+
+                if (index >= 0) {
+                    $('#tbl_sales tbody tr').each(function(){
+
+                        if($(this).find('td').find('input[name="product_id[]"]').val() == product_id && $(this).find('td').find('input[name="status[]"]').val() == status) {
+                            $(this).find('td').find('input[name="pos_qty[]"]').val(parseInt($(this).find('td').find('input[name="pos_qty[]"]').val()) + 1);
+                        }
+
+                    });
+                } else {
+                    $('#tbl_sales > tbody').prepend(
+                        '<tr style="border-bottom: 1px solid #ddd;">'+
+                            '<td class="hidden" width="10%">' +
+                                '<input class="text-center form-control" type="text" value="'+product_id+'" name="product_id[]">'+
+                            '</td>' +
+                            '<td width="15%" style="vertical-align: middle;">' +
+                                '<div class="input-group">' +
+                                 ' <span class="input-group-btn">' +
+                                    '<button id="btn_add" class="btn btn-primary btn-sm" type="button" style="border-radius: 50%;"><i class="fa fa-plus"></i></button>' +
+                                  '</span>' +
+                                    '<input type="number" class="form-control text-center" name="pos_qty[]" value="1" style="border: 1px solid #ddd!important; height: 31px;">' +
+                                 ' <span class="input-group-btn">' +
+                                    '<button id="btn_minus" class="btn btn-warning btn-sm" type="button" style="border-radius: 50%;"><i class="fa fa-minus"></i></button>' +
+                                  '</span>' +
+                               ' </div>' +
+                            '</td>' +
+                            '<td width="20%" style="vertical-align: middle;">'+
+                                '<input class="form-control" type="hidden" value="'+prod_desc+'">'+prod_desc+
+                            '</td>'+
+                            '<td width="10%" class="text-center">'+
+                                '<input class="numeric text-right form-control" type="text" value="'+pos_price+'" name="pos_price[]">'+
+                            '</td>'+
+                            '<td width="10%">'+
+                                '<input class="numeric text-right form-control" type="text" value="'+pos_discount+'" name="pos_discount[]">'+
+                            '</td>'+
+                            '<td width="15%" class="hidden">'+
+                                '<input class="numeric text-right form-control" type="text" value="'+prod_tax+'" name="tax_rate[]">'+
+                            '</td>'+
+                            '<td width="15%">'+
+                                '<input class="numeric text-right form-control" type="text" value="'+tax_amount+'" name="tax_amount[]" readonly />'+
+                            '</td>'+
+                            '<td width="10%">'+
+                                '<input id="total" class="numeric text-right form-control" type="text" value="'+total+'" name="total[]" readonly />'+
+                            '</td>'+
+                            '<td width="10%" class="hidden">'+
+                                '<input id="status" class="numeric text-right form-control" type="text" value="1" name="status[]" readonly />'+
+                            '</td>'+
+                            '<td width="10%" class="text-center" style="vertical-align: middle;">'+
+                            '<button type="button" id="btn_delete" style="border-radius:50%;" class="btn btn-danger btn-remove btn-sm" disabled>'+
+                                '<i class="fa fa-times"></i>'+
+                            '</button>'+
+                            '</td>'+
+                        '</tr>'
+                    );
+
+                    editAddedProductCodes.push(td_productCode);
                 }
             };
 
@@ -1264,7 +1605,7 @@
                 "use strict";
                 $.each(thisArray, function(index, item) {
                     if (item.value == thisName) {
-                        delete tablesList[index];      
+                        delete tablesList[index];
                     }
                 });
             };
@@ -1289,6 +1630,10 @@
             var InsertProducts = function() {
                 var _data = $('#frm_items').serializeArray();
 
+                if (_isAdditional == 1) {
+                    _data.push({name: "pos_invoice_id", value: _posInvoiceID });
+                }
+
                 _data.push({name: "customer_id", value: currentCustomer });
                 _data.push({name: "grand_total", value: $('#td_total_after_tax').text() });
 
@@ -1306,7 +1651,7 @@
                     var rowSrp = parseFloat(accounting.unformat($(this).find('td').find('input[name="pos_price[]"]').val()));
                     var rowDiscount = parseFloat(accounting.unformat($(this).find('td').find('input[name="pos_discount[]"]').val()));
                     var rowTax = parseFloat(accounting.unformat($(this).find('td').find('input[name="tax_rate[]"]').val()));
-                    
+
 
                     if(rowDiscount>rowSrp){
                         showNotification({title:"Invalid",stat:"error",msg:"Discount must not greater than unit price."});
@@ -1319,7 +1664,7 @@
                         var vat_input = line_total - net_vat;
 
                         var rowTotal = (rowQty * rowSrp);
-                        
+
                         if (rowTax == 0.00) {
                             $(this).find('td').find('input[name="tax_amount[]"]').val(accounting.formatNumber(0,2));
                         } else {
@@ -1390,23 +1735,23 @@
                 var stat=true;
                 $('div.form-group').removeClass('has-error');
                 $('input[required],textarea[required],select[required]',f).each(function(){
-                        if($(this).is('select')){
-                            if($(this).val()==0 || $(this).val()==null || $(this).val()==undefined || $(this).val()==""){
-                                showNotification({title:"Error!",stat:"error",msg:$(this).data('error-msg')});
-                                $(this).closest('div.form-group').addClass('has-error');
-                                $(this).focus();
-                                stat=false;
-                                return false;
-                            }
-                        }else{
-                            if($(this).val()==""){
-                                showNotification({title:"Error!",stat:"error",msg:$(this).data('error-msg')});
-                                $(this).closest('div.form-group').addClass('has-error');
-                                $(this).focus();
-                                stat=false;
-                                return false;
-                            }
+                    if($(this).is('select')){
+                        if($(this).val()==0 || $(this).val()==null || $(this).val()==undefined || $(this).val()==""){
+                            showNotification({title:"Error!",stat:"error",msg:$(this).data('error-msg')});
+                            $(this).closest('div.form-group').addClass('has-error');
+                            $(this).focus();
+                            stat=false;
+                            return false;
                         }
+                    }else{
+                        if($(this).val()==""){
+                            showNotification({title:"Error!",stat:"error",msg:$(this).data('error-msg')});
+                            $(this).closest('div.form-group').addClass('has-error');
+                            $(this).focus();
+                            stat=false;
+                            return false;
+                        }
+                    }
                 });
                 return stat;
             };
@@ -1416,6 +1761,7 @@
                 $('.btn-util').prop('disabled',bValue);
                 $('#btn_tables').prop('disabled',bValue);
                 $('#btn_end_batch').prop('disabled',false);
+                $('#btn_clear').prop('disabled',bValue);
             };
 
             var payOrder = function() {
@@ -1425,6 +1771,7 @@
                 _data.push({name: "amount_due", value: _amountDue });
                 _data.push({name: "change", value: _change });
                 _data.push({name: "pos_invoice_id", value: _posInvoiceID });
+                _data.push({name: "approved_by", value: _globalUserID });
 
                 return $.ajax({
                     "dataType":"json",

@@ -21,6 +21,8 @@ class Templates extends CORE_Controller {
         $this->load->model('User_group_right_model');
         $this->load->model('Pos_model');
         $this->load->model('Order_tables_model');
+        $this->load->model('Vendors_model');
+        $this->load->model('Pos_items_ajax_model');
     }
 
     public function index() {
@@ -145,12 +147,15 @@ class Templates extends CORE_Controller {
                     $m_company=$this->Company_model;
                     $m_info=$this->Notes_model;
                     $m_order_tables=$this->Order_tables_model;
+                    $m_vendors=$this->Vendors_model;
 
-                    $vendor_id = $this->input->get('vendor',TRUE);
+                    $vendor_id = $this->input->get('vendorid');
+
+                    $new_vendor_id = intval($vendor_id) + 1;
 
                     $info=$m_invoice->get_list(
-                        'pos_invoice.pos_invoice_id='.$filter_value.' AND products.vendor_id='.$vendor_id,
-                        'pos_invoice.*,pos_invoice_items.*,customers.customer_name,user_accounts.*,CONCAT(user_fname, " ", user_mname, " ", user_lname) AS cashier, vendors.vendor_name',
+                        'pos_invoice.pos_invoice_id='.$filter_value.' AND products.vendor_id='.$new_vendor_id,
+                        'pos_invoice.*,pos_invoice_items.*,customers.customer_name,user_accounts.*,CONCAT(user_fname, " ", user_mname, " ", user_lname) AS cashier, vendors.vendor_name, vendors.is_last',
                         array(
                             array('customers','customers.customer_id=pos_invoice.customer_id','left'),
                             array('user_accounts','user_accounts.user_id=pos_invoice.user_id','left'),
@@ -161,8 +166,10 @@ class Templates extends CORE_Controller {
                     );
 
                     if (count($info) > 0) {
+
                         $invoice_id=$info[0]->pos_invoice_id;
                         $vendor_name=$info[0]->vendor_name;
+                        $is_last = $info[0]->is_last;
                         $data['vendor_name']=$vendor_name;
                         $data['info']=$invoice_id;
                         $footer=$m_info->get_list();
@@ -179,7 +186,7 @@ class Templates extends CORE_Controller {
 
                         $data['tables']=$tables[0]->table_names;
                         $data['pos_invoice_item']=$m_invoice_items->get_list(
-                            'pos_invoice_items.pos_invoice_id='.$invoice_id.' AND products.vendor_id='.$vendor_id,
+                            'pos_invoice_items.pos_invoice_id='.$invoice_id.' AND products.vendor_id='.$new_vendor_id,
                                 'pos_invoice_items.*,products.product_desc',
                             array(
                                 array('products','products.product_id=pos_invoice_items.product_id','left')
@@ -192,20 +199,103 @@ class Templates extends CORE_Controller {
                         $data['company_info']=$company[0];
                         $data['_def_js_files'] =  $this->load->view('template/assets/js_files', '', TRUE);
 
-                        if($filter_value2=='print'){
+                        if($filter_value2=='print')
                             echo $this->load->view('template/pos_content_kitchen_bar',$data,TRUE);
-                        }
-                        else{
+                        else
+                        {
                           echo $this->load->view('template/pos_content_kitchen_bar',$data,TRUE);
                           echo $this->load->view('template/pos_menu',$data,TRUE);
                         }
-                    } else {
-                        if ($vendor_id == 2) {
-                            redirect(base_url('Templates/layout/pospr-kitchen-bar/'.$filter_value.'/print?vendor=3'));
-                        } else if ($vendor_id == 3) {
+
+                    } 
+                    else 
+                    {
+                        if ($new_vendor_id == 2 || $new_vendor_id == 3) {
+                            redirect(base_url('Templates/layout/pospr-kitchen-bar/'.$filter_value.'/print?vendorid='.$new_vendor_id));
+                        } else {
                             redirect(base_url('Pos_v2'));
                         }
                     }
+
+                break;
+
+            case 'pospr-kitchen-bar-add':
+                    $m_invoice_payment=$this->Pos_payment_model;
+                    $m_invoice=$this->Pos_model;
+                    $m_invoice_items=$this->Purchase_items_model;
+                    $m_company=$this->Company_model;
+                    $m_info=$this->Notes_model;
+                    $m_order_tables=$this->Order_tables_model;
+                    $m_vendors=$this->Vendors_model;
+
+                    $vendor_id = $this->input->get('vendorid');
+
+                    $new_vendor_id = intval($vendor_id) + 1;
+
+                    $info=$m_invoice->get_list(
+                        'pos_invoice.pos_invoice_id='.$filter_value.' AND products.vendor_id='.$new_vendor_id.' AND pos_invoice_items.status = 1',
+                        'pos_invoice.*,pos_invoice_items.*,customers.customer_name,user_accounts.*,CONCAT(user_fname, " ", user_mname, " ", user_lname) AS cashier, vendors.vendor_name, vendors.is_last',
+                        array(
+                            array('customers','customers.customer_id=pos_invoice.customer_id','left'),
+                            array('user_accounts','user_accounts.user_id=pos_invoice.user_id','left'),
+                            array('pos_invoice_items','pos_invoice_items.pos_invoice_id=pos_invoice.pos_invoice_id','left'),
+                            array('products','products.product_id=pos_invoice_items.product_id','left'),                      //join
+                            array('vendors','vendors.vendor_id=products.vendor_id','left')    
+                        )
+                    );
+
+                    if (count($info) > 0) {
+
+                        $invoice_id=$info[0]->pos_invoice_id;
+                        $vendor_name=$info[0]->vendor_name;
+                        $is_last = $info[0]->is_last;
+                        $data['vendor_name']=$vendor_name;
+                        $data['info']=$invoice_id;
+                        $footer=$m_info->get_list();
+                        $company=$m_company->get_list();
+                        $tables = $m_order_tables->get_list(
+                            'pos_invoice_id='.$invoice_id,
+                            'GROUP_CONCAT(table_name) table_names',
+                            array(
+                                array('tables', 'tables.table_id = order_tables.table_id', 'left')
+                            ),
+                            null,
+                            'pos_invoice_id'
+                        );
+
+                        $data['tables']=$tables[0]->table_names;
+                        $data['pos_invoice_item']=$m_invoice_items->get_list(
+                            'pos_invoice_items.pos_invoice_id='.$invoice_id.' AND products.vendor_id='.$new_vendor_id.' AND pos_invoice_items.status = TRUE',
+                                'pos_invoice_items.*,products.product_desc',
+                            array(
+                                array('products','products.product_id=pos_invoice_items.product_id','left')
+                            )
+                        );
+
+                        $data['vendor'] = $this->input->get('vendor',TRUE);
+                        $data['footer_info']=$footer[0];
+                        $data['delivery_info']=$info[0];
+                        $data['company_info']=$company[0];
+                        $data['_def_js_files'] =  $this->load->view('template/assets/js_files', '', TRUE);
+
+                        if($filter_value2=='print')
+                            echo $this->load->view('template/pos_content_kitchen_bar',$data,TRUE);
+                        else
+                        {
+                          echo $this->load->view('template/pos_content_kitchen_bar',$data,TRUE);
+                          echo $this->load->view('template/pos_menu',$data,TRUE);
+                        }
+
+                    } 
+                    else 
+                    {
+                        if ($new_vendor_id == 2 || $new_vendor_id == 3) {
+                            redirect(base_url('Templates/layout/pospr-kitchen-bar-add/'.$filter_value.'/print?vendorid='.$new_vendor_id.'&type=add'));
+                        } else {
+                            redirect(base_url('Pos_v2'));
+                        }
+                    }
+
                 break;
 
             case 'pospr': //delivery invoice
@@ -242,10 +332,20 @@ class Templates extends CORE_Controller {
                 $data['tables']=$tables[0]->table_names;
                 $data['pos_invoice_item']=$m_invoice_items->get_list(
                     array('pos_invoice_items.pos_invoice_id'=>$invoice_id),
-                        'pos_invoice_items.*,products.product_desc',
+                        'pos_invoice_items.pos_invoice_id,
+                        pos_invoice_items.product_id,
+                        SUM(pos_invoice_items.pos_qty) pos_qty,
+                        pos_invoice_items.pos_price,
+                        SUM(pos_invoice_items.pos_discount) pos_discount,
+                        pos_invoice_items.tax_rate,
+                        SUM(pos_invoice_items.tax_amount) tax_amount,
+                        SUM(pos_invoice_items.total) total,
+                        products.product_desc',
                     array(
                         array('products','products.product_id=pos_invoice_items.product_id','left')
-                    )
+                    ),
+                    null,
+                    'pos_invoice_items.pos_invoice_id, pos_invoice_items.product_id'
                 );
 
                 $data['footer_info']=$footer[0];

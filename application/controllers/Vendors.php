@@ -32,11 +32,15 @@ class Vendors extends CORE_Controller
             case 'create':
                 $m_vendors = $this->Vendors_model;
 
+                $query = $this->db->update('vendors', array('is_last ' => FALSE));
+
                 $m_vendors->vendor_name = $this->input->post('vendor_name', TRUE);
                 $m_vendors->vendor_desc = $this->input->post('vendor_desc', TRUE);
+                $m_vendors->is_last = 1;
                 $m_vendors->save();
 
                 $vendor_id = $m_vendors->last_insert_id();
+
 
                 $response['title'] = 'Success!';
                 $response['stat'] = 'success';
@@ -47,15 +51,15 @@ class Vendors extends CORE_Controller
                 break;
 
             case 'delete':
-                $m_categories=$this->Categories_model;
+                $m_vendors=$this->Vendors_model;
 
-                $category_id=$this->input->post('category_id',TRUE);
+                $vendor_id=$this->input->post('vendor_id',TRUE);
 
-                $m_categories->is_deleted=1;
-                if($m_categories->modify($category_id)){
+                $m_vendors->is_deleted=1;
+                if($m_vendors->modify($vendor_id)){
                     $response['title']='Success!';
                     $response['stat']='success';
-                    $response['msg']='category information successfully deleted.';
+                    $response['msg']='Vendor information successfully deleted.';
 
                     echo json_encode($response);
                 }
@@ -63,18 +67,18 @@ class Vendors extends CORE_Controller
                 break;
 
             case 'update':
-                $m_categories=$this->Categories_model;
+                $m_vendors=$this->Vendors_model;
 
-                $category_id=$this->input->post('category_id',TRUE);
-                $m_categories->category_name=$this->input->post('category_name',TRUE);
-                $m_categories->category_desc=$this->input->post('category_desc',TRUE);
+                $vendor_id=$this->input->post('vendor_id',TRUE);
+                $m_vendors->vendor_name=$this->input->post('vendor_name',TRUE);
+                $m_vendors->vendor_desc=$this->input->post('vendor_desc',TRUE);
 
-                $m_categories->modify($category_id);
+                $m_vendors->modify($vendor_id);
 
                 $response['title']='Success!';
                 $response['stat']='success';
-                $response['msg']='category information successfully updated.';
-                $response['row_updated']=$m_categories->get_category_list($category_id);
+                $response['msg']='Vendor information successfully updated.';
+                $response['row_updated']=$m_vendors->get_vendor_list($vendor_id);
                 echo json_encode($response);
 
                 break;

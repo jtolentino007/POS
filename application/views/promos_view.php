@@ -23,11 +23,6 @@
     <link type="text/css" href="assets/plugins/datatables/dataTables.themify.css" rel="stylesheet">
 
     <style>
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-        }
 
         .toolbar{
             float: left;
@@ -86,18 +81,15 @@
                         <div data-widget-group="group1">
                             <div class="row">
                                 <div class="col-md-12">
-
-                                    <div id="div_discount_list">
+                                    <div id="div_brand_list">
                                         <div class="panel panel-default">
                                             <div class="panel-body table-responsive" style="border-top: 3px solid #2196f3;">
-                                            <h1>Discounts</h1>
-                                                <table id="tbl_discounts" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                            <h1>Product Brands</h1>
+                                                <table id="tbl_brands" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                                     <thead>
                                                     <tr>
-                                                        <th>Discount Code</th>
-                                                        <th>Discount Description</th>
-                                                        <th>Discount Rate (%)</th>
-                                                        <th>Discount Amount</th>
+                                                        <th>Brand Name</th>
+                                                        <th>Brand Description</th>
                                                         <th><center>Action</center></th>
                                                     </tr>
                                                     </thead>
@@ -110,65 +102,40 @@
                                         </div>
                                     </div>
 
-                                    <!-- <div id="div_discount_fields" style="display: none;">
+                                   <!-- <div id="div_brand_fields" style="display: none;">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
-                                                <h2>Discount Information</h2>
+                                                <h2>brand Information</h2>
                                                 <div class="panel-ctrls" data-actions-container="" data-action-collapse='{"target": ".panel-body"}'></div>
                                             </div>
 
-                                            <div class="panel-body">
-                                                <form id="frm_discount" role="form" class="form-horizontal row-border">
+                                            <div class="panel-body center">
+                                                <form id="frm_brand" role="form" class="form-horizontal row-border">
                                                     <div class="form-group">
-                                                        <label class="col-md-2 col-md-offset-2 control-label">Discount Code :</label>
+                                                        <label class="col-md-4 control-label">Brand Name :</label>
                                                         <div class="col-md-4">
                                                             <div class="input-group">
-                                                                                    <span class="input-group-addon">
-                                                                                        <i class="fa fa-users"></i>
-                                                                                    </span>
-                                                                <input type="text" name="discount_code" class="form-control" readonly>
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-user"></i>
+                                                                </span>
+                                                                <input type="text" name="brand_name" class="form-control" placeholder="Brand Name" data-error-msg="Brand Name is required!" required>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label class="col-md-2 col-md-offset-2 control-label">* Discount Type :</label>
+                                                        <label class="col-md-4 control-label">Brand Description :</label>
                                                         <div class="col-md-4">
                                                             <div class="input-group">
-                                                                <select name="discount_type" id="">
-                                                                    <option value="">Item Discount</option>
-                                                                    <option value="">Sale Discount</option>
-                                                                    <option value="">Promotional Discount</option>
-                                                                    <option value="">Senior Citizen Discount</option>
-                                                                </select>
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-user"></i>
+                                                                </span>
+                                                                <input type="text" name="brand_desc" class="form-control" placeholder="Brand Description" data-error-msg="Brand Description is required!" required>
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-group">
-                                                        <label class="col-md-2 col-md-offset-2 control-label">* Discount Description :</label>
-                                                        <div class="col-md-4">
-                                                            <textarea name="discount_desc" class="form-control" data-error-msg="Discount Description is required!" placeholder="Description" required></textarea>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-md-2 col-md-offset-2 control-label">* Discount Rate (%) :</label>
-                                                        <div class="col-md-4">
-                                                            <div class="input-group">
-                                                                <input type="text" name="discount_percent" class="form-control" data-error-msg="Discount Percentage is required!" required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label class="col-md-2 col-md-offset-2 control-label">* Discount Rate (Amount) :</label>
-                                                        <div class="col-md-4">
-                                                            <div class="input-group">
-                                                                <input type="text" name="discount_amount" class="form-control" data-error-msg="Discount Amount is required!" required>
-                                                            </div>
-                                                        </div>
-                                                    </div><br/>
+                                                    <br/>
                                                 </form>
                                             </div>
 
@@ -191,67 +158,37 @@
                 </div> <!-- #page-content -->
             </div>
 
-            <div id="modal_discount" class="modal fade" tabindex="-1" role="dialog">
+            <div id="modal_brand" class="modal fade" tabindex="-1" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
-                            <h4 class="modal-title"><span id="modal_mode">Discount Information</span></h4>
-                        </div>
-                        <div class="modal-body" style="padding-top: 0px !important;">
-                            <form id="frm_discount" role="form-horizontal row-border">
+                                <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
+                                <h4 id="category_title" class="modal-title"><span id="modal_mode">Brand Information</span></h4>
+                            </div>
+                        <div class="modal-body">
+                            <form id="frm_brand" role="form" class="form-horizontal row-border">
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label"><strong>Discount Code :</strong></label>
-                                    <div class="col-md-8">
+                                    <label class="col-md-3 col-md-offset-1 control-label"><strong>* Brand Name :</strong></label>
+                                    <div class="col-md-7">
                                         <div class="input-group">
                                             <span class="input-group-addon">
-                                                <i class="fa fa-users"></i>
+                                                <i class="fa fa-tag"></i>
                                             </span>
-                                            <input type="text" name="discount_code" class="form-control">
-                                        </div>
-                                    </div>
-                                </div><br><br><br>
-
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label"><strong>* Discount Type :</strong></label>
-                                    <div class="col-md-8">
-                                        <select name="discount_type" id="" class="form-control">
-                                            <option value="">Item Discount</option>
-                                            <option value="">Sale Discount</option>
-                                            <option value="">Promotional Discount</option>
-                                            <option value="">Senior Citizen Discount</option>
-                                        </select>
-                                    </div>
-                                </div><br>
-
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label"><strong>* Discount Description :</strong></label>
-                                    <div class="col-md-8">
-                                        <textarea name="discount_desc" class="form-control" data-error-msg="Discount Description is required!" placeholder="Description" required></textarea>
-                                    </div>
-                                </div><br><br>
-
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label"><strong>* Discount Rate (%) :</strong></label>
-                                    <div class="col-md-8">
-                                        <div class="input-group col-md-12">
-                                            <input type="number" name="discount_percent" class="form-control" data-error-msg="Discount Percentage is required!" required>
-                                        </div>
-                                    </div>
-                                </div><br>
-
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label"><strong>* Discount Rate (Amount)</strong></label>
-                                    <div class="col-md-8">
-                                        <div class="input-group col-md-12">
-                                            <input type="text" name="discount_amount" class="form-control" data-error-msg="Discount Amount is required!" required>
+                                            <input type="text" name="brand_name" class="form-control" placeholder="Brand Name" data-error-msg="Brand name is required!" required>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 col-md-offset-1 control-label"><strong>* Description :</strong></label>
+                                    <div class="col-md-7">
+                                        <textarea name="brand_desc" class="form-control" data-error-msg="Brand Description is required!" placeholder="Description" required></textarea>
+                                    </div>
+                                </div><br/>
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button id="btn_save" class="btn btn-primary" name="btn_save">Save</button>
+                            <button id="btn_save" class="btn btn-primary">Save</button>
                             <button id="btn_cancel" class="btn btn-default">Cancel</button>
                         </div>
                     </div>
@@ -307,31 +244,29 @@ $(document).ready(function(){
     var dt; var _txnMode; var _selectedID; var _selectRowObj;
 
     var initializeControls=function(){
-        dt=$('#tbl_discounts').DataTable({
+        dt=$('#tbl_brands').DataTable({
             "dom": '<"toolbar">frtip',
             "bLengthChange":false,
-            "ajax" : "Discounts/transaction/list",
+            "ajax" : "Brands/transaction/list",
             "columns": [
 
-                { targets:[0],data: "discount_code" },
-                { targets:[1],data: "discount_desc" },
-                { targets:[2],data: "discount_percent" },
-                { targets:[3],data: "discount_amount" },
+                { targets:[0],data: "brand_name" },
+                { targets:[1],data: "brand_desc" },
                 {
-                    targets:[4],
+                    targets:[3],
                     render: function (data, type, full, meta){
-                        var btn_edit='<button class="btn btn-default btn-sm" name="edit_info"  style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
-                        var btn_trash='<button class="btn btn-default btn-sm" name="remove_info" style="margin-right:0px;" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
+                        var btn_edit='<button class="btn btn-primary btn-sm" name="edit_info"  style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
+                        var btn_trash='<button class="btn btn-danger btn-sm" name="remove_info" style="margin-right:0px;" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
 
-                        return '<center>'+btn_edit+btn_trash+'</center>';
+                        return '<center>'+btn_edit+' '+btn_trash+'</center>';
                     }
                 }
             ]
         });
 
         var createToolBarButton=function(){
-            var _btnNew='<button class="btn btn-primary"  id="btn_new" style="text-transform: capitalize;font-family: Tahoma, Georgia, Serif;" data-toggle="modal" data-target="" data-placement="left" title="New discount" >'+
-                '<i class="fa fa-users"></i> New Discount</button>';
+            var _btnNew='<button class="btn btn-primary"  id="btn_new" style="text-transform: capitalize;font-family: Tahoma, Georgia, Serif;" data-toggle="modal" data-target="" data-placement="left" title="New brand" >'+
+                '<i class="fa fa-users"></i> New Brand</button>';
             $("div.toolbar").html(_btnNew);
         }();
     }();
@@ -339,7 +274,7 @@ $(document).ready(function(){
     var bindEventHandlers=(function(){
         var detailRows = [];
 
-        $('#tbl_discounts tbody').on( 'click', 'tr td.details-control', function () {
+        $('#tbl_brands tbody').on( 'click', 'tr td.details-control', function () {
             var tr = $(this).closest('tr');
             var row = dt.row( tr );
             var idx = $.inArray( tr.attr('id'), detailRows );
@@ -363,17 +298,17 @@ $(document).ready(function(){
 
         $('#btn_new').click(function(){
             _txnMode="new";
-            $('#modal_discount').modal('show');
-            clearFields('#frm_discount');
+            $('#modal_brand').modal('show');
+            clearFields('#frm_brand');
             showList(true);
         });
 
-        $('#tbl_discounts tbody').on('click','button[name="edit_info"]',function(){
+        $('#tbl_brands tbody').on('click','button[name="edit_info"]',function(){
             _txnMode="edit";
-            $('#modal_discount').modal('show');
+            $('#modal_brand').modal('show');
             _selectRowObj=$(this).closest('tr');
             var data=dt.row(_selectRowObj).data();
-            _selectedID=data.discount_id;
+            _selectedID=data.brand_id;
 
             $('input,textarea').each(function(){
                 var _elem=$(this);
@@ -386,16 +321,16 @@ $(document).ready(function(){
             showList(true);
         });
 
-        $('#tbl_discounts tbody').on('click','button[name="remove_info"]',function(){
+        $('#tbl_brands tbody').on('click','button[name="remove_info"]',function(){
             _selectRowObj=$(this).closest('tr');
             var data=dt.row(_selectRowObj).data();
-            _selectedID=data.discount_id;
+            _selectedID=data.brand_id;
 
             $('#modal_confirmation').modal('show');
         });
 
         $('#btn_yes').click(function(){
-            removeDiscount().done(function(response){
+            removebrand().done(function(response){
                 showNotification(response);
                 dt.row(_selectRowObj).remove().draw();
             });
@@ -404,7 +339,7 @@ $(document).ready(function(){
         $('input[name="file_upload[]"]').change(function(event){
             var _files=event.target.files;
 
-            $('#div_img_discount').hide();
+            $('#div_img_brand').hide();
             $('#div_img_loader').show();
 
             var data=new FormData();
@@ -415,7 +350,7 @@ $(document).ready(function(){
             console.log(_files);
 
             $.ajax({
-                url : 'Discounts/transaction/upload',
+                url : 'Brands/transaction/upload',
                 type : "POST",
                 data : data,
                 cache : false,
@@ -424,31 +359,31 @@ $(document).ready(function(){
                 contentType : false,
                 success : function(response){
                     $('#div_img_loader').hide();
-                    $('#div_img_discount').show();
+                    $('#div_img_brand').show();
                 }
             });
         });
 
         $('#btn_cancel').click(function(){
-            $('#modal_discount').modal('toggle');
+            $('#modal_brand').modal('toggle');
         });
 
         $('#btn_save').click(function(){
             if(validateRequiredFields()){
                 if(_txnMode=="new"){
-                    createDiscount().done(function(response){
+                    createBrand().done(function(response){
                         showNotification(response);
                         dt.row.add(response.row_added[0]).draw();
                     }).always(function(){
-                        $('#modal_discount').modal('toggle');
+                        $('#modal_brand').modal('toggle');
                         showSpinningProgress($('#btn_save'));
                     });
                 }else{
-                    updateDiscount().done(function(response){
+                    updateBrand().done(function(response){
                         showNotification(response);
                         dt.row(_selectRowObj).data(response.row_updated[0]).draw();
                     }).always(function(){
-                        $('#modal_discount').modal('toggle');
+                        $('#modal_brand').modal('toggle');
                         showSpinningProgress($('#btn_save'));
                     });
                 }
@@ -460,7 +395,7 @@ $(document).ready(function(){
         var stat=true;
 
         $('div.form-group').removeClass('has-error');
-        $('input[required],textarea','#frm_discount').each(function(){
+        $('input[required],textarea','#frm_brand').each(function(){
             if($(this).val()==""){
                 showNotification({title:"Error!",stat:"error",msg:$(this).data('error-msg')});
                 $(this).closest('div.form-group').addClass('has-error');
@@ -471,47 +406,47 @@ $(document).ready(function(){
         return stat;
     };
 
-    var createDiscount=function(){
-        var _data=$('#frm_discount').serializeArray();
+    var createBrand=function(){
+        var _data=$('#frm_brand').serializeArray();
 
         return $.ajax({
             "dataType":"json",
             "type":"POST",
-            "url":"Discounts/transaction/create",
+            "url":"Brands/transaction/create",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_save'))
         });
     };
 
-    var updateDiscount=function(){
-        var _data=$('#frm_discount').serializeArray();
-        _data.push({name : "discount_id" ,value : _selectedID});
+    var updateBrand=function(){
+        var _data=$('#frm_brand').serializeArray();
+        _data.push({name : "brand_id" ,value : _selectedID});
 
         return $.ajax({
             "dataType":"json",
             "type":"POST",
-            "url":"Discounts/transaction/update",
+            "url":"Brands/transaction/update",
             "data":_data,
             "beforeSend": showSpinningProgress($('#btn_save'))
         });
     };
 
-    var removeDiscount=function(){
+    var removebrand=function(){
         return $.ajax({
             "dataType":"json",
             "type":"POST",
-            "url":"Discounts/transaction/delete",
-            "data":{discount_id : _selectedID}
+            "url":"Brands/transaction/delete",
+            "data":{brand_id : _selectedID}
         });
     };
 
     var showList=function(b){
         if(b){
-            $('#div_discount_list').show();
-            $('#div_discount_fields').hide();
+            $('#div_brand_list').show();
+            $('#div_brand_fields').hide();
         }else{
-            $('#div_discount_list').hide();
-            $('#div_discount_fields').show();
+            $('#div_brand_list').hide();
+            $('#div_brand_fields').show();
         }
     };
 
@@ -529,7 +464,7 @@ $(document).ready(function(){
     };
 
     var clearFields=function(){
-        $('input[required],textarea','#frm_discount').val('');
+        $('input[required],textarea','#frm_brand').val('');
         $('form').find('input:first').focus();
     };
 
@@ -539,10 +474,7 @@ $(document).ready(function(){
         '</thead>' +
         '<tbody>' +
         '<tr>' +
-        '<td>discount Name : </td><td><b>'+ d.discount_name+'</b></td>' +
-        '</tr>' +
-        '<tr>' +
-        '<td>discount Description : </td><td>'+ d.discount_desc+'</td>' +
+        '<td>brand Name : </td><td><b>'+ d.brand_name+'</b></td>' +
         '</tr>' +
         '</tbody></table><br />';
     };

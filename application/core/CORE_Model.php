@@ -71,7 +71,7 @@ class CORE_model extends CI_Model
 
 
 
-    function get_list($where_filter=null,$select_list=null,$join_array=null,$order_by=null,$group_by=null,$auto_select_escape=TRUE){
+    function get_list($where_filter=null,$select_list=null,$join_array=null,$order_by=null,$group_by=null,$auto_select_escape=TRUE,$limit=null,$having=null){
 
         //select fields
         $this->db->select(($select_list===null?$this->table.'.*':(is_array($select_list)?join(',',$select_list):$select_list)),$auto_select_escape);
@@ -100,11 +100,17 @@ class CORE_model extends CI_Model
             }
         }
 
-
+        //group by
+        if($group_by!=null){ $this->db->group_by($group_by); }
 
         //order by
         $this->db->order_by($order_by==null?$this->table.'.'.$this->pk_id.' ASC':(is_array($order_by)?join(',',$order_by):$order_by));
 
+        //limit
+        if($limit!=null){ $this->db->limit($limit); }
+
+        //having
+        if($having!=null){ $this->db->having($having); }
 
         $query = $this->db->get();
         return $query->result();

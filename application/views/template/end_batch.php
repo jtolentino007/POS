@@ -106,9 +106,20 @@ $user_id=$this->session->user_id;
 
 
 				<?php
-					$query1 = $this->db->query('SELECT products.product_desc,pos_invoice_items.* FROM pos_invoice_items LEFT JOIN products
+					$query1 = $this->db->query('SELECT 
+							products.product_desc,
+							pos_invoice_items.pos_invoice_id,
+	                        pos_invoice_items.product_id,
+	                        SUM(pos_invoice_items.pos_qty) pos_qty,
+	                        pos_invoice_items.pos_price,
+	                        SUM(pos_invoice_items.pos_discount) pos_discount,
+	                        pos_invoice_items.tax_rate,
+	                        SUM(pos_invoice_items.tax_amount) tax_amount,
+	                        SUM(pos_invoice_items.total) total
+							FROM pos_invoice_items LEFT JOIN products
 							ON pos_invoice_items.product_id=products.product_id
-							WHERE pos_invoice_id='.$invoiceid);
+							WHERE pos_invoice_id='.$invoiceid.'
+							 GROUP BY pos_invoice_items.pos_invoice_id, pos_invoice_items.product_id');
 
 					foreach ($query1->result() as $prod)
 					{

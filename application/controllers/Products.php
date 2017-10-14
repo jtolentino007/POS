@@ -42,8 +42,7 @@ class Products extends CORE_Controller
 
             case 'create':
                 $m_products = $this->Products_model;
-				
-
+                
                 $m_products->supplier_id = $this->input->post('supplier', TRUE);
                 $m_products->product_code = $this->input->post('product_code', TRUE);
                 $m_products->product_desc = $this->input->post('product_desc', TRUE);

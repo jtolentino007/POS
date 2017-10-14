@@ -37,6 +37,9 @@
         	$data['user_name'] = $this->session->user_fullname;
         	$data['user_group_id'] = $this->session->user_group_id;
 
+			$this->db->truncate('pos_invoice_ajax');
+			$this->db->truncate('pos_invoice_items_ajax');
+
 			$this->load->view('pos_v2_view',$data);
 		}
 
@@ -77,7 +80,14 @@
 
 						$response['items'] = $m_pos_items->get_list(
 							'pi.pos_invoice_id='.$pos_invoice_id.' AND is_paid=FALSE',
-							'pos_invoice_items.*, 
+							'pos_invoice_items.pos_invoice_id,
+							pos_invoice_items.product_id,
+							SUM(pos_invoice_items.pos_qty) pos_qty,
+							pos_invoice_items.pos_price,
+							SUM(pos_invoice_items.pos_discount) pos_discount,
+							pos_invoice_items.tax_rate,
+							SUM(pos_invoice_items.tax_amount) tax_amount, 
+							SUM(pos_invoice_items.total) total, 
 							pi.pos_invoice_no, 
 							pi.total_discount, 
 							pi.before_tax,
@@ -90,7 +100,9 @@
 								array('pos_invoice pi','pi.pos_invoice_id=pos_invoice_items.pos_invoice_id','inner'),
 								array('customers c','c.customer_id=pi.customer_id','left'),
 								array('products p','p.product_id=pos_invoice_items.product_id','left')
-							)
+							),
+							null,
+							'pos_invoice_items.pos_invoice_id, pos_invoice_items.product_id'
 						);
 
 						$response['tables'] = $m_order_tables->get_list(
@@ -199,6 +211,7 @@
 			$this->db->truncate('pos_invoice_ajax');
 			$this->db->truncate('pos_invoice_items_ajax');
 
+			$pos_invoice_id = $this->input->post('pos_invoice_id',TRUE);
 			$customer_id = $this->input->post('customer_id',TRUE);
 
 			$product_id = $this->input->post('product_id', TRUE);
@@ -209,10 +222,12 @@
 			$tax_amount = $this->input->post('tax_amount', TRUE);
 			$total = $this->input->post('total', TRUE);
 			$grand_total = $this->input->post('grand_total', TRUE);
+			$status = $this->input->post('status', TRUE);
 
 			for($i=0;$i<count($product_id);$i++) 
 			{
 				$m_pos_items_ajax->customer_id = $customer_id;
+				$m_pos_items_ajax->pos_invoice_id = $pos_invoice_id;
 				$m_pos_items_ajax->product_id = $product_id[$i];
 				$m_pos_items_ajax->grand_total = $this->get_numeric_value($grand_total);
 				$m_pos_items_ajax->pos_qty = $this->get_numeric_value($pos_qty[$i]);
@@ -221,6 +236,7 @@
 				$m_pos_items_ajax->tax_rate = $this->get_numeric_value($tax_rate[$i]);
 				$m_pos_items_ajax->total = $this->get_numeric_value($total[$i]);
 				$m_pos_items_ajax->tax_amount = $this->get_numeric_value($tax_amount[$i]);
+				$m_pos_items_ajax->status = $this->get_numeric_value($status[$i]);
 				$m_pos_items_ajax->save();
 			}
 		}
@@ -236,6 +252,7 @@
 			$m_payment->tendered = $this->get_numeric_value($this->input->post('tendered',TRUE));
 			$m_payment->change = $this->get_numeric_value($this->input->post('change',TRUE));
 			$m_payment->pos_invoice_id = $this->get_numeric_value($this->input->post('pos_invoice_id',TRUE));
+			$m_payment->approved_by = $this->get_numeric_value($this->input->post('approved_by',TRUE));
 			$m_payment->set('transaction_date','NOW()');
 			$m_payment->save();
 
@@ -317,9 +334,65 @@
 			$this->db->truncate('pos_invoice_items_ajax');
 
 			$response['pos_invoice_id'] = $pos_invoice_id;
+			$response['response_rows'] = $this->response_rows($pos_invoice_id);
 			$response['title'] = 'Success!';
             $response['stat'] = 'success';
             $response['msg'] = 'Order successfully submitted.';
+
+            echo json_encode($response);
+		}
+
+		public function addProductToInvoice()
+		{
+			$m_pos = $this->Pos_model;
+			$m_pos_items = $this->Pos_items_model;
+			$m_order_tables = $this->Order_tables_model;
+
+			$m_pos->begin();
+
+			$query = $this->db->update('pos_invoice_items', array('status ' => FALSE));
+
+			$pos_invoice_id = $this->input->post('pos_invoice_id',TRUE);
+			$m_pos->set('transaction_date','NOW()');
+			$m_pos->customer_id = $this->input->post('customer_id',TRUE);
+			$m_pos->user_id = $this->session->userdata('user_id');
+			$m_pos->total_discount = $this->get_numeric_value($this->input->post('total_discount',TRUE));
+			$m_pos->before_tax = $this->get_numeric_value($this->input->post('before_tax',TRUE));
+			$m_pos->total_tax_amount = $this->get_numeric_value($this->input->post('total_tax_amount',TRUE));
+			$m_pos->total_after_tax = $this->get_numeric_value($this->input->post('total_after_tax',TRUE));
+			$m_pos->batch_id = $this->session->batch_id;
+			$m_pos->modify($pos_invoice_id);
+
+			$product_id = $this->input->post('product_id',TRUE);
+			$pos_qty = $this->input->post('pos_qty',TRUE);
+			$pos_price = $this->input->post('pos_price',TRUE);
+			$pos_discount = $this->input->post('pos_discount',TRUE);
+			$tax_rate = $this->input->post('tax_rate',TRUE);
+			$tax_amount = $this->input->post('tax_amount',TRUE);
+			$total = $this->input->post('total',TRUE);
+			$table_id = $this->input->post('table_id',TRUE);
+
+			for($i=0;$i<count($product_id);$i++)
+			{
+				$m_pos_items->pos_invoice_id = $pos_invoice_id;
+				$m_pos_items->product_id = $product_id[$i];
+				$m_pos_items->pos_qty = $this->get_numeric_value($pos_qty[$i]);
+				$m_pos_items->pos_price = $this->get_numeric_value($pos_price[$i]);
+				$m_pos_items->pos_discount = $this->get_numeric_value($pos_discount[$i]);
+				$m_pos_items->tax_rate = $this->get_numeric_value($tax_rate[$i]);
+				$m_pos_items->tax_amount = $this->get_numeric_value($tax_amount[$i]);
+				$m_pos_items->total = $this->get_numeric_value($total[$i]);
+				$m_pos_items->status = 1;
+				$m_pos_items->save();
+			}
+
+			$m_pos->commit();
+
+			$response['pos_invoice_id'] = $pos_invoice_id;
+			$response['response_rows'] = $this->response_rows($pos_invoice_id);
+			$response['title'] = 'Success!';
+            $response['stat'] = 'success';
+            $response['msg'] = 'Orders successfully added.';
 
             echo json_encode($response);
 		}
@@ -382,11 +455,26 @@
 			$this->db->truncate('pos_invoice_items_ajax');
 
 			$response['pos_invoice_id'] = $pos_invoice_id;
+			$response['response_rows'] = $this->response_rows($pos_invoice_id);
 			$response['title'] = 'Success!';
             $response['stat'] = 'success';
             $response['msg'] = 'Order successfully updated.';
 
             echo json_encode($response);
+		}
+
+		public function response_rows($filter_value) 
+		{
+			$m_pos = $this->Pos_model;
+			return $m_pos->get_list(
+				$filter_value,
+				'pos_invoice.*, pos_invoice_items.*, vendors.*',
+				array(
+					array('pos_invoice_items','pos_invoice_items.pos_invoice_id = pos_invoice.pos_invoice_id','inner'),
+					array('products','products.product_id = pos_invoice_items.product_id','left'),
+					array('vendors','vendors.vendor_id = products.vendor_id','left')
+				)
+			);
 		}
 	}
 ?>

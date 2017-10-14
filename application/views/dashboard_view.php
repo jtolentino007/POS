@@ -64,7 +64,7 @@
                                 <h1 style="margin-left: 20px; font-weight: 400;">POINT OF SALES <small>ADMINISTRATION</small></h1>
                             </div>
                             <div class="col-xs-12 col-sm-6 text-right" style="padding-top: 20px;">
-                                <a href="Login/transaction/logout" class="btn btn-primary  " style="border-radius: 50%;  padding: 10px 15px;"><i class="fa fa-sign-out"></i></a>
+                                <a id="btn_logout" href="Login/transaction/logout" class="btn btn-primary" style="border-radius: 50%;  padding: 10px 15px;"><i class="fa fa-sign-out"></i></a>
                             </div>
                         </div>
                     </div>
@@ -182,7 +182,13 @@
                             <div class="col-xs-12 col-sm-6">
                                 <div class="row">
                                     <div class="">
-                                        <div class="col-xs-12 col-sm-6">
+                                        <div class="col-xs-12 col-sm-3">
+                                            <a href="vendors" class="btn btn-success btn-block btn-height <?php echo (in_array('1-22', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #009688!important; border-color: #009688!important;"><br>
+                                                <i class="fa fa-archive" style="font-size: 50px;"></i><br><br>
+                                                <span>VENDORS</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-3">
                                             <a href="products" class="btn btn-success btn-block btn-height <?php echo (in_array('1-14', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #e67e22!important; border-color: #e67e22!important;"><br>
                                                 <i class="fa fa-archive" style="font-size: 50px;"></i><br><br>
                                                 <span>PRODUCTS</span>
@@ -270,6 +276,7 @@
 </script>
 <script>
 $(document).ready(function(){
+
     $('#btn_z_reading').click(function(){
         $('#modal_zreading_reportsjs').modal('show');
     });
@@ -318,6 +325,10 @@ $(document).ready(function(){
 
     $('#salestodate').change(function() {
         getsales();
+    });
+
+    $('#btn_logout').on('click', function(){
+        window.close();
     });
 
     var getsales=function(){

@@ -12,7 +12,11 @@
 <script type="text/javascript">
       window.onload = function() {
        window.print();
-		window.onfocus=function(){ window.close();}
+      setTimeout(function(){
+        var url = window.location.origin;
+        url = url + "/POS/dashboard";  // this number is dynamic actually
+        window.location.href = url;
+      },100);
    }
  </script>
 

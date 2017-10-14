@@ -41,6 +41,14 @@
 					echo json_encode($response);
 					break;
 
+				case 'list-all-tables':
+					$m_tables = $this->Tables_model;
+
+					$response['data'] = $m_tables->list_all_tables();
+
+					echo json_encode($response);
+					break;
+
 				case 'list':
 					$m_tables = $this->Tables_model;
 

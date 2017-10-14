@@ -23,29 +23,28 @@
         height:100%;
       }
 
+      .form-control {
+        height: 50px;
+        font-size: 20px;
+        border:none!important;
+        border-bottom: 1px solid #ddd!important;
+      }
+
+      .form-control:focus {
+        border-bottom-width: 3px!important;
+      }
+
+      .btn {
+        height: 50px;
+        font-size: 20px;
+      }
+
+      .panel {
+        background: transparent!important;
+      }
+
       body {
         margin:0;
-      }
-
-      .bg {
-        animation:slide 3s ease-in-out infinite alternate;
-        background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
-        bottom:0;
-        left:-50%;
-        opacity:.5;
-        position:fixed;
-        right:-50%;
-        top:0;
-        z-index:-1;
-      }
-
-      .bg2 {
-        animation-direction:alternate-reverse;
-        animation-duration:4s;
-      }
-
-      .bg3 {
-        animation-duration:5s;
       }
 
       .content {
@@ -77,7 +76,7 @@
 
     </head>
 
-    <body class="focused-form animated-content">
+    <body class="focused-form animated-content" style="background:#2196f3">
 
 <div style="z-index: -9999999;">
     <div class="bg"></div>
@@ -90,26 +89,16 @@
 			<div class="col-md-4 col-md-offset-3">
 				<div class="panel panel-default" style="width:500px;">
 					<div class="panel-body">
-            <center><h1 style="font-family: Arial, sans-serif; font-weight: 200;">LOGIN <br><small><b>POINT OF SALES</b></small></h1></center><br>
+            <center><h1 style="font-family: 'Segoe UI', sans-serif; font-weight: 400;">LOGIN <br><small style="color: #2196f3;">POINT OF SALES</small></h1></center><br>
             <form class="form-horizontal" id="validate-form">
               <div class="form-group mb-md">
                   <div class="col-xs-12">
-                  	<div class="input-group">
-  										<span class="input-group-addon">
-  											<i class="ti ti-user"></i>
-  										</span>
-  										<input name="user_name" type="text" class="form-control" placeholder="Username" data-parsley-minlength="20" placeholder="At least 6 characters" required>
-					          </div>
+  										<input name="user_name" type="text" class="form-control text-center" placeholder="Username" data-parsley-minlength="20" placeholder="At least 6 characters" required>
                   </div>
 							</div>
 							<div class="form-group mb-md">
                   <div class="col-xs-12">
-                  	<div class="input-group">
-  										<span class="input-group-addon">
-  											<i class="ti ti-key"></i>
-  										</span>
-  										<input name="user_pword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-  									</div>
+  										<input name="user_pword" type="password" class="form-control text-center" id="exampleInputPassword1" placeholder="Password">
                   </div>
 							</div>
 						</form>
@@ -119,7 +108,7 @@
 					<div class="panel-footer">
 						<div class="col-xs-12">
 							<button id="btn_login" class="btn btn-primary ladda-button btn-block" data-style="expand-left" data-spinner-color="white" data-size="l"><span class=""></span> Login</button>
-              <button id="btn_close_window" class="btn btn-danger ladda-button btn-block hidden" data-style="expand-left" data-spinner-color="white" data-size="l"><span class=""></span> Close</button>
+              <button id="btn_close_window" class="btn btn-danger ladda-button btn-block" data-style="expand-left" data-spinner-color="white" data-size="l"><span class=""></span> Close</button>
 						</div>
 					</div>
 				</div>
@@ -130,8 +119,6 @@
 <?php echo $_def_js_files; ?>
 <script src="assets/plugins/spinner/dist/spin.min.js"></script>
 <script src="assets/plugins/spinner/dist/ladda.min.js"></script>
-
-
 
     <script>
         $(document).ready(function(){
@@ -165,18 +152,14 @@
 
                 });
 
-                $('#btn_close_window').on('click', function(){
-                  window.close();
+                $('#btn_close_window').on('click', function(event){
+                    window.open('Login/closekiosk','_self')
                 });
 
                 $('input').keypress(function(evt){
                     if(evt.keyCode==13){ $('#btn_login').click(); }
                 });
-
-
             })();
-
-
 
             var validateUser=(function(){
                 var _data={uname : $('input[name="user_name"]').val() , pword : $('input[name="user_pword"]').val()};

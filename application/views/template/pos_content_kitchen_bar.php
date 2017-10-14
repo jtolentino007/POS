@@ -28,23 +28,23 @@
         
         var url = window.location.origin;
 
-        var _vendor = getParameterByName('vendor');
+        var _vendor = getParameterByName('vendorid');
+        var _type = getParameterByName('type');
 
-        if (_vendor == 2) {
-            var a = url.indexOf("?");
-            var b =  url.substring(a);
-            var c = url.replace(b,"");
-            var newUrl = c;
-            setTimeout(function(){
-                url = newUrl + '?vendor=3';  // this number is dynamic actually
-                window.location.href = url;
-            },100);
-        } else {
-            setTimeout(function(){
-                url = url + "/POS/Pos_v2";  // this number is dynamic actually
-                window.location.href = url;
-            },100);
-        }
+        var _newVendorID = parseInt(_vendor) + 1;
+
+        var a = url.indexOf("?");
+        var b =  url.substring(a);
+        var c = url.replace(b,"");
+        var newUrl = c;
+        setTimeout(function(){
+            if (_type == "add") {
+                url = newUrl + '?vendorid='+_newVendorID+'&type=add'; // this number is dynamic actually
+            } else {
+                url = newUrl + '?vendorid='+_newVendorID;
+            }
+            window.location.href = url;
+        },100);
    }
 </script>
 <style>
@@ -161,7 +161,7 @@
             <div class="page-content"><!-- #page-content -->
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-12"> 
+                        <div class="col-md-12">
                             <input id="txt_vendor" type="hidden" value="<?php echo $vendor; ?>">
                             <div id="header" style="display: none;">
                                 

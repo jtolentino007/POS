@@ -13,6 +13,8 @@
     </thead>
     <tbody>
       <?php
+        $subTotal = 0;
+        $grandTotal = 0;
         foreach($receipts as $receipt){
           ?>
           <tr style="border-top:2px solid black;">
@@ -23,20 +25,34 @@
             <td></td>
           </tr>
           <?php
-        foreach($invoice as $invoices){
-              if($receipt->pos_invoice_id==$invoices->pos_invoice_id){  ?>
-          <tr>
-            <td></td>
-            <td><?php echo $invoices->product_desc; ?></td>
-            <td><?php echo number_format($invoices->pos_price,2); ?></td>
-            <td><?php echo $invoices->pos_qty; ?></td>
-            <td><?php echo number_format($invoices->total,2); ?></td>
-          </tr>
-      <?php
+            foreach($invoice as $invoices){
+                  if($receipt->pos_invoice_id==$invoices->pos_invoice_id){  ?>
+              <tr>
+                <td></td>
+                <td><?php echo $invoices->product_desc; ?></td>
+                <td><?php echo number_format($invoices->pos_price,2); ?></td>
+                <td><?php echo $invoices->pos_qty; ?></td>
+                <td><?php echo number_format($invoices->total,2); ?></td>
+              </tr>
+          <?php
+              $subTotal += $invoices->total;
             }
           }
-        }
-      ?>
+          ?>
+          <tr>
+            <td colspan="4" align="right">Sub-Total :</td>
+            <td><?php echo number_format($subTotal,2); ?></td>
+          </tr>
+      <?php 
+        $grandTotal += $subTotal;
+      } ?>
+      <tr></tr>
+      <tr></tr>
+      <tr></tr>
+      <tr>
+        <td colspan="4" align="right">Grand-Total :</td>
+        <td><?php echo number_format($grandTotal,2); ?></td>
+      </tr>
     </tbody>
 </table>
 
