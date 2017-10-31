@@ -18,7 +18,10 @@
 					'Pos_payment_model',
 					'Batches_model',
 					'Pos_items_ajax_model',
-					'Pos_ajax_model'
+					'Pos_ajax_model',
+					'User_groups_model',
+					'Pos_invoice_server_model',
+					'Void_logs_model'
 				)
 			);
 		}
@@ -36,6 +39,7 @@
         	);
         	$data['user_name'] = $this->session->user_fullname;
         	$data['user_group_id'] = $this->session->user_group_id;
+        	$data['user_groups'] = $this->User_groups_model->get_list($this->session->user_group_id)[0];
 
 			$this->db->truncate('pos_invoice_ajax');
 			$this->db->truncate('pos_invoice_items_ajax');
@@ -75,6 +79,7 @@
 				case 'pos-items':
 						$m_pos_items = $this->Pos_items_model;
 						$m_order_tables = $this->Order_tables_model;
+						$m_pos_servers = $this->Pos_invoice_server_model;
 
 						$pos_invoice_id = $this->input->get('inv_id',TRUE);
 
@@ -95,7 +100,8 @@
 							pi.total_after_tax, 
 							c.customer_id,
 							c.customer_name,
-							p.product_desc',
+							p.product_desc,
+							p.vendor_id',
 							array(
 								array('pos_invoice pi','pi.pos_invoice_id=pos_invoice_items.pos_invoice_id','inner'),
 								array('customers c','c.customer_id=pi.customer_id','left'),
@@ -104,6 +110,8 @@
 							null,
 							'pos_invoice_items.pos_invoice_id, pos_invoice_items.product_id'
 						);
+
+						$response['servers'] = $m_pos_items->get_servers_edit($pos_invoice_id);
 
 						$response['tables'] = $m_order_tables->get_list(
 							'pos_invoice_id='.$pos_invoice_id,
@@ -150,14 +158,18 @@
 			} else {
 				if ($no_of_non_ended_batch > 0) 
 				{
-					$invoice = $this->db->query('SELECT pos_invoice.pos_invoice_id FROM pos_invoice WHERE user_id='.$user_id.
-						' AND batch_id = '.$this->session->batch_id);
+					$query = $this->db->update('pos_invoice', array('is_current_batch ' => FALSE));
+
+					$invoice = $this->db->query('SELECT pos_invoice.pos_invoice_id FROM pos_invoice WHERE end_batch = 0');
+
 					foreach ($invoice->result() as $row)
 					{
 						$pos_invoice_id = $row->pos_invoice_id;
+
 						$updateArray[] = array(
-							'pos_invoice_id'=>$pos_invoice_id,
-							'end_batch' => "1"
+							'pos_invoice_id'=> $pos_invoice_id,
+							'end_batch' => "1",
+							'is_current_batch' => "1"
 						);
 					}
 					$this->db->update_batch('pos_invoice', $updateArray, 'pos_invoice_id');
@@ -280,6 +292,7 @@
 			$m_pos = $this->Pos_model;
 			$m_pos_items = $this->Pos_items_model;
 			$m_order_tables = $this->Order_tables_model;
+			$m_voids = $this->Void_logs_model;
 
 			$m_pos->begin();
 
@@ -293,7 +306,10 @@
 			$m_pos->batch_id = $this->session->batch_id;
 			$m_pos->save();
 
+			$server_id = $this->input->post('server_id',true);
 			$pos_invoice_id = $m_pos->last_insert_id();
+
+			$m_pos_servers = $this->Pos_invoice_server_model;
 
 			$product_id = $this->input->post('product_id',TRUE);
 			$pos_qty = $this->input->post('pos_qty',TRUE);
@@ -303,6 +319,24 @@
 			$tax_amount = $this->input->post('tax_amount',TRUE);
 			$total = $this->input->post('total',TRUE);
 			$table_id = $this->input->post('table_id',TRUE);
+			$server_id = $this->input->post('server_id', TRUE);
+
+			$void_product_id = $this->input->post('product_id_void',TRUE);
+			$void_pos_qty = $this->input->post('pos_qty_void',TRUE);
+			$void_pos_price = $this->input->post('pos_price_void',TRUE);
+			$void_pos_total = $this->input->post('pos_total_void',TRUE);
+
+			for($v=0;$v<count($void_product_id);$v++)
+			{
+				$m_voids->set('void_datetime','NOW()');
+				$m_voids->pos_invoice_id = $pos_invoice_id;
+				$m_voids->product_id = $void_product_id[$v];
+				$m_voids->pos_qty = $this->get_numeric_value($void_pos_qty[$v]);
+				$m_voids->pos_price = $this->get_numeric_value($void_pos_price[$v]);
+				$m_voids->pos_total = $this->get_numeric_value($void_pos_total[$v]);
+				$m_voids->user_id = $this->session->user_id;
+				$m_voids->save();
+			}
 
 			for($i=0;$i<count($product_id);$i++)
 			{
@@ -315,6 +349,16 @@
 				$m_pos_items->tax_amount = $this->get_numeric_value($tax_amount[$i]);
 				$m_pos_items->total = $this->get_numeric_value($total[$i]);
 				$m_pos_items->save();
+
+				$pos_invoice_items_id = $m_pos_items->last_insert_id();
+
+				for($s=0;$s<count($server_id);$s++)
+				{
+					$m_pos_servers->pos_invoice_id = $pos_invoice_id;
+					$m_pos_servers->pos_invoice_items_id = $pos_invoice_items_id;
+					$m_pos_servers->server_id = $server_id[$s];
+					$m_pos_servers->save();
+				}
 			}
 
 			for($t=0;$t<count($table_id);$t++)
@@ -347,6 +391,8 @@
 			$m_pos = $this->Pos_model;
 			$m_pos_items = $this->Pos_items_model;
 			$m_order_tables = $this->Order_tables_model;
+			$m_pos_servers = $this->Pos_invoice_server_model;
+			$m_voids = $this->Void_logs_model;
 
 			$m_pos->begin();
 
@@ -371,6 +417,24 @@
 			$tax_amount = $this->input->post('tax_amount',TRUE);
 			$total = $this->input->post('total',TRUE);
 			$table_id = $this->input->post('table_id',TRUE);
+			$server_id = $this->input->post('server_id',TRUE);
+
+			$void_product_id = $this->input->post('product_id_void',TRUE);
+			$void_pos_qty = $this->input->post('pos_qty_void',TRUE);
+			$void_pos_price = $this->input->post('pos_price_void',TRUE);
+			$void_pos_total = $this->input->post('pos_total_void',TRUE);
+
+			for($v=0;$v<count($void_product_id);$v++)
+			{
+				$m_voids->set('void_datetime','NOW()');
+				$m_voids->pos_invoice_id = $pos_invoice_id;
+				$m_voids->product_id = $void_product_id[$v];
+				$m_voids->pos_qty = $this->get_numeric_value($void_pos_qty[$v]);
+				$m_voids->pos_price = $this->get_numeric_value($void_pos_price[$v]);
+				$m_voids->pos_total = $this->get_numeric_value($void_pos_total[$v]);
+				$m_voids->user_id = $this->session->user_id;
+				$m_voids->save();
+			}
 
 			for($i=0;$i<count($product_id);$i++)
 			{
@@ -384,6 +448,16 @@
 				$m_pos_items->total = $this->get_numeric_value($total[$i]);
 				$m_pos_items->status = 1;
 				$m_pos_items->save();
+
+				$pos_invoice_items_id = $m_pos_items->last_insert_id();
+
+				for($s=0;$s<count($server_id);$s++)
+				{
+					$m_pos_servers->pos_invoice_id = $pos_invoice_id;
+					$m_pos_servers->pos_invoice_items_id = $pos_invoice_items_id;
+					$m_pos_servers->server_id = $server_id[$s];
+					$m_pos_servers->save();
+				}
 			}
 
 			$m_pos->commit();
@@ -402,9 +476,10 @@
 			$m_pos = $this->Pos_model;
 			$m_pos_items = $this->Pos_items_model;
 			$m_order_tables = $this->Order_tables_model;
+			$m_pos_servers = $this->Pos_invoice_server_model;
+			$m_voids = $this->Void_logs_model;
 
 			$m_pos->begin();
-
 			$pos_invoice_id = $this->input->post('pos_invoice_id',TRUE);
 			$m_pos->set('transaction_date','NOW()');
 			$m_pos->customer_id = $this->input->post('customer_id',TRUE);
@@ -417,6 +492,7 @@
 			$m_pos->modify($pos_invoice_id);
 
 			$m_pos_items->delete_via_fk($pos_invoice_id);
+			$m_pos_servers->delete('pos_invoice_id = '.$pos_invoice_id);
 
 			$product_id = $this->input->post('product_id',TRUE);
 			$pos_qty = $this->input->post('pos_qty',TRUE);
@@ -426,6 +502,24 @@
 			$tax_amount = $this->input->post('tax_amount',TRUE);
 			$total = $this->input->post('total',TRUE);
 			$table_id = $this->input->post('table_id',TRUE);
+			$server_id = $this->input->post('server_id',TRUE);
+
+			$void_product_id = $this->input->post('product_id_void',TRUE);
+			$void_pos_qty = $this->input->post('pos_qty_void',TRUE);
+			$void_pos_price = $this->input->post('pos_price_void',TRUE);
+			$void_pos_total = $this->input->post('pos_total_void',TRUE);
+
+			for($v=0;$v<count($void_product_id);$v++)
+			{
+				$m_voids->set('void_datetime','NOW()');
+				$m_voids->pos_invoice_id = $pos_invoice_id;
+				$m_voids->product_id = $void_product_id[$v];
+				$m_voids->pos_qty = $this->get_numeric_value($void_pos_qty[$v]);
+				$m_voids->pos_price = $this->get_numeric_value($void_pos_price[$v]);
+				$m_voids->pos_total = $this->get_numeric_value($void_pos_total[$v]);
+				$m_voids->user_id = $this->session->user_id;
+				$m_voids->save();
+			}
 
 			for($i=0;$i<count($product_id);$i++)
 			{
@@ -438,6 +532,16 @@
 				$m_pos_items->tax_amount = $this->get_numeric_value($tax_amount[$i]);
 				$m_pos_items->total = $this->get_numeric_value($total[$i]);
 				$m_pos_items->save();
+
+				$pos_invoice_items_id = $m_pos_items->last_insert_id();
+
+				for($s=0;$s<count($server_id);$s++)
+				{
+					$m_pos_servers->pos_invoice_id = $pos_invoice_id;
+					$m_pos_servers->pos_invoice_items_id = $pos_invoice_items_id;
+					$m_pos_servers->server_id = $server_id[$s];
+					$m_pos_servers->save();
+				}
 			}
 
 			$m_order_tables->delete_via_fk($pos_invoice_id);

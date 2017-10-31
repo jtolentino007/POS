@@ -30,7 +30,8 @@ class Rights_link_model extends CORE_Model{
                                           (19,'1','1-19','Z-Reading'),
                                           (20,'1','1-20','User Accounts'),
                                           (21,'1','1-21','User Rights'),
-                                          (22,'1','1-22','Vendors')
+                                          (22,'1','1-22','Vendors'),
+                                          (23,'1','1-23','Servers')
 
                                           ON DUPLICATE KEY UPDATE
                                           rights_links.parent_code=VALUES(rights_links.parent_code),

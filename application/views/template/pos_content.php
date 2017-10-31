@@ -185,9 +185,8 @@
                             <tr>
                                 <td width="15%" style="border-bottom: 2px dashed gray;text-align: left;height: 15px;padding: 6px;">Qty</td>
                                 <td width="50%" style="border-bottom: 2px dashed gray;text-align: left;height: 15px;padding: 6px;">Description</td>
-                                <td width="11%" style="border-bottom: 2px dashed gray;text-align: right;height: 15px;padding: 6px;"></td>
                                 <td width="11%" style="border-bottom: 2px dashed gray;text-align: left;height: 15px;padding: 6px;">Price</td>
-                                <td width="11%" style="border-bottom: 2px dashed gray;text-align: right;height: 15px;padding: 6px;">Amount</td>
+                                <td width="11%" style="border-bottom: 2px dashed gray;text-align: right;height: 15px;padding: 6px;">Discount</td> <td width="11%" style="border-bottom: 2px dashed gray;text-align: right;height: 15px;padding: 6px;">Amount</td>
                             </tr>
                             </thead>
                             <tbody id="pos_item">
@@ -201,8 +200,8 @@
                                 <tr>
                                     <td width="15%" style="border-bottom: 1px dashed gray;text-align: left;height: 15px;padding: 6px;"><?php echo number_format($item->pos_qty); ?></td>
                                     <td width="50%" style="border-bottom: 1px dashed gray;text-align: left;height: 15px;padding: 6px;"><?php echo $item->product_desc; ?></td>
-                                    <td width="11%" style="border-bottom: 1px dashed gray;text-align: left;height: 15px;padding: 6px;"></td>
                                     <td width="11%" style="border-bottom: 1px dashed gray;text-align: right;height: 15px;padding: 6px;"><?php echo number_format($item->pos_price,2); ?></td>
+                                    <td width="11%" style="border-bottom: 1px dashed gray;text-align: right;height: 15px;padding: 6px;"><?php echo number_format($item->pos_discount,2); ?></td>
                                     <td width="11%" style="border-bottom: 1px dashed gray;text-align: right;height: 15px;padding: 6px;"><?php echo number_format($item->total,2); ?></td>
                                 </tr>
                             <?php } ?>
@@ -272,6 +271,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div id="left3">
+                                Sub-Total<br>
+                                Total Discount<br>
                                 Amount&nbsp;Due&nbsp;<br>
                                 Tendered&nbsp;<br>
                                 Change&nbsp;<br>
@@ -280,8 +281,13 @@
                                 . . . . . . . . . . . . . . <br>
                                 . . . . . . . . . . . . . . <br>
                                 . . . . . . . . . . . . . . <br>
+                                . . . . . . . . . . . . . . <br>
+                                . . . . . . . . . . . . . . <br>
                             </div>
                             <div id="right3">
+                                <?php $total_before_discount = $delivery_info->total_after_tax + $delivery_info->total_discount; ?>
+                                <?php echo number_format($total_before_discount,2); ?><br>
+                                <?php echo number_format($delivery_info->total_discount,2); ?><br>
                                 <?php echo number_format($delivery_info->amount_due,2); ?><br>
                                 <?php echo number_format($delivery_info->tendered,2); ?><br>
                                 <?php echo number_format($delivery_info->change,2); ?><br>

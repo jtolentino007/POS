@@ -251,8 +251,7 @@
 
 <modalzreading>
 <div class="modal fade" id="modal_zreading_reportsjs" role="dialog">
-    <div class="modal-dialog modal-sm">
-
+    <div class="modal-dialog modal-md">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
@@ -260,19 +259,38 @@
           <h4 class="modal-title">Z Reading</h4>
         </div>
         <div class="modal-body">
-		<form action="Templates/layout/zreading/0/preview" method="post" target="_blank">
-
-		 <button type="submit" style="margin-top:50px;background-color:#2ecc71 !important;color:white;padding:20px !important;width:100%;" href="Dashboard" class="btn btn-default">Generate Report</button>
-		</button>
-		</form>
-		<form action="Templates/layout/zreading/0/pdf" method="post" target="_blank">
-			<input type="text" style="display:none;" id="fromdatepdf" name="fromdatepdf" class="date-picker form-control" value="<?php echo date("m/d/Y"); ?>" placeholder="Due Date" data-error-msg="Due Date is required!" required>
-			<input type="text" style="display:none;" id="tilldatepdf" name="tilldatepdf" class="date-picker form-control" value="<?php echo date("m/d/Y"); ?>" placeholder="Due Date" data-error-msg="Due Date is required!" required>
-		  <button type="submit" style="margin-top:50px;background-color:#2ecc71 !important;color:white;padding:20px !important;width:100%;" href="Dashboard" class="btn btn-default hidden">Dowload Report as PDF</button>
-		  </form>
+            <div class="row">
+                <div class="container-fluid">
+                    <div class="col-xs-12">
+                         <label>
+                            <strong>* Start Date :</strong>
+                         </label>
+                         <input type="text" id="fromdatepdf" name="fromdatepdf" class="date-picker form-control" value="<?php echo date("m/d/Y"); ?>" placeholder="Due Date" data-error-msg="Start Date is required!" required readonly>
+                         <label>
+                            <strong>* End Date :</strong>
+                         </label>
+                         <input type="text" id="todatepdf" name="todatepdf" class="date-picker form-control" value="<?php echo date("m/d/Y"); ?>" placeholder="Due Date" data-error-msg="End Date is required!" required readonly>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 hidden">
+                         <label>
+                            <strong>* Start Time :</strong>
+                         </label>
+                         <input type="time" id="fromtimepdf" class="form-control" value="18:00:00" placeholder="Due Date" data-error-msg="Start Time is required!" required>
+                         <label>
+                            <strong>* End Time :</strong>
+                         </label>
+                         <input type="time" id="totimepdf" class="form-control" value="02:00:00" placeholder="Due Date" data-error-msg="End Time is required!" required>
+                    </div>
+                </div>
+            </div>
 		</div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <div class="row">
+                <div class="container-fluid">
+                    <button id="btn_generate_z" type="button" class="btn btn-success btn-block">Generate Report</button>
+                    <button type="button" class="btn btn-danger btn-block" data-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
       </div>
 

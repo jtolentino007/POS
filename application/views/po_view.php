@@ -26,11 +26,6 @@
     <!--/twitter typehead-->
     <link href="assets/plugins/twittertypehead/twitter.typehead.css" rel="stylesheet">
 
-
-
-
-
-
     <style>
         .toolbar{
             float: left;

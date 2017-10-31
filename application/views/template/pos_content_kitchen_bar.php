@@ -29,7 +29,6 @@
         var url = window.location.origin;
 
         var _vendor = getParameterByName('vendorid');
-        var _type = getParameterByName('type');
 
         var _newVendorID = parseInt(_vendor) + 1;
 
@@ -38,13 +37,9 @@
         var c = url.replace(b,"");
         var newUrl = c;
         setTimeout(function(){
-            if (_type == "add") {
-                url = newUrl + '?vendorid='+_newVendorID+'&type=add'; // this number is dynamic actually
-            } else {
-                url = newUrl + '?vendorid='+_newVendorID;
-            }
+            url = newUrl + '?vendorid='+_newVendorID;
             window.location.href = url;
-        },100);
+        },50);
    }
 </script>
 <style>
@@ -162,54 +157,23 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            <input id="txt_vendor" type="hidden" value="<?php echo $vendor; ?>">
-                            <div id="header" style="display: none;">
-                                
-                                <?php echo $company_info->company_address; ?><br>
-                                <?php echo $company_info->landline; ?><br>
-                            </div>
                             <div id="header">
-                                <span style="font-size: 14px; font-weight: bolder;"><?php echo $company_info->company_name; ?></span><br>
-                            	<h4><?php echo $vendor_name; ?> COPY</h4>
-                                <h5><?php echo $tables; ?></h5>
+                                <span style="font-size: 14px; font-weight: bolder;"><?php echo $company_info->company_name; ?></span><br><br>
+                                <span style="font-size: 12px; font-weight: 600;"><?php echo $vendor_name; ?> COPY</span><br><br>
                             </div>
-                            <div id="middle1" style="display: none;">
-                                VAT&nbsp;Reg&nbsp;TIN:&nbsp;<?php echo $company_info->tin_no; ?><br>
+                            <div class="text-left">
+                                <span><strong>TABLE(S)</strong> : <?php echo $tables; ?></span><br>
+                                <span><strong>SERVER(S)</strong> : <?php echo $server_names; ?></span><br>
+                                <span>
+                                    <strong>DATE : </strong>
+                                    <?php
+                                    date_default_timezone_set('Asia/Manila');
+                                    echo date('M. d, Y g:i a'); 
+                                    ?>
+                                </span>
                             </div>
                         </div>
                     </div><br>
-
-                    <div class="row">
-                        <div id="" class="col-md-12" style="display: none;">
-                            MIN#&nbsp;<br>
-                            SN#&nbsp;<br>
-                            FP#&nbsp;<br>
-                        </div>  
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12" style="display: none;">
-                            <div id="left2">
-                                Date&nbsp;<br>
-                                Cashier&nbsp;<br>
-                                Terminal&nbsp;<br>
-                                Receipt&nbsp;<br>
-                                Table(s)&nbsp;<br>
-                            </div>
-                            <div id="right2">
-                                #&nbsp;:&nbsp;
-                                <?php 
-                                    $currentDateTime = $delivery_info->transaction_timestamp;
-                                    $newDateTime = date('m/d/Y h:i A', strtotime($currentDateTime));
-                                    echo $newDateTime;
-                                ?><br>
-                                #&nbsp;:&nbsp;<?php echo $delivery_info->cashier; ?><br>
-                                #&nbsp;:&nbsp;<?php echo $company_info->terminal; ?><br>
-                                #&nbsp;:&nbsp;<?php echo $delivery_info->receipt_no; ?><br>
-                                &nbsp;&nbsp;:&nbsp;<?php echo $vendor_name; ?><br>
-                            </div>
-                        </div>
-                    </div>
 
                     <center>
 
@@ -219,185 +183,21 @@
                                 <td width="15%" style="border-bottom: 2px dashed gray;text-align: left;height: 15px;padding: 6px;">Qty</td>
                                 <td width="50%" style="border-bottom: 2px dashed gray;text-align: left;height: 15px;padding: 6px;">Description</td>
                                 <td width="11%" style="border-bottom: 2px dashed gray;text-align: right;height: 15px;padding: 6px;"></td>
-                                <td width="11%" style="border-bottom: 2px dashed gray;text-align: left;height: 15px;padding: 6px; display: none;">Price</td>
-                                <td width="11%" style="border-bottom: 2px dashed gray;text-align: right;height: 15px;padding: 6px; display: none;">Amount</td>
                             </tr>
                             </thead>
                             <tbody id="pos_item">
-                            <?php 
-                            $count = 0;
-                            $qty = 0;
-                            foreach($pos_invoice_item as $item){
-                            $count++;
-                            $qty += $item->pos_qty;
-                            ?>
+                                <?php foreach ($delivery_info as $item) { ?>
                                 <tr>
                                     <td width="15%" style="border-bottom: 1px dashed gray;text-align: left;height: 15px;padding: 6px;"><?php echo number_format($item->pos_qty); ?></td>
                                     <td width="50%" style="border-bottom: 1px dashed gray;text-align: left;height: 15px;padding: 6px;"><?php echo $item->product_desc; ?></td>
                                     <td width="11%" style="border-bottom: 1px dashed gray;text-align: left;height: 15px;padding: 6px;"></td>
-                                    <td width="11%" style="border-bottom: 1px dashed gray;text-align: right;height: 15px;padding: 6px; display: none;"><?php echo number_format($item->pos_price,2); ?></td>
-                                    <td width="11%" style="border-bottom: 1px dashed gray;text-align: right;height: 15px;padding: 6px; display: none;"><?php echo number_format($item->total,2); ?></td>
                                 </tr>
-                            <?php } ?>
-
+                                <?php } ?>
                             </tbody>
-                            <tfoot style="display: none;">
-                            <tr>
-                                <td colspan="2" style="text-align: right;height: 15px;padding-top: 10px;"></td>
-                                <td colspan="2" style="text-align: left;height: 15px;padding-top: 10px;">Sub Total : </td>
-                                <td style="text-align: right;height: 15px;padding-top: 10px;padding-right: 4px;"><?php echo number_format($delivery_info->total_after_tax,2); ?></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: left;height: 15px;"></td>
-                                <td colspan="2" style="text-align: left;height: 15px;">Discount :</td>
-                                <td style="text-align: right;height: 15px;padding-right: 4px;"><?php echo number_format($delivery_info->totaldiscount,2); ?></td>
-                            </tr>
-
-                            <!-- <tr>
-                                <td colspan="2" style="text-align: left;height: 15px;padding-top: 10px;">Amount&nbsp;Due</td>
-                                <td colspan="2" style="text-align: left;height: 15px;padding-top: 10px;">. . . . . . . . . </td>
-                                <td style="text-align: right;height: 15px;padding-top: 10px;">AMOUNT<?php echo number_format($delivery_info->total_after_tax,2); ?></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: left;height: 15px;">Tendered</td>
-                                <td colspan="2" style="text-align: left;height: 15px;">. . . . . . . . . </td>
-                                <td style="text-align: right;height: 15px;">AMOUNT<?php echo number_format($delivery_info->total_after_tax,2); ?></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: left;height: 15px;padding-bottom: 10px;">Change</td>
-                                <td colspan="2" style="text-align: left;height: 15px;padding-bottom: 10px;">. . . . . . . . . </td>
-                                <td style="text-align: right;height: 15px;padding-bottom: 10px;">AMOUNT<?php echo number_format($delivery_info->total_after_tax,2); ?></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;height: 15px;">Total&nbsp;Item(s)</td>
-                                <td style="text-align: left;height: 15px;">. . . . .</td>
-                                <td colspan="3" style="text-align: left;height: 15px;">AMOUNT<?php echo number_format($delivery_info->total_after_tax,2); ?></td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: left;height: 15px;padding-bottom: 10px;">Total&nbsp;Qty</td>
-                                <td style="text-align: left;height: 15px;padding-bottom: 10px;">. . . . .</td>
-                                <td colspan="3" style="text-align: left;height: 15px;padding-bottom: 10px;">AMOUNT<?php echo number_format($delivery_info->total_after_tax,2); ?></td>
-                            </tr>  -->
-
-
-
-
-
-
-                            <!-- <tr>
-                                <td colspan="2" style="text-align: right;height: 15px;padding: 6px;"></td>
-                                <td colspan="2" style="border-bottom: 1px solid gray;text-align: left;height: 15px;padding: 6px;">Total before Tax : </td>
-                                <td style="border-bottom: 1px solid gray;text-align: right;height: 15px;padding: 6px;"><?php echo number_format($delivery_info->before_tax,2); ?></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: right;height: 15px;padding: 6px;"></td>
-                                <td colspan="2" style="border-bottom: 1px solid gray;text-align: left;height: 15px;padding: 6px;">Tax : </td>
-                                <td style="border-bottom: 1px solid gray;text-align: right;height: 15px;padding: 6px;"><?php echo number_format($delivery_info->tax_amount,2); ?></td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="text-align: right;height: 15px;padding: 6px;"></td>
-                                <td colspan="2" style="border-bottom:1px solid gray;text-align: left;height: 15px;padding: 6px;"><strong>Total after Tax : </strong></td>
-                                <td style="border-bottom: 1px solid gray;text-align: right;height: 15px;padding: 6px;"><strong><?php echo number_format($delivery_info->total_after_tax,2); ?></strong></td>
-                            </tr> -->
-                            </tfoot>
                         </table>
                     </center>
                     <tr><p>.</p></tr>
-                    <div class="row">
-                        <div class="col-md-12" style="display: none;">
-                            <div id="left3">
-                                Amount&nbsp;Due&nbsp;<br>
-                                Tendered&nbsp;<br>
-                                Change&nbsp;<br>
-                            </div>
-                            <div id="center3">
-                                . . . . . . . . . . . . . . <br>
-                                . . . . . . . . . . . . . . <br>
-                                . . . . . . . . . . . . . . <br>
-                            </div>
-                            <div id="right3">
-                                <?php echo number_format($delivery_info->amount_due,2); ?><br>
-                                <?php echo number_format($delivery_info->tendered,2); ?><br>
-                                <?php echo number_format($delivery_info->change,2); ?><br>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row" style="display: none;">
-                        <div class="col-md-12">
-                            <div id="left4">
-                                Total&nbsp;Item(s)&nbsp;<br>
-                                Total&nbsp;Qty&nbsp;<br>
-                            </div>
-                            <div id="center4">
-                                . . . . <br>
-                                . . . . <br>
-                            </div>
-                            <div id="right4">
-                                <?php echo $count; ?><br>
-                                <?php echo $qty; ?><br>
-                            </div>
-                        </div>
-                    </div><br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                            <p>&nbsp;</p>
-                        </div>
-                    </div>
-
-                    <div class="row" style="display: none;">
-                        <div class="col-md-12">
-                            <div id="left5">
-                                Net&nbsp;Vat&nbsp;Sales&nbsp;<br>
-                                Vat&nbsp;Sales&nbsp;<br>
-                                12%&nbsp;Vat&nbsp;<br>
-                                Non-Vat&nbsp;Sales&nbsp;<br>
-                            </div>
-                            <div id="center5">
-                                . . . . . . . . . . . . . . <br>
-                                . . . . . . . . . . . . . . <br>
-                                . . . . . . . . . . . . . . <br>
-                                . . . . . . . . . . . . . . <br>
-                            </div>
-                            <div id="right5">
-                                <?php echo number_format($delivery_info->before_tax,2); ?><br>
-                                <?php echo number_format($delivery_info->total_after_tax,2); ?><br>
-                                <?php echo number_format($delivery_info->tax_amount,2); ?><br>
-                                0.00<br>
-                            </div>
-                        </div>
-                    </div><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-                    <div class="row" style="display: none;">
-                        <div class="col-md-12">
-                            <div id="left1">
-                                Buyer's&nbsp;Name<br>
-                                Address<br>
-                                TIN&nbsp;#<br>
-                            </div>
-                            <div id="right1">
-                                ___________________________<br>
-                                ___________________________<br>
-                                ___________________________<br>
-                            </div>
-                        </div>
-                    </div><br><br><br><br>
-                    <div class="row" style="display: none;">
-                        <div id="middle2" class="col-md-12">
-                            <?php echo $footer_info->note1; ?><br>
-                            <?php echo $footer_info->note2; ?><br>
-                            <?php echo $footer_info->note3; ?><br>
-                            <?php echo $footer_info->note4; ?><br>
-                            <?php echo $footer_info->note5; ?><br>
-                            <?php echo $footer_info->note6; ?><br>
-                            <?php echo $footer_info->note7; ?><br>
-                            <?php echo $footer_info->note8; ?><br>
-                            <?php echo $footer_info->note9; ?><br>
-                            <?php echo $footer_info->note10; ?><br>
-                        </div>
-                    </div><br>
+                    <tr><p>.</p></tr>
                 </div>
             </div>
         </div>

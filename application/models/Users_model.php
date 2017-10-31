@@ -293,7 +293,7 @@ class Users_model extends CORE_Model{
         $this->db->where('ua.user_pword', sha1($pword));
         $this->db->where('ua.is_active', 1);
         $this->db->where('ua.is_deleted', 0);
-        $this->db->where('ua.user_group_id', 1);
+        $this->db->where('ua.user_group_id = 1 OR ua.user_group_id = 2');
         // $this->db->where('ua.is_online', 0);
 
         return $this->db->get();

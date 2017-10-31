@@ -29,11 +29,6 @@
     <link href="assets/plugins/datapicker/datepicker3.css" rel="stylesheet">
 
 
-
-
-
-
-
     <style>
         .toolbar{
             float: left;
@@ -128,11 +123,13 @@
 <div class="col-md-12">
 
 <div id="div_user_list">
-    <div class="panel panel-default">
-        <div class="panel-body table-responsive" style="border-top: 5px solid #2196f3;">
-            <h1>Stock Receiving</h1>
+    <div class="panel panel-default" style="padding: 0!important;">
+        <div class="panel-heading">
+            <h2 style="color: white;">STOCK RECEIVING</h2>
+        </div>
+        <div class="panel-body table-responsive">
             <table id="tbl_delivery_invoice" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                <thead>
+                <thead style="background: #2196f3;">
                 <tr>
                     <th></th>
                     <th>Invoice #</th>
@@ -570,7 +567,6 @@ $(document).ready(function(){
                 },
                 { targets:[1],data: "dr_invoice_no" },
                 { targets:[2],data: "supplier_name" },
-
                 { targets:[6],data: "date_received" },
                 {
                     targets:[7],
@@ -578,7 +574,7 @@ $(document).ready(function(){
                         var btn_edit='<button class="btn btn-default btn-sm" name="edit_info"  style="margin-left:-15px;" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
                         var btn_trash='<button class="btn btn-default btn-sm" name="remove_info" style="margin-right:0px;" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
 
-                        return '<center>'+btn_edit+btn_trash+'</center>';
+                        return '<center>'+btn_edit+' '+btn_trash+'</center>';
                     }
                 }
             ]

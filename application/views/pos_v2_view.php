@@ -118,17 +118,23 @@
                             <div class="row">
                                 <div class="container-fluid">
                                     <div class="col-xs-12 col-sm-6">
-                                        <h1 style="font-weight: 400;"><i class="fa fa-fax" style="color: #ff9800;"></i> POINT OF SALES <small id="cashier_name"> | Cashier : <?php echo $user_name; ?></small></h1>
+                                        <h1 style="font-weight: 400;"><i class="fa fa-fax" style="color: #ff9800;"></i> POINT OF SALES<br><small id="cashier_name" style="text-transform: uppercase;"> <strong><?php echo $user_groups->user_group; ?></strong> : <?php echo $user_name; ?></small></h1>
                                     </div>
                                     <div class="col-xs-12 col-sm-6">
-                                        <a id="btn_home" href="dashboard" class="btn btn-primary pull-right <?php echo ($this->session->user_group_id != 2 ? '' : 'hidden') ?>" style="margin-top: 10px; padding: 15px 17px; border-radius: 50%;">
-                                            <i class="fa fa-home" style="font-size: 25px;"></i>
-                                        </a>
-                                        <button id="btn_tables" class="btn btn-primary pull-right" style="margin-top: 10px; margin-right: 10px; padding: 15px 17px; border-radius: 50%;" title="Tables">
-                                            <i class="fa fa-table" style="font-size: 25px;"></i>
+                                        <button id="btn_logout" class="btn btn-warning pull-right <?php echo ($this->session->user_group_id != 1 ? '' : 'hidden') ?>" style="margin-top: 10px; padding: 15px 30px;">
+                                            <i class="fa fa-sign-out" style="font-size: 25px;"></i><br><span>Logout</span>
                                         </button>
-                                        <button id="btn_customers" class="btn btn-primary pull-right" style="margin-top: 10px; margin-right: 10px; padding: 15px 17px; border-radius: 50%;" title="Customers">
-                                            <i class="fa fa-users" style="font-size: 25px;"></i>
+                                        <a id="btn_home" href="dashboard" class="btn btn-warning pull-right <?php echo ($this->session->user_group_id != 2 ? '' : 'hidden') ?>" style="margin-top: 10px; padding: 15px 30px;">
+                                            <i class="fa fa-home" style="font-size: 25px;"></i><br><span>Home</span>
+                                        </a>
+                                        <button id="btn_tables" class="btn btn-primary pull-right" style="margin-top: 10px; margin-right: 10px; padding: 15px 35px;" title="Tables">
+                                            <i class="fa fa-table" style="font-size: 25px;"></i><br><span>Tables</span>
+                                        </button>
+                                        <button id="btn_servers" class="btn btn-primary pull-right" style="margin-top: 10px; margin-right: 10px; padding: 15px 30px;">
+                                            <i class="fa fa-child" style="font-size: 25px;"></i><br><span>Servers</span>
+                                        </button>
+                                        <button id="btn_customers" class="btn btn-primary pull-right" style="margin-top: 10px; margin-right: 10px; padding: 15px 20px;" title="Customers">
+                                            <i class="fa fa-users" style="font-size: 25px;"></i><br><span>Customers</span>
                                         </button>
                                     </div>
                                 </div>
@@ -176,6 +182,16 @@
                                                     </tbody>
                                                 </table>
                                             </form>
+                                        </div>
+                                        <div class="row">
+                                           <div class="container-fluid">
+                                                <div class="col-xs-12 col-sm-6">
+                                                   <p style="font-weight: 600; font-size: 17px;">Server :</p>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6">
+                                                   <p id="td_server" class="text-right" style="font-weight: 600; font-size: 17px;">No selected</p>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="row">
                                            <div class="container-fluid">
@@ -381,6 +397,31 @@
                           </div>
                         </div>
 
+                        <div id="modal_servers" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+                          <div class="modal-dialog" style="width: 50%;">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                              <div class="modal-header text-center">
+                                <h4 class="modal-title" style="font-weight: 400;">SERVERS</h4>
+                              </div>
+                              <div class="modal-body" style="overflow: auto; height: 600px; background-color: #f3f3f3;">
+                                <div class="row">
+                                    <div class="container-fluid" id="server_container">
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <div class="col-xs-12 col-sm-6">
+                                    <button id="btn_enter_servers" type="button" class="btn btn-primary btn-block" style="font-size: 25px;">ENTER</button>
+                                </div>
+                                <div class="col-xs-12 col-sm-6">
+                                    <button type="button" class="btn btn-danger btn-block" data-dismiss="modal" style="font-size: 25px;">CLOSE</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                         <div id="modal_unpaid" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
                           <div class="modal-dialog modal-lg">
                             <!-- Modal content-->
@@ -432,6 +473,24 @@
                               <div class="modal-footer text-center">
                                     <button id="btn_save_customer" type="button" class="btn btn-primary" style="font-size: 25px;">SAVE</button>
                                     <button type="button" class="btn btn-danger" data-dismiss="modal" style="font-size: 25px;">CLOSE</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div id="modal_logout" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+                          <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                              <div class="modal-header text-center">
+                                <h4 class="modal-title" style="font-weight: 400;">LOGOUT CONFIRMATION</h4>
+                              </div>
+                              <div class="modal-body text-center">
+                                <h4>Are you sure you want to logout?</h4>
+                              </div>
+                              <div class="modal-footer text-center">
+                                    <button id="btn_yes_logout" type="button" class="btn btn-primary" style="font-size: 25px;">YES</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="font-size: 25px;">NO</button>
                               </div>
                             </div>
                           </div>
@@ -639,9 +698,14 @@
             var _customerID;
             var addedProductCodes = [];
             var tablesList = [];
+            var serversList = [];
+            var serversListArray = [];
             var editAddedProductCodes = [];
+            var _voidData = [];
             var currentCustomer;
+            var currentServer;
             var tableCount = 0;
+            var serverCount = 0;
             var _isEdit = 0;
             var _isAdditional = 0;
             var _amountDue = 0;
@@ -661,14 +725,16 @@
             toggleControls(true);
 
             $('#btn_enter_order').on('click', function(){
-                if ($('#tbl_sales tbody tr').length > 0) {
+                if ($('#tbl_sales tbody tr').length > 0 && serversList.length > 0) {
                     var _data = $('#frm_items').serializeArray();
 
+                    $('#btn_enter_order').prop('disabled',true);
+
                     if (_isAdditional == 1) {
-                        _data.push({name: "total_discount", value: parseFloat($('#td_total_discount').text()) + parseFloat(_btnTotalDiscount) });
-                        _data.push({name: "before_tax", value: parseFloat($('#td_total_before_tax').text()) + parseFloat(_btnTotalBeforeTax) });
-                        _data.push({name: "total_tax_amount", value: parseFloat($('#td_total_tax').text()) + parseFloat(_btnTotalTax) });
-                        _data.push({name: "total_after_tax", value: parseFloat($('#td_total_after_tax').text()) + parseFloat(_btnAmountDue) });
+                        _data.push({name: "total_discount", value: parseFloat(accounting.unformat($('#td_total_discount').text())) + parseFloat(accounting.unformat(_btnTotalDiscount)) });
+                        _data.push({name: "before_tax", value: parseFloat(accounting.unformat($('#td_total_before_tax').text())) + parseFloat(accounting.unformat(_btnTotalBeforeTax)) });
+                        _data.push({name: "total_tax_amount", value: parseFloat(accounting.unformat($('#td_total_tax').text())) + parseFloat(accounting.unformat(_btnTotalTax)) });
+                        _data.push({name: "total_after_tax", value: parseFloat(accounting.unformat($('#td_total_after_tax').text())) + parseFloat(accounting.unformat(_btnAmountDue)) });
                     } else {
                         _data.push({name: "total_discount", value: $('#td_total_discount').text() });
                         _data.push({name: "before_tax", value: $('#td_total_before_tax').text() });
@@ -676,12 +742,29 @@
                         _data.push({name: "total_after_tax", value: $('#td_total_after_tax').text() });
                     }
 
-
                     _data.push({name: "customer_id", value: currentCustomer });
                     _data.push({name: "pos_invoice_id", value: _posInvoiceID });
 
+                    $.each(serversList,function(index,server_id){
+                        _data.push({name: "server_id[]", value: server_id });
+                    });
+
                     $.each(tablesList,function(index, table){
                         _data.push({name: "table_id[]", value: table});
+                    });
+
+                    $.each(_voidData, function(i,v){
+                        if (v.name == "product_id_void[]")
+                            _data.push({name: "product_id_void[]", value: v.value});
+
+                        if (v.name == "pos_qty_void[]")
+                            _data.push({name: "pos_qty_void[]", value: v.value});
+
+                        if (v.name == "pos_price_void[]")
+                            _data.push({name: "pos_price_void[]", value: v.value});
+
+                        if (v.name == "pos_total_void[]")
+                            _data.push({name: "pos_total_void[]", value: v.value});
                     });
 
                     if (_isEdit == 1) {
@@ -694,6 +777,7 @@
                         }).done(function(response){
                             showNotification(response);
                             toggleControls(true);
+                            $('#btn_tables').prop('disabled',true);
                             $('#btn_unpaid').prop('disabled',false);
                             $('#tbl_sales tbody').html('');
                             resetSummary();
@@ -702,9 +786,11 @@
                             _isEdit = 0;
                             _isAdditional = 0;
                             $('#btn_customers').prop('disabled',false);
-                            $('#btn_tables').prop('disabled',false);
                             addedProductCodes = [];
+                            serversList = [];
+                            serversListArray = [];
                             window.onbeforeunload = null;
+                            _voidData = [];
                             //window.location.replace('Templates/layout/pospr-kitchen-bar/'+response.pos_invoice_id+'/print?vendorid=1&lastid='+response.response_rows[0].is_last);
                             //pos_invoice_id/print_layout/vendor_id
                         });
@@ -727,8 +813,11 @@
                             $('#btn_customers').prop('disabled',false);
                             $('#btn_tables').prop('disabled',false);
                             addedProductCodes = [];
+                            serversList = [];
+                            serversListArray = [];
                             window.onbeforeunload = null;
-                            window.location.replace('Templates/layout/pospr-kitchen-bar-add/'+response.pos_invoice_id+'/print?vendorid=1&type=add');
+                            window.location.replace('Templates/layout/pospr-kitchen-bar-add/'+response.pos_invoice_id+'/print?vendorid=2');
+                            _voidData = [];
                             //pos_invoice_id/print_layout/vendor_id
                         });
                     } else {
@@ -751,12 +840,13 @@
                             $('#btn_tables').prop('disabled',false);
                             addedProductCodes = [];
                             window.onbeforeunload = null;
-                            window.location.replace('Templates/layout/pospr-kitchen-bar/'+response.pos_invoice_id+'/print?vendorid=1');
+                            window.location.replace('Templates/layout/pospr-kitchen-bar/'+response.pos_invoice_id+'/print?vendorid=2');
+                            _voidData = [];
                             //pos_invoice_id/print_layout/vendor_id
                         });
                     }
                 } else {
-                    showNotification({title: "Error!", msg: "No order to submit", stat: "error"})
+                    showNotification({title: "Error!", msg: "No order or server to submit", stat: "error"})
                 }
 
             });
@@ -781,7 +871,9 @@
             $('#btn_clear').on('click', function(){
                 addedProductCodes = [];
                 tablesList = [];
+                serversList = [];
                 editAddedProductCodes = [];
+                currentServer = 0;
                 _isEdit = 0;
                 _isAdditional = 0;
                 _amountDue = 0;
@@ -797,12 +889,25 @@
                 _btnTotalDiscount = 0;
                  _btnTotalTax = 0;
                 _btnTotalBeforeTax = 0;
+                _customerID = 0;
+                $('#order_title').html('PLEASE SELECT CUSTOMER...');
                 $('#tbl_sales tbody').html('');
+                $('#td_tables').html('No selected');
+                $('#td_server').html('No selected');
                 toggleControls(true);
                 $('#btn_unpaid').prop('disabled',false);
                 $('#btn_customers').prop('disabled',false);
                 recomputeTotal();
                 initializeNumeric();
+            });
+
+            $('#btn_logout').on('click', function(){
+                $('#modal_logout').modal('show');
+            });
+
+            $('#modal_logout').on('click', '#btn_yes_logout', function(){
+                window.onbeforeunload = null;
+                window.location.replace('Login/transaction/logout');
             });
 
             $('.btn-categories').on('click',function(){
@@ -826,6 +931,7 @@
                                     'data-prod-desc="'+value.product_desc+'"'+
                                     'data-prod-srp="'+value.sale_cost+'"'+
                                     'data-prod-tax="'+value.tax_rate+'"'+
+                                    'data-prod-vendor-id="'+value.vendor_id+'"' +
                                     '>' +
                                         '<span style="font-weight:500; font-size:25px;">' +
                                             value.product_code +
@@ -871,7 +977,10 @@
                                         '<button id="btn_edit_order" class="btn btn-primary" style="border-radius:0;" data-inv-id="'+value.pos_invoice_id+'" data-before-tax="'+value.before_tax+'" data-amount-due="'+value.total_after_tax+'" data-total-tax="'+value.total_tax_amount+'">'+
                                             '<b>EDIT ORDER</b>'+
                                         '</button>&nbsp;'+
-                                        '<button id="btn_pay_order" class="btn btn-success" style="border-radius:0; padding: 12px 25px 12px 25px;" data-inv-id="'+value.pos_invoice_id+'" data-amount-due="'+value.total_after_tax+'">'+
+                                        '<button id="btn_print_order" class="btn btn-success" style="border-radius:0; padding: 12px 25px 12px 25px;" data-inv-id="'+value.pos_invoice_id+'" data-amount-due="'+value.total_after_tax+'">'+
+                                            '<b>PRINT</b>'+
+                                        '</button>&nbsp;'+
+                                        '<button id="btn_pay_order" class="btn btn-warning" style="border-radius:0; padding: 12px 25px 12px 25px;" data-inv-id="'+value.pos_invoice_id+'" data-amount-due="'+value.total_after_tax+'">'+
                                             '<b>BILL OUT</b>'+
                                         '</button>'+
                                     '</center>'+
@@ -886,6 +995,13 @@
 
             $('#btn_close_pay').on('click', function(){
                 $('#modal_payment').modal('hide');
+            });
+
+            $('#tbl_unpaid').on('click', '#btn_print_order', function(){
+                var _btn = $(this);
+
+                window.onbeforeunload = null;
+                window.location.replace('Templates/layout/pospr-bill/'+_btn.data('inv-id')+'/print');
             });
 
             $('#tbl_unpaid').on('click', '#btn_add_order', function(){
@@ -951,6 +1067,8 @@
                     },
                     success : function(response){
                         var tablesListArray = [];
+                        serversListArray = [];
+                        serversList = [];
 
                         tablesList = [];
 
@@ -965,10 +1083,14 @@
                             tablesListArray.push(value.table_name);
                         });
 
+                        $.each(response.servers, function(index,value){
+                            serversList.push(value.server_id);
+                            serversListArray.push(value.server_name);
+                        });
+
                         $('#tbl_sales > tbody').html('');
 
                         $.each(response.items, function(index, value){
-
                             $('#tbl_sales > tbody').prepend(
                                 '<tr style="border-bottom: 1px solid #ddd;">'+
                                     '<td class="hidden" width="10%">' +
@@ -978,7 +1100,7 @@
 		                                '<div class="input-group">' + ' <span class="input-group-btn">' +
 		                                    '<button id="btn_add" class="btn btn-primary btn-sm" type="button" style="border-radius: 50%;" disabled><i class="fa fa-plus"></i></button>' +
 		                                  '</span>' +
-		                                  	'<input type="number" class="form-control text-center" name="pos_qty[]" value="'+value.pos_qty+'" style="border: 1px solid #ddd!important; height: 31px;">' +
+		                                  	'<input type="number" class="form-control text-center" name="pos_qty[]" value="'+value.pos_qty+'" style="border: 1px solid #ddd!important; height: 31px;" readonly />' +
 		                                 ' <span class="input-group-btn">' +
 		                                    '<button id="btn_minus" class="btn btn-warning btn-sm" type="button" style="border-radius: 50%;"><i class="fa fa-minus"></i></button>' +
 		                                  '</span>' +
@@ -991,7 +1113,7 @@
                                         '<input class="numeric text-right form-control" type="text" value="'+value.pos_price+'" name="pos_price[]">'+
                                     '</td>'+
                                     '<td width="10%">'+
-                                        '<input class="numeric text-right form-control" type="text" value="'+value.pos_discount+'" name="pos_discount[]">'+
+                                        '<input class="numeric text-right form-control" type="text" value="'+value.pos_discount+'" name="pos_discount[]" '+(value.vendor_id != 2 ? 'readonly' : '')+'>'+
                                     '</td>'+
                                     '<td width="15%" class="hidden">'+
                                         '<input class="numeric text-right form-control" type="text" value="'+value.tax_rate+'" name="tax_rate[]">'+
@@ -1019,6 +1141,11 @@
                             $('#td_tables').html(tablesListArray.join(' & '));
                         else
                             $('#td_tables').html(tablesListArray.join(', '));
+
+                        if (serversListArray.length == 2)
+                            $('#td_server').html(serversListArray.join(' & '));
+                        else
+                            $('#td_server').html(serversListArray.join(', '));
 
                         recomputeTotal();
                         initializeNumeric();
@@ -1049,6 +1176,98 @@
                 $('.form-input').val('');
                 $('#modal_login').modal('show');
                 $('#modal_unpaid').modal('hide');
+            });
+
+            $('#btn_servers').on('click', function(){
+                var _thisBtn = $(this);
+                $.ajax({
+                    "dataType":"json",
+                    "url":"Servers/getList/servers"
+                }).done(function(response){
+                    $('#server_container').html('');
+
+                    $.each(response.data, function(index, value){
+                        $('#server_container').append(
+                            '<div class="col-xs-12 col-sm-3">' +
+                                '<button ' +
+                                    'id="btn_server_trigger"' +
+                                    'class="btn btn-success btn-block btn-wheight btn-server-'+ value.server_id +'"'+
+                                    'style="border-radius: 0; margin-bottom: 25px;white-space:normal;"'+
+                                    'data-server-id="'+value.server_id+'"' +
+                                    'data-server-name="'+value.server_name+'"' +
+                                    'data-server-click="0"' +
+                                    '>' +
+                                        '<span style="font-weight:500; font-size:25px;">' +
+                                            '<i class="fa fa-child"></i><br>' + value.server_name +
+                                        '</span>' +
+                                '</button>' +
+                            '</div>'
+                        );
+                    });
+
+                        $.each(serversList, function(index,value){
+                            $('.btn-server-'+value).html('<h1><i class="fa fa-check"></i></h1>');
+                            $('.btn-server-'+value).data('server-click',1);
+                        }); 
+                });
+
+                $('.modal-title').html('SERVERS');
+                $('#modal_servers').modal('show');
+            });
+
+            $('#modal_servers').on('click','#btn_server_trigger', function(){
+                var checked = '<h1><i class="fa fa-check"></i></h1>';
+                var unchecked = '<span style="font-weight:500; font-size:25px;"><i class="fa fa-child"></i><br>'+$(this).data('server-name')+'</span>';
+
+                if ($(this).html() == checked) {
+                    $(this).html(unchecked)
+                    $(this).data('server-click','0');
+                } else {
+                    $(this).html(checked)
+                    $(this).data('server-click','1');
+                }
+            });
+
+            $('#modal_servers').on('click','#btn_enter_servers', function(){
+                serversListArray = [];
+                serversList = [];
+
+                $.each($('button#btn_server_trigger'), function(index, value){
+                    if ($(this).data('server-click') == 1) {
+                        serverCount += 1;
+                        serversList.push($(this).data('server-id'));
+                        serversListArray.push($(this).data('server-name'));
+                    }
+                });
+
+                if (serversListArray.length == 2)
+                    $('#td_server').html(serversListArray.join(' & '));
+                else
+                    $('#td_server').html(serversListArray.join(', '));
+
+                if (serversList.length > 0) {
+                    $('#modal_servers').modal('toggle');
+                    if (_isEdit == 0) {
+                        toggleControls(true);
+                        $('#btn_servers').prop('disabled',false);
+                        $('#btn_tables').prop('disabled',false);
+                    } 
+
+                    if (_isAdditional == 1) {
+                        toggleControls(false);
+                        $('#btn_servers').prop('disabled',false);
+                        $('#btn_tables').prop('disabled',true);
+                    }
+                } else
+                    alert('Please Select Servers...');
+
+                if ($('#tbl_sales tbody tr').length == 0) {
+                    $('#btn_void').prop('disabled',true);
+                }
+
+                if (_isEdit == true) {
+                    $('#btn_cancel_order').prop('disabled',true);
+                }
             });
 
             $('#btn_end_batch').on('click', function(){
@@ -1112,7 +1331,7 @@
             $('#modal_customers').on('click', '#btn_customer_trigger',function(){
                 if ($(this).data('customer-id') != 0) {
                     $('#order_title').html('ORDER SUMMARY OF ' + $(this).data('customer-name'));
-                    $('#btn_tables').prop('disabled',false);
+                    $('#btn_servers').prop('disabled',false);
                     currentCustomer = $(this).data('customer-id');
                 }
                 else {
@@ -1175,10 +1394,17 @@
             });
 
             $('#tbl_sales tbody').on('click', '#btn_delete', function(){
+                var _self = $(this);
                 var confirmation = confirm('Are you sure you want to void this item?');
 
                 if (confirmation == true) {
-                    $(this).closest('tr').remove();
+
+                    _voidData.push({name: "product_id_void[]", value: $(this).closest('tr').find('input[name="product_id[]"]').val() });
+                    _voidData.push({name: "pos_qty_void[]", value: $(this).closest('tr').find('input[name="pos_qty[]"]').val() });
+                    _voidData.push({name: "pos_price_void[]", value: $(this).closest('tr').find('input[name="pos_price[]"]').val() });
+                    _voidData.push({name: "pos_total_void[]", value: $(this).closest('tr').find('input[name="total[]"]').val() });
+
+                    _self.closest('tr').remove();
                     recomputeTotal();
                     initializeNumeric();
                     InsertProducts();
@@ -1230,6 +1456,11 @@
                 if (_isEdit == true)
                 {
                     $('#btn_cancel_order').prop('disabled',true);
+                    toggleControls(true);
+                    $('#btn_enter_order').prop('disabled',false);
+                    $('#btn_tables').prop('disabled',false);
+                    $('#btn_clear').prop('disabled',false);
+                    $('#btn_void').prop('disabled',false);
                 }
 
             });
@@ -1439,7 +1670,7 @@
                // if (_isEdit == 1) {
                //      EditAppendProductToTable($(this).data('prod-id'), $(this).data('prod-desc'), $(this).data('prod-srp'), 0, $(this).data('prod-tax'), 0, 0, 1);
                // } else {
-                    AppendProductToTable($(this).data('prod-id'), $(this).data('prod-desc'), $(this).data('prod-srp'), 0, $(this).data('prod-tax'), 0, 0);
+                    AppendProductToTable($(this).data('prod-id'), $(this).data('prod-desc'), $(this).data('prod-srp'), 0, $(this).data('prod-tax'), 0, 0, $(this).data('prod-vendor-id'));
                // }
                 reComputeRowTotal();
                 recomputeTotal();
@@ -1469,7 +1700,7 @@
                 InsertProducts();
             });
 
-            var AppendProductToTable = function(product_id, prod_desc, pos_price, pos_discount, prod_tax, tax_amount, total) {
+            var AppendProductToTable = function(product_id, prod_desc, pos_price, pos_discount, prod_tax, tax_amount, total, vendor_id) {
                 var td_productCode = product_id;
                 var index = $.inArray(td_productCode, addedProductCodes);
 
@@ -1492,7 +1723,7 @@
                                  ' <span class="input-group-btn">' +
                                     '<button id="btn_add" class="btn btn-primary btn-sm" type="button" style="border-radius: 50%;"><i class="fa fa-plus"></i></button>' +
                                   '</span>' +
-                                  	'<input type="number" class="form-control text-center" name="pos_qty[]" value="1" style="border: 1px solid #ddd!important; height: 31px;">' +
+                                  	'<input type="number" class="form-control text-center" name="pos_qty[]" value="1" style="border: 1px solid #ddd!important; height: 31px;" readonly />' +
                                  ' <span class="input-group-btn">' +
                                     '<button id="btn_minus" class="btn btn-warning btn-sm" type="button" style="border-radius: 50%;"><i class="fa fa-minus"></i></button>' +
                                   '</span>' +
@@ -1505,7 +1736,7 @@
                                 '<input class="numeric text-right form-control" type="text" value="'+pos_price+'" name="pos_price[]">'+
                             '</td>'+
                             '<td width="10%">'+
-                                '<input class="numeric text-right form-control" type="text" value="'+pos_discount+'" name="pos_discount[]">'+
+                                '<input class="numeric text-right form-control" type="text" value="'+pos_discount+'" name="pos_discount[]" '+(vendor_id != 2 ? 'readonly' : '')+'>'+
                             '</td>'+
                             '<td width="15%" class="hidden">'+
                                 '<input class="numeric text-right form-control" type="text" value="'+prod_tax+'" name="tax_rate[]">'+
@@ -1551,7 +1782,7 @@
                                  ' <span class="input-group-btn">' +
                                     '<button id="btn_add" class="btn btn-primary btn-sm" type="button" style="border-radius: 50%;"><i class="fa fa-plus"></i></button>' +
                                   '</span>' +
-                                    '<input type="number" class="form-control text-center" name="pos_qty[]" value="1" style="border: 1px solid #ddd!important; height: 31px;">' +
+                                    '<input type="number" class="form-control text-center" name="pos_qty[]" value="1" style="border: 1px solid #ddd!important; height: 31px;" readonly />' +
                                  ' <span class="input-group-btn">' +
                                     '<button id="btn_minus" class="btn btn-warning btn-sm" type="button" style="border-radius: 50%;"><i class="fa fa-minus"></i></button>' +
                                   '</span>' +
@@ -1721,6 +1952,7 @@
             };
 
             var resetSummary=function(){
+                $('#td_server').html('No selected');
                 $('#td_tables').html('No selected');
                 $('#td_change').html('0.00');
                 $('#td_tendered').html('0.00');
@@ -1762,6 +1994,7 @@
                 $('#btn_tables').prop('disabled',bValue);
                 $('#btn_end_batch').prop('disabled',false);
                 $('#btn_clear').prop('disabled',bValue);
+                $('#btn_servers').prop('disabled',bValue);
             };
 
             var payOrder = function() {

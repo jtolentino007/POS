@@ -30,11 +30,6 @@
     <!-- Datepicker -->
     <link href="assets/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
 
-
-
-
-
-
     <style>
         .toolbar{
             float: left;
@@ -208,6 +203,43 @@
 </div>
 </div>
 </div>
+<div id="modal_xreading" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+            <div class="container-fluid">
+                <div class="col-xs-12">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <center><h4 class="modal-title"><strong>PREVIEW</strong></h4></center><br>
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <label><strong>* START DATE :</strong></label>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <input id="startDate" type="text" class="date-picker form-control" value="<?php echo date("m/d/Y"); ?>" readonly>
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <label><strong>* END DATE :</strong></label>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <input id="endDate" type="text" class="date-picker form-control" value="<?php echo date("m/d/Y"); ?>" readonly>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-body" id="xreading_content" style="max-height: 700px; overflow-y: auto;">
+        
+      </div>
+      <div class="modal-footer">
+        <button id="btn_print_x_reading" type="button" class="btn btn-default">Print</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 </div> <!-- .container-fluid -->
 
 </div> <!-- #page-content -->
@@ -216,7 +248,7 @@
 
 <div id="modal_confirmation" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
     <div class="modal-dialog modal-sm">
-        <div class="modal-content"><!---content--->
+        <div class="modal-content"><!---content-->
             <div class="modal-header">
                 <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
                 <h4 class="modal-title"><span id="modal_mode"> </span>Confirm Deletion</h4>
@@ -231,14 +263,14 @@
                 <button id="btn_yes" type="button" class="btn btn-danger" data-dismiss="modal" style="text-transform: capitalize;">Yes</button>
                 <button id="btn_close" type="button" class="btn btn-default" data-dismiss="modal" style="text-transform: capitalize;">No</button>
             </div>
-        </div><!---content---->
+        </div><!---content-->
     </div>
 </div><!---modal-->
 
 
 <div id="modal_new_supplier" class="modal fade" tabindex="-1" role="dialog"><!--modal-->
     <div class="modal-dialog modal-md">
-        <div class="modal-content"><!---content--->
+        <div class="modal-content"><!---content-->
             <div class="modal-header">
                 <button type="button" class="close"   data-dismiss="modal" aria-hidden="true">X</button>
                 <h4 class="modal-title"><span id="modal_mode"> </span>New Supplier</h4>
@@ -276,7 +308,7 @@
                 <button id="btn_create_user_suppliers" type="button" class="btn btn-primary"  style="text-transform: capitalize;"><span class=""></span> Create</button>
                 <button id="btn_close_user_suppliers" type="button" class="btn btn-default" data-dismiss="modal" style="text-transform: capitalize;">Cancel</button>
             </div>
-        </div><!---content---->
+        </div><!---content-->
     </div>
 </div><!---modal-->
 
@@ -353,7 +385,7 @@
 $(document).ready(function(){
 
 
-
+    var d;
     var initializeControls=function(){
 
 
@@ -384,8 +416,6 @@ $(document).ready(function(){
 
             $("div.toolbar").html(_btnNew);
         }();
-
-
 
 
 
@@ -421,45 +451,74 @@ $(document).ready(function(){
     var bindEventHandlers=(function(){
         var detailRows = [];
 
+        $('#btn_print_x_reading').on('click', function(){
+            window.location.replace('Templates/layout/xreading-print/'+ d.user_id+'?sdate='+$('#startDate').val()+'&edate='+$('#endDate').val());
+        });
+
         $('#tbl_transaction_receipt tbody').on( 'click', 'tr td.details-control', function () {
             var tr = $(this).closest('tr');
             var row = dt.row( tr );
             var idx = $.inArray( tr.attr('id'), detailRows );
+            d = row.data();
 
-            if ( row.child.isShown() ) {
-                tr.removeClass( 'details' );
-                row.child.hide();
+            // if ( row.child.isShown() ) {
+            //     tr.removeClass( 'details' );
+            //     row.child.hide();
 
-                // Remove from the 'open' array
-                detailRows.splice( idx, 1 );
-            }
-            else {
-                tr.addClass( 'details' );
-                //console.log(row.data());
-                var d=row.data();
+            //     // Remove from the 'open' array
+            //     detailRows.splice( idx, 1 );
+            // }
+            // else {
+            //     tr.addClass( 'details' );
+            //     //console.log(row.data());
+                 
 
                 $.ajax({
                     "dataType":"html",
                     "type":"POST",
-                    "url":"Templates/layout/xreading/"+ d.user_id,
+                    "url":"Templates/layout/xreading/"+ d.user_id+"?sdate="+$('#startDate').val()+"&edate="+$('#endDate').val(),
                     "beforeSend" : function(){
-                        row.child( '<center><br /><img src="assets/img/loader/ajax-loader-lg.gif" /><br /><br /></center>' ).show();
+                        //row.child( '<center><br /><img src="assets/img/loader/ajax-loader-lg.gif" /><br /><br /></center>' ).show();
+                        $('#xreading_content').append( '<center><br /><img src="assets/img/loader/ajax-loader-lg.gif" /><br /><br /></center>' );
                     }
                 }).done(function(response){
-                    row.child( response ).show();
+                    //row.child( response ).show();
+                    $('#xreading_content').html('');
+                    $('#xreading_content').append(response);
+                    $('#modal_xreading').modal('show');
                     // Add to the 'open' array
-                    if ( idx === -1 ) {
-                        detailRows.push( tr.attr('id') );
-                    }
+                    // if ( idx === -1 ) {
+                    //     detailRows.push( tr.attr('id') );
+                    // }
                 });
 
 
 
 
-            }
+            // }
         } );
 
+        $('.date-picker').on('change', function(){
 
+            $.ajax({
+                "dataType":"html",
+                "type":"POST",
+                "url":"Templates/layout/xreading/"+ d.user_id+"?sdate="+$('#startDate').val()+"&edate="+$('#endDate').val(),
+                "beforeSend" : function(){
+                    //row.child( '<center><br /><img src="assets/img/loader/ajax-loader-lg.gif" /><br /><br /></center>' ).show();
+                    $('#xreading_content').append( '<center><br /><img src="assets/img/loader/ajax-loader-lg.gif" /><br /><br /></center>' );
+                }
+            }).done(function(response){
+                //row.child( response ).show();
+                $('#xreading_content').html('');
+                $('#xreading_content').append(response);
+                $('#modal_xreading').modal('show');
+                // Add to the 'open' array
+                // if ( idx === -1 ) {
+                //     detailRows.push( tr.attr('id') );
+                // }
+            });
+        });
 
         $('#btn_new').click(function(){
             _txnMode="new";

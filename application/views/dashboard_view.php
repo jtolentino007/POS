@@ -24,6 +24,12 @@
             overflow-x: hidden;
        }
 
+       .btn,
+       a {
+            white-space: normal!important;
+            word-wrap: break-word!important;
+       }
+
        #topnav {
             display: none!important;
        }
@@ -64,7 +70,9 @@
                                 <h1 style="margin-left: 20px; font-weight: 400;">POINT OF SALES <small>ADMINISTRATION</small></h1>
                             </div>
                             <div class="col-xs-12 col-sm-6 text-right" style="padding-top: 20px;">
-                                <a id="btn_logout" href="Login/transaction/logout" class="btn btn-primary" style="border-radius: 50%;  padding: 10px 15px;"><i class="fa fa-sign-out"></i></a>
+                                <a id="btn_logout" href="Login/transaction/logout" class="btn btn-primary" style="border-radius: 10px;padding: 10px 15px;">
+                                    <i class="fa fa-sign-out"></i><br><span><strong>Logout</strong></span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -158,7 +166,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="">
-                                        <div class="col-xs-12 col-sm-4">
+                                        <div class="col-xs-12 col-sm-4">    
                                             <a href="locations" class="btn btn-success btn-block btn-height <?php echo (in_array('1-13', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #7CB342!important; border-color: #7CB342!important;"><br>
                                                 <i class="fa fa-institution" style="font-size: 50px;"></i><br><br>
                                                 <span>Locations</span>
@@ -194,7 +202,13 @@
                                                 <span>PRODUCTS</span>
                                             </a>
                                         </div>
-                                        <div class="col-xs-12 col-sm-6">
+                                        <div class="col-xs-12 col-sm-3">
+                                            <a href="servers" class="btn btn-success btn-block btn-height <?php echo (in_array('1-23', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #d39e00!important; border-color: #d39e00!important;"><br>
+                                                <i class="fa fa-child" style="font-size: 50px;"></i><br><br>
+                                                <span>SERVERS</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-3">
                                             <a href="suppliers" class="btn btn-success btn-block btn-height <?php echo (in_array('1-15', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #27ae60!important; border-color: #27ae60!important;"><br>
                                                 <i class="fa fa-truck" style="font-size: 50px;"></i><br><br>
                                                 <span>SUPPLIERS</span>
@@ -204,13 +218,25 @@
                                 </div>
                                 <div class="row">
                                     <div class="">
-                                        <div class="col-xs-12 col-sm-6">
+                                        <div class="col-xs-12 col-sm-3">
                                             <a href="customers" class="btn btn-success btn-block btn-height <?php echo (in_array('1-16', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #8e44ad!important; border-color: #8e44ad!important;"><br>
                                                 <i class="fa fa-users" style="font-size: 50px;"></i><br><br>
                                                 <span>CUSTOMERS</span>
                                             </a>
                                         </div>
-                                        <div class="col-xs-12 col-sm-6">
+                                        <div class="col-xs-12 col-sm-3">
+                                            <a href="voids" class="btn btn-success btn-block btn-height <?php echo (in_array('1-16', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #e91e63!important; border-color: #e91e63!important;"><br>
+                                                <i class="fa fa-code" style="font-size: 50px;"></i><br><br>
+                                                <span>VOID LOGS</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-3">
+                                            <a href="Templates/layout/endbatch/0/preview" class="btn btn-success btn-block btn-height <?php echo (in_array('1-16', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #607d8b!important; border-color: #607d8b!important;"><br>
+                                                <i class="fa fa-list-alt" style="font-size: 50px;"></i><br><br>
+                                                <span>PRINT LAST BATCH REPORT</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-3">
                                             <a href="stock" class="btn btn-success btn-block btn-height <?php echo (in_array('1-17', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #2980b9!important; border-color: #2980b9!important;"><br>
                                                 <i class="fa fa-archive" style="font-size: 50px;"></i><br><br>
                                                 <span>STOCKS</span>
@@ -276,6 +302,13 @@
 </script>
 <script>
 $(document).ready(function(){
+
+    $('#btn_generate_z').click(function(){
+        if ($('#fromdatepdf').val() !== '' || $('#todatepdf').val() !== '')
+            window.location.replace('Templates/layout/zreading/0/preview?sdate='+$('#fromdatepdf').val()+'&stime='+$('#fromtimepdf').val()+'&edate='+$('#todatepdf').val()+'&etime='+$('#totimepdf').val());
+        else
+            alert('Please fill in the required(*) Dates');
+    });
 
     $('#btn_z_reading').click(function(){
         $('#modal_zreading_reportsjs').modal('show');

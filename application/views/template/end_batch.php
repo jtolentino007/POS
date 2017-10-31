@@ -4,11 +4,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Test</title>
 <style type="text/css">
-    table { page-break-inside:auto }
-    div   { page-break-inside:avoid; } /* This is the key */
+    /*table { page-break-inside:auto }
+    div   { page-break-inside:avoid; }
     thead { display:table-header-group }
     tfoot { display:table-footer-group }
-    td { padding-top: 5px; padding-bottom: 5px; }
+    td { padding-top: 5px; padding-bottom: 5px; }*/
+    @media print {
+	  body { height:0; page-break-before:always; margin:0; border-top:none; }
+	}
 </style>
  <script type="text/javascript">
       window.onload = function() {
@@ -22,7 +25,7 @@
  </script>
 </head>
 
-<body style="width: 250px;">
+<body style="width: 250px;position: absolute;">
 
 <?php
 $fromdate="1900/10/01"; //post value of the date
@@ -39,7 +42,7 @@ $time = date("H:i:s", strtotime($date));
 $user_id=$this->session->user_id;
 
 ?>
-<center><?php echo "<h2 style='font-size:11px;text-align:center;font-family:tahoma;margin:0px;margin-bottom:5px;'>X-READING</h2>"; ?></center>
+<center><?php echo "<h2 style='font-size:11px;text-align:center;font-family:tahoma;margin:0px;margin-bottom:5px;'>END BATCH REPORT</h2>"; ?></center>
 <center><?php echo "<h2 style='font-size:11px;text-align:center;font-family:tahoma;margin:0px;margin-bottom:5px;'></h2>"; ?></center>
 <center><?php echo "<h3 style='font-size:11px;text-align:center;font-family:tahoma;margin:0px;margin-bottom:5px;'>".$company_info->company_name."</h3>"; ?></center>
 <center><?php echo "<h3 style='font-size:11px;text-align:center;font-family:tahoma;margin:0px;margin-bottom:5px;'>".$company_info->company_address."</h3>"; ?></center>
@@ -59,25 +62,27 @@ $user_id=$this->session->user_id;
 <table width='95%' style='border-collapse: collapse;border-spacing: 0;font-family: tahoma;font-size: 8;'>
 		<thead>
             <tr>
-				<th width='25%' style='border-bottom: 2px solid gray;text-align: left;'>Receipt #</th>
-                <th width='12%' style='border-bottom: 2px solid gray;text-align: left;'>Customer</th>
-				<th width='12%' style='border-bottom: 2px solid gray;text-align: left;'>Item</th>
-                <th width='12%' style='border-bottom: 2px solid gray;text-align: left;'>SRP</th>
-				<th width='6%' style='border-bottom: 2px solid gray;text-align: left;'>Qty</th>
-				<th width='12%' style='border-bottom: 2px solid gray;text-align: right;'>Total</th>
+				<th width='25%' colspan="2" style='border-bottom: 2px solid gray;text-align: left;'>Receipt #</th>
+                <th width='12%' colspan="2" style='border-bottom: 2px solid gray;text-align: left;'>Customer</th>
             </tr>
         </thead>
  		<tbody>
 		<?php
 
-			$query = $this->db->query('SELECT receipt_no,pos_invoice.*,customers.customer_name,pos_payment.pos_payment_id FROM 	
-						pos_payment
-						LEFT JOIN pos_invoice
-						ON pos_payment.pos_invoice_id=pos_invoice.pos_invoice_id
-
-						LEFT JOIN customers
-						ON pos_invoice.customer_id=customers.customer_id WHERE user_id='.$user_id.' AND end_batch=1 AND batch_id='.$this->session->batch_id);
-							$gtotal = $query->row();
+			$query = $this->db->query('SELECT 
+					receipt_no,
+					pos_invoice.*,
+					customers.customer_name,
+					pos_payment.pos_payment_id,
+					SUM(pos_invoice_items.total) total
+					FROM pos_payment
+					LEFT JOIN pos_invoice ON pos_payment.pos_invoice_id=pos_invoice.pos_invoice_id
+					INNER JOIN pos_invoice_items ON pos_invoice_items.pos_invoice_id = pos_invoice.pos_invoice_id
+					LEFT JOIN customers ON pos_invoice.customer_id=customers.customer_id
+					WHERE is_current_batch=1 
+					GROUP BY pos_invoice_id');
+					
+					$gtotal = $query->row();
 //$grandtotal = $gtotal->grand_total;
 
 						$grandtotal=0; //start value of grandtotal
@@ -96,12 +101,17 @@ $user_id=$this->session->user_id;
 
 						?>
 						<tr>
-						<td width='25%' style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;text-align: left;'><?php echo $receiptno; ?></td>
-						<td width='12%' style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'><?php echo $customer; ?></td>
-						<td width='12%' style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'></td>
-						<td width='12%' style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'></td>
-						<td width='6%' style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'></td>
-						<td width='12%' style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'></td>
+							<td width='25%' colspan="3" style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;text-align: left;'><?php echo $receiptno; ?></td>
+							<td width='12%' colspan="2" style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'><?php echo $customer; ?></td>
+							<td width='6%' style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'></td>
+							<td width='12%' style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'></td>
+						</tr>
+
+						<tr>
+							<th width='12%' colspan="3" style='border-bottom: 2px solid gray;text-align: left;'>Item</th>
+			                <th width='12%' style='border-bottom: 2px solid gray;text-align: left;'>SRP</th>
+							<th width='6%' style='border-bottom: 2px solid gray;text-align: left;'>Qty</th>
+							<th width='12%' colspan="2" style='border-bottom: 2px solid gray;text-align: right;'>Total</th>
 						</tr>
 
 
@@ -119,19 +129,18 @@ $user_id=$this->session->user_id;
 							FROM pos_invoice_items LEFT JOIN products
 							ON pos_invoice_items.product_id=products.product_id
 							WHERE pos_invoice_id='.$invoiceid.'
-							 GROUP BY pos_invoice_items.pos_invoice_id, pos_invoice_items.product_id');
+							GROUP BY pos_invoice_items.pos_invoice_id, pos_invoice_items.product_id');
 
 					foreach ($query1->result() as $prod)
 					{
 
 						?>
 						<tr>
-						<td width='6%' style='text-align: left;'></td>
-						<td width='24%' style='text-align: left;'></td>
-						<td width='32%' style='text-align: left;'><?php echo $prod->product_desc; ?></td>
-						<td width='12%' style='text-align: left;'><?php echo $prod->pos_price; ?></td>
-						<td width='12%' style='text-align: left;'><?php echo $prod->pos_qty; ?></td>
-						<td width='12%' style='text-align: right;'><?php echo $prod->total; ?></td></tr>
+							<td width='32%' colspan="3" style='text-align: left;'><?php echo $prod->product_desc; ?></td>
+							<td width='12%' style='text-align: left;'><?php echo $prod->pos_price; ?></td>
+							<td width='12%' style='text-align: left;'><?php echo $prod->pos_qty; ?></td>
+							<td width='12%' colspan="2" style='text-align: right;'><?php echo $prod->total; ?></td>
+						</tr>
 
 				<?php
 						$grandtotal+=$prod->total; //computing for grandtotal
@@ -140,7 +149,7 @@ $user_id=$this->session->user_id;
 						<tr>
 						<td width='12%' style='text-align: left;'></td>
 						<td width='12%' style='text-align: left;'></td>
-						<td colspan="3" width='6%' style='border-bottom:1px solid black;text-align: left;'><b>Sub Total :</b></td>
+						<td colspan="4" width='6%' style='border-bottom:1px solid black;text-align: left;'><b>Sub Total :</b></td>
 						<td width='12%' style='border-bottom:1px solid black;text-align: right;'><?php echo "<b>".number_format($row->total_after_tax,2)."</b>"; ?></tr>
 						<tr>
 						<td width='12%' style='text-align: left;'></td>
@@ -191,12 +200,12 @@ $user_id=$this->session->user_id;
                 <td colspan="3" style="border-bottom: 1px solid black;"><strong>Cash Sale : </strong></td>
                 <td colspan="3" style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format($grandtotal-$card_amount,2); ?></strong></td>
             </tr>
-			<tr>
+			<tr style="display: none;">
 				<td ></td><td></td>
                 <td colspan="3" style="border-bottom: 1px solid black;"><strong>Card Sale : </strong></td>
                 <td colspan="3" style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format($card_amount,2); ?></strong></td>
             </tr>
-			<tr>
+			<tr style="display: none;">
 				<td ></td><td></td>
                 <td colspan="3" style="border-bottom: 1px solid black;"><strong>Gift Cert : </strong></td>
                 <td colspan="3" style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format(0,2); ?></strong></td>

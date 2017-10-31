@@ -10,15 +10,17 @@ $date = date('Y-m-d H:i:s');
 $today = date("m/d/Y", strtotime($date));
 $time = date("H:i:s", strtotime($date));
 
+$sDate = date('Y-m-d', strtotime($this->input->get('sdate',TRUE)));
+$eDate = date('Y-m-d', strtotime($this->input->get('edate',TRUE)));
+
 $user_id = $id;
 ?>
-
-<center><?php echo "<h2 style='font-size:11px;text-align:center;margin:0px;margin-bottom:5px;'>X-READING</h2>"; ?>
-<center><?php echo "<h2 style='font-size:11px;text-align:center;margin:0px;margin-bottom:5px;'></h2>"; ?></center>
-<center><?php echo "<h3 style='font-size:11px;text-align:center;margin:0px;margin-bottom:5px;'>".$company_info->company_name."</h3>"; ?></center>
-<center><?php echo "<h3 style='font-size:11px;text-align:center;margin:0px;margin-bottom:5px;'>".$company_info->company_address."</h3>"; ?></center>
-<center><?php echo "<h3 style='font-size:11px;text-align:center;margin:0px;margin-bottom:5px;'>".$company_info->email_address."</h3>"; ?></center>
-<center><?php echo "<h3 style='font-size:11px;text-align:center;margin:0px;margin-bottom:5px;'>".$company_info->landline."</h3>"; ?></center>
+	
+<center><?php echo "<h2 style='text-align:center;margin:0px;margin-bottom:5px;'>X-READING</h2>"; ?></center>
+<center><?php echo "<h3 style='text-align:center;margin:0px;margin-bottom:5px;'>".$company_info->company_name."</h3>"; ?></center>
+<center><?php echo "<h3 style='text-align:center;margin:0px;margin-bottom:5px;'>".$company_info->company_address."</h3>"; ?></center>
+<center><?php echo "<h3 style='text-align:center;margin:0px;margin-bottom:5px;'>".$company_info->email_address."</h3>"; ?></center>
+<center><?php echo "<h3 style='text-align:center;margin:0px;margin-bottom:5px;'>".$company_info->landline."</h3>"; ?></center>
 <center><table width="100%" cellpadding="5" style="font-family: tahoma;font-size: 11">
         <tr>
            <!-- <td width="45%" valign="top">
@@ -33,42 +35,37 @@ $user_id = $id;
     <td width="50%" valign="top">
                 <companyname>
                     <?php echo ""; ?><br>
-                    <strong><?php  echo "Date :<u>".$today."</u> Time : <u>".$time."</u>";?></strong><br>
-                      <strong><?php echo "Cashier Name :".$user_info->full_name; ?> </strong>
+                    <strong><?php  echo "Date Generated :<u>".$today."</u><br> Time Generated : <u>".$time."</u>";?></strong><br>
+                      <strong><?php echo "Cashier Name : <u>".$user_info->full_name."</u>"; ?></strong>
                 </companyname>
             </td>
 
-            <td width="50%" align="right">
+         <!--    <td width="50%" align="right">
         <img height="50px" width="50px" src="<?php echo $company_info->logo_path; ?>" ></img>
-            </td>
+            </td> -->
         </tr>
     </table></center>
 <table width='95%' class="table table-responsive" style='border-collapse: collapse;border-spacing: 0;font-size: 11'>
 			<thead>
-			<!--<tr>
-				<th width='30%' style='text-align: left;'><?php echo "Date: <u>".$fromdate."</u>"; ?></th>
-            </tr>
-			<tr>
-				<th width='30%' style='text-align: left;'><?php echo "Cashier Name: <u>".$this->session->user_fullname."</u>"; ?></th>
-			</tr> -->
-            <tr>
-				<th style='border-bottom: 2px solid gray;text-align: left;'>Receipt No</th>
-                <th width='12%' style='border-bottom: 2px solid gray;text-align: left;'>Customer</th>
-				<th style='border-bottom: 2px solid gray;text-align: left;'>Item</th>
-                <th width='12%' style='border-bottom: 2px solid gray;text-align: left;'>SRP</th>
-				<th  style='border-bottom: 2px solid gray;text-align: left;'>Qty</th>
-				<th  style='border-bottom: 2px solid gray;text-align: right;'>Total</th>
-            </tr>
+	            <tr>
+					<th colspan="2" style='border-bottom: 2px solid gray;text-align: left;'>Receipt No</th>
+	                <th colspan="2" width='12%' style='border-bottom: 2px solid gray;text-align: left;'>Customer</th>
+					<th colspan="2" style='border-bottom: 2px solid gray;text-align: left;'>Date</th>
+	            </tr>
             </thead>
  <tbody>
 <?php
 
-	$query = $this->db->query('SELECT receipt_no,pos_invoice.*,customers.customer_name,pos_payment.pos_payment_id FROM pos_payment
-	LEFT JOIN pos_invoice
-	ON pos_payment.pos_invoice_id=pos_invoice.pos_invoice_id
-
-	LEFT JOIN customers
-	ON pos_invoice.customer_id=customers.customer_id WHERE user_id='.$user_id);
+	$query = $this->db->query('SELECT 
+			receipt_no,
+			pos_invoice.*,
+			customers.customer_name,
+			pos_payment.pos_payment_id,
+			SUM(pos_invoice_items.total) total
+			FROM pos_payment
+			LEFT JOIN pos_invoice ON pos_payment.pos_invoice_id=pos_invoice.pos_invoice_id
+			INNER JOIN pos_invoice_items ON pos_invoice_items.pos_invoice_id = pos_invoice.pos_invoice_id
+			LEFT JOIN customers ON pos_invoice.customer_id=customers.customer_id WHERE user_id='.$user_id.' AND DATE_FORMAT(transaction_timestamp, "%Y-%m-%d") BETWEEN "'.$sDate.'" AND "'.$eDate.'" GROUP BY pos_invoice_id');
 	$gtotal = $query->row();
 	//$grandtotal = $gtotal->grand_total;
 
@@ -84,15 +81,19 @@ $user_id = $id;
 
 		?>
 			<tr>
-			<td style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;text-align: left;'><?php echo $receiptno; ?></td>
-			<td style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'><?php echo $customer; ?></td>
-			<td style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'></td>
-			<td style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'></td>
-			<td style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'></td>
-			<td style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'></td>
+				<td colspan="2" style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;text-align: left;'><?php echo $receiptno; ?></td>
+				<td colspan="2" style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left; text-transform: uppercase;'><?php echo $customer; ?></td>
+				<td colspan="2" style='border-bottom: 2px solid gray;border-top: 2px solid gray;text-align: left;'><?php echo $row->transaction_date; ?></td>
 			</tr>
 
-
+			<thead>
+	            <tr>
+					<th colspan="3" style='border-bottom: 2px solid gray;text-align: left;'>Item</th>
+	                <th width='12%' style='border-bottom: 2px solid gray;text-align: left;'>SRP</th>
+					<th style='border-bottom: 2px solid gray;text-align: left;'>Qty</th>
+					<th style='border-bottom: 2px solid gray;text-align: right;'>Total</th>
+	            </tr>
+            </thead>
 		<?php
 		$query1 = $this->db->query('SELECT products.product_desc,pos_invoice_items.* FROM pos_invoice_items LEFT JOIN products
 				ON pos_invoice_items.product_id=products.product_id
@@ -100,29 +101,18 @@ $user_id = $id;
 
 			foreach ($query1->result() as $prod) { ?>
 				<tr>
-				<td style='text-align: left;'></td>
-				<td style='text-align: left;'></td>
-				<td style='text-align: left;'><?php echo $prod->product_desc; ?></td>
-				<td style='text-align: left;'><?php echo $prod->pos_price; ?></td>
+				<td colspan="3" style='text-align: left;'><?php echo $prod->product_desc; ?></td>
+				<td style='text-align: left;'><?php echo number_format($prod->pos_price,2); ?></td>
 				<td style='text-align: left;'><?php echo $prod->pos_qty; ?></td>
-				<td style='text-align: right;'><?php echo $prod->total; ?></td></tr>
+				<td style='text-align: right;'><?php echo number_format($prod->total,2); ?></td></tr>
 
 				<?php
 					$grandtotal+=$prod->total; /*computing for grandtotal*/ } ?>
 						<tr>
-						<td style='text-align: left;'></td>
-						<td style='text-align: left;'></td>
-						<td style='text-align: left;'></td>
-						<td style='text-align: left;'></td>
-						<td style='border-bottom:1px solid black;text-align: left;'><b>Sub Total :</b></td>
-						<td style='border-bottom:1px solid black;text-align: right;'><?php echo "<b>".number_format($row->total_after_tax)."</b>"; ?></tr>
+						<td colspan="5" style='border-bottom:1px solid black;border-top:1px solid black;text-align: left;'><b>Sub Total :</b></td>
+						<td style='border-bottom:1px solid black;text-align: right;border-top:1px solid black; font-size: 14px;'><?php echo "<b>".number_format($row->total,2)."</b>"; ?></tr>
 						<tr>
-						<td style='text-align: left;'></td>
-						<td style='text-align: left;'></td>
-						<td style='text-align: left;'></td>
-						<td style='text-align: left;'></td>
-						<td style='text-align: left;'></td>
-						<td style='text-align: left;'></td>
+						<td colspan="5" style='text-align: left;'>&nbsp;</td>
 						</tr>
 				<?php
 
@@ -135,36 +125,26 @@ $user_id = $id;
 
 		} ?>
 			</tbody>
-			<tfoot>
-			<tr>
-				<td ></td><td></td><td></td><td></td>
-                <td style="border-bottom: 1px solid black;"><strong>Grand Total : </strong></td>
-                <td style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format($grandtotal,2); ?></strong></td>
-            </tr>
-			<tr>
-				<td ></td><td></td><td></td><td></td>
-                <td><strong>BreakDown : </strong></td>
-                <td><strong></strong></td>
-            </tr>
-			<tr>
-				<td ></td><td></td><td></td><td></td>
-                <td style="border-bottom: 1px solid black;"><strong>Cash Sale : </strong></td>
-                <td style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format($grandtotal-$card_amount,2); ?></strong></td>
-            </tr>
-			<tr>
-				<td ></td><td></td><td></td><td></td>
-                <td style="border-bottom: 1px solid black;"><strong>Card Sale : </strong></td>
-                <td style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format($card_amount,2); ?></strong></td>
-            </tr>
-			<tr>
-				<td ></td><td></td><td></td><td></td>
-                <td style="border-bottom: 1px solid black;"><strong>Gift Cert : </strong></td>
-                <td style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format(0,2); ?></strong></td>
-            </tr>
-			<tr>
-				<td ></td><td></td><td></td><td></td>
-                <td style="border-bottom: 1px solid black;"><strong>Total : </strong></td>
-                <td style="border-bottom: 1px solid black;text-align:right;"><strong><?php echo number_format($grandtotal-$card_amount+$card_amount,2); ?></strong></td>
-            </tr>
+			<tfoot width="100%">
+				<tr>
+	                <td colspan="5" style="border-bottom: 1px solid black; font-size: 14px;"><strong>Grand Total : </strong></td>
+	                <td style="border-bottom: 1px solid black;text-align:right; font-size: 14px;"><strong><?php echo number_format($grandtotal,2); ?></strong></td>
+	            </tr>
+				<tr>
+	                <td colspan="5"  style="border-bottom: 1px solid black; font-size: 14px;"><strong>Cash Sale : </strong></td>
+	                <td style="border-bottom: 1px solid black;text-align:right; font-size: 14px;"><strong><?php echo number_format($grandtotal-$card_amount,2); ?></strong></td>
+	            </tr>
+				<tr>
+	                <td colspan="5"  style="border-bottom: 1px solid black; font-size: 14px;"><strong>Card Sale : </strong></td>
+	                <td style="border-bottom: 1px solid black;text-align:right; font-size: 14px;"><strong><?php echo number_format($card_amount,2); ?></strong></td>
+	            </tr>
+				<tr>
+	                <td colspan="5"  style="border-bottom: 1px solid black; font-size: 14px;"><strong>Gift Cert : </strong></td>
+	                <td style="border-bottom: 1px solid black;text-align:right; font-size: 14px;"><strong><?php echo number_format(0,2); ?></strong></td>
+	            </tr>
+				<tr>
+	                <td colspan="5"  style="border-bottom: 1px solid black; font-size: 14px;"><strong>Total : </strong></td>
+	                <td style="border-bottom: 1px solid black;text-align:right; font-size: 14px;"><strong><?php echo number_format($grandtotal-$card_amount+$card_amount,2); ?></strong></td>
+	            </tr>
             </tfoot>
 			</table>
