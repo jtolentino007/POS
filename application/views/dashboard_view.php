@@ -78,6 +78,16 @@
                     </div>
                     <div class="row">
                         <div class="container-fluid">
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h2>PRODUCTS</h2>
+                                    </div>
+                                    <div class="panel-body">
+                                        
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-xs-12 col-sm-3 col-md-2">
                                 <a href="Deliveries" class="btn btn-primary btn-block btn-height <?php echo (in_array('1-1', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
                                     <i class="fa fa-truck" style="font-size: 50px;"></i><br><br>
@@ -92,7 +102,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-3 col-md-2">
                                 <a id="btn_pos" href="pos_v2" class="btn btn-primary btn-block btn-height <?php echo (in_array('1-3', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
-                                    <i class="fa fa-shopping-cart" style="font-size: 50px;"></i><br><br>
+                                    <i class="fa fa-calculator" style="font-size: 50px;"></i><br><br>
                                     <span>Point of Sales</span>
                                 </a>
                             </div>
@@ -135,9 +145,9 @@
                                             </a>
                                         </div>
                                         <div class="col-xs-12 col-sm-4">
-                                            <a href="brands" class="btn btn-success btn-block btn-height <?php echo (in_array('1-9', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #00bcd4!important; border-color: #00bcd4!important;"><br>
+                                            <a href="ingredients" class="btn btn-success btn-block btn-height <?php echo (in_array('1-9', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #00bcd4!important; border-color: #00bcd4!important;"><br>
                                                 <i class="fa fa-bars" style="font-size: 50px;"></i><br><br>
-                                                <span>Brands</span>
+                                                <span>Ingredients</span>
                                             </a>
                                         </div>
                                     </div>
@@ -167,9 +177,9 @@
                                 <div class="row">
                                     <div class="">
                                         <div class="col-xs-12 col-sm-4">    
-                                            <a href="locations" class="btn btn-success btn-block btn-height <?php echo (in_array('1-13', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #7CB342!important; border-color: #7CB342!important;"><br>
-                                                <i class="fa fa-institution" style="font-size: 50px;"></i><br><br>
-                                                <span>Locations</span>
+                                            <a href="recipes" class="btn btn-success btn-block btn-height <?php echo (in_array('1-13', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #cddc39!important; border-color: #cddc39!important;"><br>
+                                                <i class="fa fa-book" style="font-size: 50px;"></i><br><br>
+                                                <span>RECIPES</span>
                                             </a>
                                         </div>
                                         <div class="col-xs-12 col-sm-4">
@@ -192,7 +202,7 @@
                                     <div class="">
                                         <div class="col-xs-12 col-sm-3">
                                             <a href="vendors" class="btn btn-success btn-block btn-height <?php echo (in_array('1-22', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #009688!important; border-color: #009688!important;"><br>
-                                                <i class="fa fa-archive" style="font-size: 50px;"></i><br><br>
+                                                <i class="fa fa-user-circle" style="font-size: 50px;"></i><br><br>
                                                 <span>VENDORS</span>
                                             </a>
                                         </div>
@@ -238,7 +248,7 @@
                                         </div>
                                         <div class="col-xs-12 col-sm-3">
                                             <a href="stock" class="btn btn-success btn-block btn-height <?php echo (in_array('1-17', $this->session->user_rights) ? '' : 'hidden') ?>" style="background: #2980b9!important; border-color: #2980b9!important;"><br>
-                                                <i class="fa fa-archive" style="font-size: 50px;"></i><br><br>
+                                                <i class="fa fa-linode" style="font-size: 50px;"></i><br><br>
                                                 <span>STOCKS</span>
                                             </a>
                                         </div>
@@ -248,13 +258,13 @@
                                     <div class="">
                                         <div class="col-xs-12 col-sm-6">
                                             <a href="users" class="btn btn-info btn-block btn-height <?php echo (in_array('1-20', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
-                                                <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
+                                                <i class="fa fa-male" style="font-size: 50px;"></i><br><br>
                                                 <span>USER ACCOUNTS</span>
                                             </a>
                                         </div>
                                         <div class="col-xs-12 col-sm-6">
                                             <a href="user_groups" class="btn btn-warning btn-block btn-height <?php echo (in_array('1-21', $this->session->user_rights) ? '' : 'hidden') ?>"><br>
-                                                <i class="fa fa-file-o" style="font-size: 50px;"></i><br><br>
+                                                <i class="fa fa-address-book" style="font-size: 50px;"></i><br><br>
                                                 <span>USER RIGHTS</span>
                                             </a>
                                         </div>
